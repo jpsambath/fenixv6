@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="JavaScriptLibraryMappings">
+    <file url="file://$PROJECT_DIR$" libraries="{animate, basic, bootstrap, bootstrap.bundle, dropzone-amd-module, jquery-3.4.1, material-components-web, popper-utils, table2csv}" />
+  </component>
+</project>

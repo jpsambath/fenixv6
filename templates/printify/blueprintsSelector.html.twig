@@ -1,0 +1,147 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ProjetController!{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('blueprintselector') }}
+{% endblock %}
+
+
+{% block body %}
+
+
+
+    <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+        <h1 class="display-4">Printify Blueprints</h1>
+        <p class="lead">Choose blueprints you want to save in your shop. <br>You will be able to create product from
+            them.</p>
+    </div>
+
+    <div class="container-fluid">
+        <div class="card-deck mb-3 text-center">
+
+            <div class="card mb-8 box-shadow">
+                <div class="card-header">
+                    <h4 class="my-0 font-weight-normal">Blueprints</h4>
+                </div>
+                <div class="card-body">
+                    <input type="hidden" id="selectedshop" value="{{ selectedShop.id }}">
+                    </input>
+                    <table class="table table-bordered table-sm m-0">
+                        <thead class="">
+                        <tr>
+                            <th>Save</th>
+                            <th>Title</th>
+                            <th>Brand</th>
+                            <th>Model</th>
+                            <th>Provider</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for blueprint in blueprintslist %}
+                            <tr>
+                                <td>
+                                    <label class="custom-control custom-checkbox">
+                                        {% if blueprint in selectedShop.blueprints %}
+                                            <input type="checkbox"
+                                                   data-url="{{ path('printifyservice_blueprintforshop', {shopid: selectedShop.id, blueprintid: blueprint.id}) }}"
+                                                   value="{{ blueprint.id }}" class="custom-control-input" checked>
+                                        {% else %}
+                                            <input type="checkbox"
+                                                   data-url="{{ path('printifyservice_blueprintforshop', {shopid: selectedShop.id, blueprintid: blueprint.id}) }}"
+                                                   value="{{ blueprint.id }}" class="custom-control-input">
+                                        {% endif %}
+                                        <span class="custom-control-indicator"></span>
+                                    </label>
+                                </td>
+                                <td>{{ blueprint.title }}</td>
+                                <td>{{ blueprint.brand }}</td>
+                                <td>{{ blueprint.model }}</td>
+                                <td>
+                                    {% for provider in blueprint.providers %}
+                                        {{ provider.title }} [{{ provider.location.country }}],
+                                    {% endfor %}
+                                </td>
+                            </tr>
+                            <tr class="blueprintdetail">
+                                <td colspan="5" class="blueprintdetail">
+                                    <table class="table table-bordered table-sm m-0">
+                                        <thead>
+                                        <tr>
+                                            <th>Provider</th>
+                                            <th>Country</th>
+                                            <th>Region</th>
+                                            <th>City</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for provider in blueprint.providers %}
+                                        <tr>
+                                            <td>{{ provider.title }}</td>
+                                            <td>{{ provider.location.country }}</td>
+                                            <td>{{ provider.location.region }}</td>
+                                            <td>{{ provider.location.city }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+
+                    {{ knp_pagination_render(blueprintslist) }}
+
+
+                </div>
+            </div>
+        </div>
+
+        <footer class="pt-4 my-md-5 pt-md-5 border-top">
+            <div class="row">
+                <div class="col-12 col-md">
+                    <img class="mb-2" src="https://getbootstrap.com/docs/4.0/assets/brand/bootstrap-solid.svg" alt=""
+                         width="24" height="24">
+                    <small class="d-block mb-3 text-muted">© 2017-2018</small>
+                </div>
+                <div class="col-6 col-md">
+                    <h5>Features</h5>
+                    <ul class="list-unstyled text-small">
+                        <li><a class="text-muted" href="#">Cool stuff</a></li>
+                        <li><a class="text-muted" href="#">Random feature</a></li>
+                        <li><a class="text-muted" href="#">Team feature</a></li>
+                        <li><a class="text-muted" href="#">Stuff for developers</a></li>
+                        <li><a class="text-muted" href="#">Another one</a></li>
+                        <li><a class="text-muted" href="#">Last time</a></li>
+                    </ul>
+                </div>
+                <div class="col-6 col-md">
+                    <h5>Resources</h5>
+                    <ul class="list-unstyled text-small">
+                        <li><a class="text-muted" href="#">Resource</a></li>
+                        <li><a class="text-muted" href="#">Resource name</a></li>
+                        <li><a class="text-muted" href="#">Another resource</a></li>
+                        <li><a class="text-muted" href="#">Final resource</a></li>
+                    </ul>
+                </div>
+                <div class="col-6 col-md">
+                    <h5>About</h5>
+                    <ul class="list-unstyled text-small">
+                        <li><a class="text-muted" href="#">Team</a></li>
+                        <li><a class="text-muted" href="#">Locations</a></li>
+                        <li><a class="text-muted" href="#">Privacy</a></li>
+                        <li><a class="text-muted" href="#">Terms</a></li>
+                    </ul>
+                </div>
+            </div>
+        </footer>
+    </div>
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('blueprintselector') }}
+{% endblock %}

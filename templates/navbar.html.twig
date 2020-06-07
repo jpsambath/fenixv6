@@ -1,0 +1,156 @@
+<div id="menu_area" class="menu-area">
+    <div class="container-fluid">
+        <div class="row">
+            <nav class="navbar navbar-light navbar-expand-lg mainmenu">
+                <a class="navbar-brand font-weight-bold" href="{{ path('homepage') }}">FENIX</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse"
+                        data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto">
+                        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+
+                            {#                            {% if is_granted(['ROLE_PRINTIFY','ROLE_PRINTFUL']) %} #}
+
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                   data-toggle="dropdown"
+                                   aria-haspopup="true" aria-expanded="false">POD Platform</a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    {% if is_granted('ROLE_PRINTIFY') %}
+                                        <li class="dropdown">
+                                            <a class="dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Printify</a>
+                                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                                {% if printify_shoplist is defined %}
+                                                    {% for shop in printify_shoplist %}
+                                                        <li class="dropdown">
+                                                            <a class="dropdown-toggle" href="#" id="navbarDropdown"
+                                                               role="button" data-toggle="dropdown" aria-haspopup="true"
+                                                               aria-expanded="false">{{ shop.title }}</a>
+                                                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                                                <li>
+                                                                    <a href="{{ path('printify_blueprintsselector', {shopid: shop.id}) }}">Blueprints
+                                                                        Selector</a></li>
+                                                                <li>
+                                                                    <a href="{{ path('printify_templateexporter', {shopid: shop.id}) }}">Template Exporter</a></li>
+                                                                <li>
+                                                                    <a href="{{ path('printify_productlist', {shopid: shop.id}) }}">Product
+                                                                        List</a></li>
+                                                                <li>
+                                                                    <a href="{{ path('printify_createproduct', {shopid: shop.id}) }}">Create
+                                                                        Products</a></li>
+                                                                <li>
+                                                                    <a href="{{ path('printify_uploadimage', {shopid: shop.id}) }}">Upload
+                                                                        Images</a></li>
+                                                            </ul>
+                                                        </li>
+                                                    {% endfor %}
+                                                {% endif %}
+
+                                            </ul>
+                                        </li>
+                                    {% endif %}
+
+                                    {% if is_granted('ROLE_PRINTFUL') %}
+                                        <li class="dropdown">
+                                            <a class="dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                               data-toggle="dropdown" aria-haspopup="true"
+                                               aria-expanded="false">Printful</a>
+                                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                                <li><a href="#">Products Light</a></li>
+                                                <li><a href="#">Create Products</a></li>
+                                                <li><a href="#">Upload Images</a></li>
+                                            </ul>
+                                        </li>
+                                    {% endif %}
+                                </ul>
+                            </li>
+                            {#                        {% endif %}#}
+
+                            {#                        {% if is_granted(['ROLE_SHOPIFY','ROLE_WOOCOMMERCE']) %}#}
+
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                   data-toggle="dropdown"
+                                   aria-haspopup="true" aria-expanded="false">Shop Platform</a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    {% if is_granted('ROLE_SHOPIFY') %}
+                                        <li class="dropdown">
+                                            <a class="dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                               data-toggle="dropdown" aria-haspopup="true"
+                                               aria-expanded="false">Shopify</a>
+                                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                                <li><a href="#">Products List</a></li>
+                                                <li><a href="#">Create Products</a></li>
+                                                <li><a href="#">Blablabla</a></li>
+                                            </ul>
+                                        </li>
+                                    {% endif %}
+
+                                    {% if is_granted('ROLE_WOOCOMMERCE') %}
+                                        <li class="dropdown">
+                                            <a class="dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                               data-toggle="dropdown" aria-haspopup="true"
+                                               aria-expanded="false">WooCommerce</a>
+                                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                                <li><a href="#">Products Light</a></li>
+                                                <li><a href="#">Create Products</a></li>
+                                                <li><a href="#">Blablabla</a></li>
+                                            </ul>
+                                        </li>
+                                    {% endif %}
+                                </ul>
+                            </li>
+
+                            {#                        {% endif %}#}
+
+
+                            {% if is_granted('ROLE_SPINNING') %}
+
+                                <li><a href="#">Spinning Tool</a></li>
+
+                            {% endif %}
+
+                        {% endif %}
+                    </ul>
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                        <ul class="nav navbar-nav navbar-right mr-5">
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                   data-toggle="dropdown" aria-haspopup="true"
+                                   aria-expanded="false">{{ app.user.username }}</a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li><a href="#">My Profile</a></li>
+                                    <li><a href="#">Inbox</a></li>
+                                    {% if is_granted('ROLE_ADMIN') %}
+                                        <li class="dropdown-divider"></li>
+                                        <li><a href="{{ path('admin_synchronizeprintify') }}">Synchronize Printify</a>
+                                        </li>
+                                    {% endif %}
+                                    <li class="dropdown-divider"></li>
+                                    <li><a href="{{ path('app_logout') }}">Logout</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    {% endif %}
+
+
+                    {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="nav-item">
+                                <a href="{{ path('register') }}" class="nav-link">S'inscrire</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ path('app_login') }}" class="nav-link">Se connecter</a>
+                            </li>
+                        </ul>
+                    {% endif %}
+
+                </div>
+            </nav>
+        </div>
+    </div>
+</div>

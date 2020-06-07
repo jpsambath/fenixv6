@@ -1,0 +1,116 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ProjetController!{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('tableexport') }}
+    {{ encore_entry_link_tags('blueprintexporter') }}
+
+
+{% endblock %}
+
+
+{% block body %}
+
+
+
+    <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+        <h1 class="display-4">Printify Blueprint Exporter</h1>
+        <p class="lead">Follow the steps. <br>You will get a CSV file.</p>
+    </div>
+
+    <div class="container-fluid">
+        <div class="card-deck mb-3 text-center">
+
+            <div class="card mb-8 box-shadow">
+                <div class="card-header">
+                    <h4 class="my-0 font-weight-normal">Blueprints</h4>
+                </div>
+                <div class="card-body">
+                    <input type="hidden" id="selectedshop" data-shop="{{ selectedShopArray | json_encode }}" value="{{ selectedShop.id }}">
+                    </input>
+                    <div class="row" id="blueprintchoice">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label for="blueprintselection">1. Choose a blueprint</label>
+                                <select class="form-control" id="blueprintselection">
+                                    {% for blueprint in selectedShop.blueprints %}
+                                        <option value="{{ blueprint.id }}">{{ blueprint.title }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div id="blueprintdescription"></div>
+
+                        </div>
+                        <div id="blueprintimages" class="col-6">
+
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row" id="providerchoice">
+                    </div>
+                    <hr>
+                    <div class="row" id="exportchoice">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="pt-4 my-md-5 pt-md-5 border-top">
+            <div class="row">
+                <div class="col-12 col-md">
+                    <img class="mb-2" src="https://getbootstrap.com/docs/4.0/assets/brand/bootstrap-solid.svg" alt=""
+                         width="24" height="24">
+                    <small class="d-block mb-3 text-muted">© 2017-2018</small>
+                </div>
+                <div class="col-6 col-md">
+                    <h5>Features</h5>
+                    <ul class="list-unstyled text-small">
+                        <li><a class="text-muted" href="#">Cool stuff</a></li>
+                        <li><a class="text-muted" href="#">Random feature</a></li>
+                        <li><a class="text-muted" href="#">Team feature</a></li>
+                        <li><a class="text-muted" href="#">Stuff for developers</a></li>
+                        <li><a class="text-muted" href="#">Another one</a></li>
+                        <li><a class="text-muted" href="#">Last time</a></li>
+                    </ul>
+                </div>
+                <div class="col-6 col-md">
+                    <h5>Resources</h5>
+                    <ul class="list-unstyled text-small">
+                        <li><a class="text-muted" href="#">Resource</a></li>
+                        <li><a class="text-muted" href="#">Resource name</a></li>
+                        <li><a class="text-muted" href="#">Another resource</a></li>
+                        <li><a class="text-muted" href="#">Final resource</a></li>
+                    </ul>
+                </div>
+                <div class="col-6 col-md">
+                    <h5>About</h5>
+                    <ul class="list-unstyled text-small">
+                        <li><a class="text-muted" href="#">Team</a></li>
+                        <li><a class="text-muted" href="#">Locations</a></li>
+                        <li><a class="text-muted" href="#">Privacy</a></li>
+                        <li><a class="text-muted" href="#">Terms</a></li>
+                    </ul>
+                </div>
+            </div>
+        </footer>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+
+    {{ parent() }}
+
+
+    <script>
+        let shop = JSON.parse({{ selectedShopArray | json_encode |raw }});
+    </script>
+    {{ encore_entry_script_tags('tableexport') }}
+    {{ encore_entry_script_tags('blueprintexporter') }}
+
+
+
+
+{% endblock %}
+
