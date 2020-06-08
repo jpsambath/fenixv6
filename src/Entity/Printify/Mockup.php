@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping\JoinTable;
 use JMS\Serializer\Annotation as Serializer;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\MockupRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\Printify\MockupRepository")
  * @ORM\Table(name="printify_mockup")
  */
 class Mockup

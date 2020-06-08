@@ -11,7 +11,7 @@ use JMS\Serializer\Annotation as Serializer;
 use Symfony\Component\Serializer\Annotation\MaxDepth;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\ProviderRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\Printify\ProviderRepository")
  * @ORM\Table(name="printify_provider")
  */
 class Provider

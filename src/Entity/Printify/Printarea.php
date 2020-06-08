@@ -11,7 +11,7 @@ use JMS\Serializer\Annotation as Serializer;
 use phpDocumentor\Reflection\Types\Integer;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\PrintareaRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\Printify\PrintareaRepository")
  * @ORM\Table(name="printify_printarea")
  */
 class Printarea

@@ -12,7 +12,7 @@ use JMS\Serializer\Annotation as Serializer;
 use Symfony\Component\Serializer\Annotation\MaxDepth;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\VariantRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\Printify\VariantRepository")
  * @ORM\Table(name="printify_variant")
  */
 class Variant

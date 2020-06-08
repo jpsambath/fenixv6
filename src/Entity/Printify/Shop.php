@@ -13,7 +13,7 @@ use Symfony\Component\Serializer\Annotation\MaxDepth;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\ShopRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\Printify\ShopRepository")
  * @ORM\Table(name="printify_shop")
  */
 class Shop

@@ -12,7 +12,7 @@ use Symfony\Component\Serializer\Annotation\MaxDepth;
 
 /**
  *
- * @ORM\Entity(repositoryClass="App\Repository\BlueprintRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\Printify\BlueprintRepository")
  * @ORM\Table(name="printify_blueprint")
  */
 class Blueprint

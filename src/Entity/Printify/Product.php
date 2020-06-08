@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping\JoinTable;
 use JMS\Serializer\Annotation as Serializer;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\ProductRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\Printify\ProductRepository")
  * @ORM\Table(name="printify_product")
  */
 class Product

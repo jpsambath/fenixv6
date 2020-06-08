@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\LocationRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\Printify\LocationRepository")
  * @ORM\Table(name="printify_location")
  */
 class Location
