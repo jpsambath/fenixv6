@@ -5,11 +5,16 @@ namespace App\Service;
 
 
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Persistence\ObjectManager;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
 
+/**
+ * @Route("/printfulservice", name="printfulservice_")
+ * @return array|string
+ */
 class Printful
 {
+
     private const BASE_URL = "https://api.printify.com/";
 
     private $headers = [];
@@ -21,14 +26,14 @@ class Printful
     /**
      * Printify constructor.
      * @param Security $security
-     * @param ObjectManager $em
+     * @param EntityManagerInterface $em
      */
     public function __construct(Security $security, EntityManagerInterface $em)
     {
         $this->em = $em;
         $this->security = $security;
         $this->headers = array();
-        $this->addHeaders("Authorization", "Bearer " . $this->security->getUser()->get());
+        $this->addHeaders("Authorization", "Bearer " . $this->security->getUser()->getPrintifyApikey());
         $this->addHeaders("Content-Type", "application/json");
     }
 
@@ -42,9 +47,9 @@ class Printful
 
     /**
      * @param array $headers
-     * @return Printify
+     * @return Printful
      */
-    public function setHeaders(array $headers): Printify
+    public function setHeaders(array $headers): Printful
     {
         $this->headers = $headers;
         return $this;
@@ -55,9 +60,12 @@ class Printful
      * @param string $value
      * @return Printify
      */
-    public function addHeaders(string $index, string $value): Printify
+    public function addHeaders(string $index, string $value): Printful
     {
         $this->headers[$index] = $value;
         return $this;
     }
+
+
+
 }

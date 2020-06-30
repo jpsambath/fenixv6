@@ -8,7 +8,6 @@ use App\Entity\Printify\Blueprint;
 use App\Entity\Printify\Image;
 use App\Entity\Printify\Location;
 use App\Entity\Printify\Mockup;
-use App\Entity\Printify\Option;
 use App\Entity\Printify\Placeholder;
 use App\Entity\Printify\Printarea;
 use App\Entity\Printify\Product;
@@ -19,7 +18,6 @@ use App\Entity\Printify\Shop;
 use App\Entity\Printify\Upload;
 use App\Entity\Printify\Variant;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Persistence\ObjectManager;
 use Exception;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerBuilder;
@@ -52,14 +50,14 @@ class Printify
     /**
      * Printify constructor.
      * @param Security $security
-     * @param ObjectManager $em
+     * @param EntityManagerInterface $em
      */
     public function __construct(Security $security, EntityManagerInterface $em)
     {
         $this->em = $em;
         $this->security = $security;
         $this->headers = array();
-        $this->addHeaders("Authorization", "Bearer " . $this->security->getUser()->getPrintifyApikey());
+        $this->addHeaders("Authorization", "Bearer " . $this->security->getUser()->getApikeys()->get(0)["printify_apikey"]);
         $this->addHeaders("Content-Type", "application/json");
     }
 
@@ -111,6 +109,8 @@ class Printify
             $statusCode = $response->getStatusCode();
             $contentType = $response->getHeaders()['content-type'][0];
             $content = $response->getContent();
+
+
             $serializer = SerializerBuilder::create()->build();
             $createdupload = $serializer->deserialize($content, 'App\Entity\Printify\Upload', 'json');
             // ICI UPLOAD OU IMAGE TRANSFER

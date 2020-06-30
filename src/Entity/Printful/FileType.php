@@ -3,31 +3,41 @@
 namespace App\Entity\Printful;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Printful\FileTypeRepository")
+ * @ORM\Table("printful_filetype")
  */
 class FileType
 {
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string")
+     * @var string
+     * @Serializer\Type("string")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @var string
+     * @Serializer\Type("string")
      */
     private $type;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @var string
+     * @Serializer\Type("string")
      */
     private $title;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @var string
+     * @Serializer\Type("string")
      */
     private $additional_price;
 

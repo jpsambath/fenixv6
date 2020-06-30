@@ -47,9 +47,10 @@ class User implements UserInterface, Serializable
     private $shops;
 
     /**
-     * @ORM\Column(type="text")
+     * @var ArrayCollection
+     * @ORM\Column(type="array")
      */
-    private $printify_apikey;
+    private $apikeys;
 
     /**
      * @ORM\Column(type="json")
@@ -59,7 +60,7 @@ class User implements UserInterface, Serializable
 
     public function __construct()
     {
-        $this->projets = new ArrayCollection();
+        $this->apikeys = new ArrayCollection();
         $this->estActif = true;
     }
 
@@ -152,7 +153,7 @@ class User implements UserInterface, Serializable
             $this->id,
             $this->username,
             $this->password,
-            $this->printify_apikey,
+            $this->apikeys,
             // see section on salt below
             // $this->salt,
         ));
@@ -165,26 +166,10 @@ class User implements UserInterface, Serializable
             $this->id,
             $this->username,
             $this->password,
-            $this->printify_apikey,
+            $this->apikeys,
             // see section on salt below
             // $this->salt
             ) = unserialize($serialized, array('allowed_classes' => false));
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getPrintifyApikey()
-    {
-        return $this->printify_apikey;
-    }
-
-    /**
-     * @param mixed $printify_apikey
-     */
-    public function setPrintifyApikey($printify_apikey): void
-    {
-        $this->printify_apikey = $printify_apikey;
     }
 
     /**
@@ -193,5 +178,51 @@ class User implements UserInterface, Serializable
     public function setRoles(array $roles): void
     {
         $this->roles = $roles;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getApikeys(): ArrayCollection
+    {
+        return $this->apikeys;
+    }
+
+    /**
+     * @param ArrayCollection $apikeys
+     */
+    public function setApikeys(ArrayCollection $apikeys): void
+    {
+        $this->apikeys = $apikeys;
+    }
+
+
+    /**
+     * @param string $key
+     * @param string|null $value
+     * @return $this
+     */
+    public function addApikeys(string $key, ?string $value)
+    {
+        if (!$this->apikeys->containskey($key)) {
+            $this->apikeys->add([$key => $value]);
+        }
+        else{
+            $this->apikeys->remove($key);
+            $this->apikeys->add([$key => $value]);
+        }
+        return $this;
+    }
+
+    /**
+     * @param string $key
+     * @return $this
+     */
+    public function removeApikey(string $key)
+    {
+        if ($this->apikeys->contains($key)) {
+            $this->apikeys->remove($key);
+        }
+        return $this;
     }
 }

@@ -22,7 +22,8 @@ class UserType extends AbstractType
         $builder
             ->add('email', EmailType::class, array('label' => 'Email'))
             ->add('username', TextType::class, array('label' => 'Nom Utilisateur'))
-            ->add('printify_apikey',null, array('label' => 'Printify API KEY'))
+            ->add('printify_apikey',null, array('label' => 'Printify API KEY', 'mapped' => false))
+            ->add('printful_apikey',null, array('label' => 'Printful API KEY', 'mapped' => false))
             ->add('password', RepeatedType::class, array(
                 'type' => PasswordType::class,
                 'first_options'  => array('label' => 'Mot de passe'),

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repository;
+namespace App\Repository\Printify;
 
 use App\Entity\Printify\Printarea;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
