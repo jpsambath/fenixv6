@@ -2,15 +2,17 @@
 
 namespace App\Entity\Printful;
 
-use App\Entity\AvailabilityStatus;
+use App\Entity\Printful\AvailabilityStatus;
+use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\JoinTable;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Printful\VariantRepository")
+ * @ORM\Table("printful_variant")
  */
 class Variant
 {
@@ -23,51 +25,71 @@ class Variant
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @var integer
+     * @Serializer\Type("integer")
      */
     private $product_id;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @var string
+     * @Serializer\Type("string")
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @var string
+     * @Serializer\Type("string")
      */
     private $color;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @var string
+     * @Serializer\Type("string")
      */
     private $color_code;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @var string
+     * @Serializer\Type("string")
      */
     private $color_code2;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @var string
+     * @Serializer\Type("string")
      */
     private $image;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @var string
+     * @Serializer\Type("string")
      */
     private $price;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
+     * @var boolean
+     * @Serializer\Type("boolean")
      */
     private $in_stock;
 
     /**
      * @ORM\Column(type="array", nullable=true)
+     * @var array
+     * @Serializer\Type("array")
      */
     private $availability_regions = [];
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\AvailabilityStatus", mappedBy="variant")
+     * @ORM\OneToMany(targetEntity="App\Entity\Printful\AvailabilityStatus", mappedBy="variant")
+     * @var string
+     * @Serializer\Type("ArrayCollection<App\Entity\Printful\AvailabilityStatus>")
      */
     private $availability_status;
 

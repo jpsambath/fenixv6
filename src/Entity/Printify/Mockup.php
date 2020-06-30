@@ -22,7 +22,6 @@ class Mockup
      * @Serializer\Type("integer")
      */
     private $id;
-
     /**
      * @var string
      * @ORM\Column(type="string", length=255, nullable=true)

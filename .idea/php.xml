@@ -113,7 +113,6 @@
       <path value="$PROJECT_DIR$/vendor/symfony/webpack-encore-bundle" />
       <path value="$PROJECT_DIR$/vendor/knplabs/knp-paginator-bundle" />
       <path value="$PROJECT_DIR$/vendor/knplabs/knp-components" />
-      <path value="$PROJECT_DIR$/vendor/jms/serializer-bundle" />
       <path value="$PROJECT_DIR$/vendor/jms/serializer" />
       <path value="$PROJECT_DIR$/vendor/jms/metadata" />
       <path value="$PROJECT_DIR$/vendor/hoa/ustring" />
@@ -129,6 +128,8 @@
       <path value="$PROJECT_DIR$/vendor/hoa/file" />
       <path value="$PROJECT_DIR$/vendor/hoa/exception" />
       <path value="$PROJECT_DIR$/vendor/hoa/compiler" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/sql-formatter" />
+      <path value="$PROJECT_DIR$/vendor/jms/serializer-bundle" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="7.2" />

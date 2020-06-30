@@ -22,7 +22,6 @@ class HomeController extends AbstractController
             $shoplist = $this->getDoctrine()->getRepository(Shop::class)->findBy(['user' => $user]);
 
 
-
 //            $providerlist = $printify->retrieveproviderlist();
 //
 //            $blueprintlist = $printify->retrieveblueprintlist();

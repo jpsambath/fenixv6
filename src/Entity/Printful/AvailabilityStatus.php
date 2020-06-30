@@ -4,9 +4,15 @@ namespace App\Entity\Printful;
 
 use App\Entity\Printful\Variant;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\JoinTable;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\AvailabilityStatusRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\Printful\AvailabilityStatusRepository")
+ * @ORM\Table(name="printful_availabilitystatus")
  */
 class AvailabilityStatus
 {
@@ -14,22 +20,29 @@ class AvailabilityStatus
      * @var integer
      * @ORM\Id()
      * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue()
      * @Serializer\Type("integer")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @var string
+     * @Serializer\Type("string")
      */
     private $region;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @var string
+     * @Serializer\Type("string")
      */
     private $status;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Printful\Variant", inversedBy="availability_status")
+     * @var Variant
+     * @Serializer\Type("App\Entity\Printful\Variant")
      */
     private $variant;
 

@@ -2,14 +2,16 @@
 
 namespace App\Entity\Printful;
 
+use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\JoinTable;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Printful\ProductRepository")
+ * @ORM\Table("printful_product")
  */
 class Product
 {
@@ -17,60 +19,84 @@ class Product
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @var integer
+     * @Serializer\Type("integer")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @var string
+     * @Serializer\Type("string")
      */
     private $type;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @var string
+     * @Serializer\Type("string")
      */
     private $type_name;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @var string
+     * @Serializer\Type("string")
      */
     private $brand;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @var string
+     * @Serializer\Type("string")
      */
     private $model;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @var string
+     * @Serializer\Type("string")
      */
     private $image;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @var integer
+     * @Serializer\Type("integer")
      */
     private $variant_count;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @var string
+     * @Serializer\Type("string")
      */
     private $currency;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
+     * @var boolean
+     * @Serializer\Type("boolean")
      */
     private $is_discontinued;
 
     /**
      * @ORM\Column(type="float", nullable=true)
+     * @var float
+     * @Serializer\Type("float")
      */
     private $avg_fulfillment_time;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @var string
+     * @Serializer\Type("string")
      */
     private $description;
 
     /**
+     * @var ArrayCollection<FileType>
+     * @Serializer\Type("ArrayCollection<App\Entity\Printful\FileType>")
      * @ORM\ManyToMany(targetEntity="App\Entity\Printful\FileType")
      * @JoinTable(name="printful_productfiletype",
      * joinColumns={@JoinColumn(name="product_id", referencedColumnName="id")},
@@ -80,6 +106,8 @@ class Product
     private $files;
 
     /**
+     * @var ArrayCollection<OptionType>
+     * @Serializer\Type("ArrayCollection<App\Entity\Printful\OptionType>")
      * @ORM\ManyToMany(targetEntity="App\Entity\Printful\OptionType")
      * @JoinTable(name="printful_productoptiontype",
      *      joinColumns={@JoinColumn(name="product_id", referencedColumnName="id")},
@@ -90,6 +118,8 @@ class Product
 
     /**
      * @ORM\Column(type="json", nullable=true)
+     * @var array
+     * @Serializer\Type("array")
      */
     private $dimensions;
 

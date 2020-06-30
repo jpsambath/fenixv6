@@ -3,41 +3,59 @@
 namespace App\Entity\Printful;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\JoinTable;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Printful\OptionTypeRepository")
+ * @ORM\Table("printful_optiontype")
  */
 class OptionType
 {
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string")
+     * @var string
+     * @Serializer\Type("string")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @var string
+     * @Serializer\Type("string")
      */
     private $title;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @var string
+     * @Serializer\Type("string")
      */
     private $type;
 
     /**
      * @ORM\Column(type="array", nullable=true)
+     * @var array
+     * @Serializer\Type("array")
      */
     private $option_values = [];
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @var string
+     * @Serializer\Type("string")
      */
     private $additional_price;
 
     /**
      * @ORM\Column(type="array", nullable=true)
+     * @var array
+     * @Serializer\Type("array")
      */
     private $additional_price_breakdown = [];
 
