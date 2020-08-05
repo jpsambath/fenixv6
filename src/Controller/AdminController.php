@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Printify\Blueprint;
 use App\Entity\Printify\Provider;
+use App\Service\Printful;
 use App\Service\Printify;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -85,10 +86,10 @@ class AdminController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $security = new Security($this->container);
 
-            $printify = new Printful($security, $em);
+            $printful = new Printful($security, $em);
 
             // RETRIEVE ALL SHOP FOR THIS USER
-            $shoplist = $printify->retrieveshoplist();
+            $productlist = $printful->retrieveproductlist();
 
 //            // RETRIEVE ALL PROVIDERS FROM PRINTIFY
 //            $providerlist = $printify->retrieveproviderlist();
@@ -113,24 +114,24 @@ class AdminController extends AbstractController
 
 //
 //             RETRIEVE ALL VARIANTS BASED ON PROVIDERS AND BLUEPRINTS
-            $fullproviderlist = $this->getDoctrine()->getRepository(Provider::class)->findAll();
-            $variantslist = array();
-            foreach($fullproviderlist as $fullprovider){
-                foreach($fullprovider->getBlueprints() as $fullproviderblueprint){
-                    $variantslist[] = $printify->retrievevariants($fullproviderblueprint->getId(), $fullprovider->getId());
-                }
-            }
+//            $fullproviderlist = $this->getDoctrine()->getRepository(Provider::class)->findAll();
+//            $variantslist = array();
+//            foreach($fullproviderlist as $fullprovider){
+//                foreach($fullprovider->getBlueprints() as $fullproviderblueprint){
+//                    $variantslist[] = $printify->retrievevariants($fullproviderblueprint->getId(), $fullprovider->getId());
+//                }
+//            }
 
 //            $variantslist[] = $printify->retrievevariants(14, 25);
 //            $variantslist[] = $printify->retrievevariants(14, 16);
 
-            return $this->render('admin/synchronizeprintify.html.twig', [
-                'printify_shoplist' => $shoplist,
+            return $this->render('admin/synchronizeprintful.html.twig', [
+                'printful_productlist' => $productlist,
 //                'printify_blueprintlist' => $blueprintlist,
 //                'printify_providerlist' => $providerlist,
 //                'printify_fullblueprintlist' => $fullblueprintlist,
 //               'printify_shippinglist' => $shippinglist,
-                'printify_variantlist' => $variantslist,
+//                'printify_variantlist' => $variantslist,
             ]);
         }
 
