@@ -105,7 +105,7 @@ class PrintifyController extends AbstractController
             $importedcsv = [];
 
             if (($h = fopen("{$originalFilename}", "r")) !== FALSE) {
-                while (($data = fgetcsv($h, 10000, ";")) !== FALSE) {
+                while (($data = fgetcsv($h, 100000, ";")) !== FALSE) {
                     $importedcsv[] = $data;
                 }
                 fclose($h);

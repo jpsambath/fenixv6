@@ -5,7 +5,6 @@ namespace App\Service;
 
 
 use Doctrine\ORM\EntityManagerInterface;
-use JMS\Serializer\SerializerBuilder;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
@@ -54,7 +53,7 @@ class Printful
 
     /**
      * @param array $headers
-     * @return Printify
+     * @return Printful
      */
     public function setHeaders(array $headers): Printful
     {
@@ -65,7 +64,7 @@ class Printful
     /**
      * @param string $index
      * @param string $value
-     * @return Printify
+     * @return Printful
      */
     public function addHeaders(string $index, string $value): Printful
     {
