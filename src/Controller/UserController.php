@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\UserEdit;
+use App\Form\UserRegister;
 use App\Form\UserType;
 use LogicException;
 use Swift_Mailer;
@@ -29,7 +31,7 @@ class UserController extends AbstractController
     {
         // 1) build the form
         $user = new User();
-        $form = $this->createForm(UserType::class, $user);
+        $form = $this->createForm(UserRegister::class, $user);
 
         // 2) handle the submit (will only happen on POST)
         $form->handleRequest($request);
@@ -38,7 +40,7 @@ class UserController extends AbstractController
             // 3) Encode the password (you could also do this via Doctrine listener)
             $password = $passwordEncoder->encodePassword($user, $user->getPassword());
             $user->setPassword($password);
-            $user->setRoles(['ROLE_PRINTIFY', 'ROLE_SHOPIFY', 'ROLE_PRINTFUL']);
+            $user->setRoles(['ROLE_PRINTIFY', 'ROLE_SHOPIFY', 'ROLE_PRINTFUL', 'ROLE_ADMIN']);
             $user->addApikeys("printify_apikey", $form->get("printify_apikey")->getData());
             $user->addApikeys("printful_apikey", $form->get("printful_apikey")->getData());
 
@@ -65,16 +67,58 @@ class UserController extends AbstractController
             $mailer->send($message);
 
 
-            $this->addFlash('success', 'Utilisateur créé!');
+            $this->addFlash('success', 'Utilisateur créé avec succés!');
 
             return $this->redirectToRoute('homepage');
         }
 
         return $this->render(
             'user/register.html.twig',
-            array('form' => $form->createView())
+            array('registerform' => $form->createView())
         );
     }
+
+    /**
+     * @Route("/edit", name="edit")
+     * @param Request $request
+     * @param UserPasswordEncoderInterface $passwordEncoder
+     * @param Swift_Mailer $mailer
+     * @return RedirectResponse|Response
+     */
+    public function edit(Request $request, UserPasswordEncoderInterface $passwordEncoder, Swift_Mailer $mailer)
+    {
+        // 1) build the form
+        $user = $this->getUser();
+        $form = $this->createForm(UserEdit::class, $user);
+
+        // 2) handle the submit (will only happen on POST)
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            // 3) Encode the password (you could also do this via Doctrine listener)
+            $password = $passwordEncoder->encodePassword($user, $user->getPassword());
+            $user->setEmail($form->get("email")->getData());
+            $user->setUsername($form->get("username")->getData());
+            $user->addApikeys("printify_apikey", $form->get("printify_apikey")->getData());
+            $user->addApikeys("printful_apikey", $form->get("printful_apikey")->getData());
+
+            // 4) save the User!
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($user);
+            $entityManager->flush();
+
+
+            $this->addFlash('success', 'Utilisateur modifié avec succés!');
+
+            return $this->redirectToRoute('homepage');
+        }
+
+        return $this->render(
+            'user/edit.html.twig',
+            array('editform' => $form->createView())
+        );
+    }
+
 
     /**
      * @Route("/login", name="app_login")

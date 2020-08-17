@@ -135,7 +135,7 @@ class AdminController extends AbstractController
             ]);
         }
 
-        return $this->render('admin/synchronizeprintify.html.twig');
+        return $this->render('admin/synchronizeprintful.html.twig');
     }
 
 }

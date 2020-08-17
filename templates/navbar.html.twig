@@ -123,7 +123,7 @@
                                    data-toggle="dropdown" aria-haspopup="true"
                                    aria-expanded="false">{{ app.user.username }}</a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <li><a href="#">My Profile</a></li>
+                                    <li><a href="{{ path('edit') }}">Edit my profile</a></li>
                                     <li><a href="#">Inbox</a></li>
                                     {% if is_granted('ROLE_ADMIN') %}
                                         <li class="dropdown-divider"></li>

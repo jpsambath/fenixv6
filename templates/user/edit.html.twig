@@ -5,28 +5,26 @@
 {% block body %}
 
     <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
-        <h1 class="display-4">Inscription</h1>
-        <p class="lead">Inscrivez vous! Outil de spin ultra puissant</p>
+        <h1 class="display-4">Modifier son profil</h1>
+        <p class="lead">Vous pouvez modifiez les informations présentes sur votre profil.</p>
     </div>
 
     <div class="container">
         <div class="card-deck mb-3 text-center">
             <div class="card mb-6 box-shadow">
                 <div class="card-header">
-                    <h4 class="my-0 font-weight-normal">Inscription</h4>
+                    <h4 class="my-0 font-weight-normal">Modification</h4>
                 </div>
                 <div class="card-body">
 
-                    {{ form_start(registerform) }}
-                    {{ form_row(registerform.username) }}
-                    {{ form_row(registerform.email) }}
-                    {{ form_row(registerform.password.first) }}
-                    {{ form_row(registerform.password.second) }}
-                    {{ form_row(registerform.printify_apikey) }}
-                    {{ form_row(registerform.printful_apikey) }}
+                    {{ form_start(editform) }}
+                    {{ form_row(editform.username) }}
+                    {{ form_row(editform.email) }}
+                    {{ form_row(editform.printify_apikey) }}
+                    {{ form_row(editform.printful_apikey) }}
 
-                    <button type="submit" class="btn btn-outline-primary">S'inscrire</button>
-                    {{ form_end(registerform) }}
+                    <button type="submit" class="btn btn-outline-primary">Modifier mon profil</button>
+                    {{ form_end(editform) }}
                 </div>
             </div>
 
