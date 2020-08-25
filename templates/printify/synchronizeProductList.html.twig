@@ -1,0 +1,120 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ProjetController!{% endblock %}
+
+
+{% block body %}
+
+
+
+    <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+        <h1 class="display-4">Synchronize Product from {{ printifyshop.title }}</h1>
+        <p class="lead">{{ printifyshop.platform }} on {{ printifyshop.salesChannel }}</p>
+    </div>
+
+    <div class="container-fluid">
+        <div class="card-deck mb-3 text-center">
+
+            <div class="card mb-8 box-shadow">
+                <div class="card-header">
+                    <h4 class="my-0 font-weight-normal">Product List : {{ total_product }}</h4>
+                </div>
+                <div class="card-body">
+                    <div class="justify-content-center m-2"><button type="button" class="btn btn-primary mr-2">Delete Selected Items</button><button type="button" class="btn btn-primary">Modify Selected Items</button></div>
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th><div class="form-check"><label for="all"></label><input type="checkbox" name="checked_printifyproduct" class="form-check-input" id="all"></div></th>
+                            <th>Product Id</th>
+                            <th>Product Title</th>
+                            <th>Product Creation Date</th>
+                            <th>Product Blueprint Id</th>
+                            <th>Product Provider Id</th>
+
+                        </tr>
+                        </thead>
+                        <tbody class="p-0">
+                        {% if productlist is defined and productlist is not empty and productlist is not null %}
+                            {% for oneProduct in productlist %}
+                                <tr>
+                                    <td>
+                                        <div class="form-check">
+                                            <label for="{{ oneProduct.id }}"></label><input type="checkbox" class="form-check-input" id="{{ oneProduct.id }}">
+                                        </div>
+                                    </td>
+                                    <td>{{ oneProduct.id }}</td>
+                                    <td><a href="product/productlist/{{ oneProduct.id }}">{{ oneProduct.title }} </a>
+                                    </td>
+                                    <td>{{ oneProduct.createdat |date('d-m-Y H:i:s')}}</td>
+                                    <td>{{ oneProduct.blueprintid }}</td>
+                                    <td>{{ oneProduct.printproviderid }}</td>
+
+
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            No product found!
+                        {% endif %}
+
+                        </tbody>
+                    </table>
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#" tabindex="-1">Previous</a>
+                            </li>
+                            {% for page in 1..last_page %}
+
+                                <li class="page-item"><a class="page-link" href="{{ path('printify_productlist', {shopid: printifyshop.id, page:  page }) }}">{{ page }}</a></li>
+                            {% endfor %}
+                            <li class="page-item">
+                                <a class="page-link" href="#">Next</a>
+                            </li>
+                        </ul>
+                    </nav>
+
+
+                </div>
+            </div>
+        </div>
+
+        <footer class="pt-4 my-md-5 pt-md-5 border-top">
+            <div class="row">
+                <div class="col-12 col-md">
+                    <img class="mb-2" src="https://getbootstrap.com/docs/4.0/assets/brand/bootstrap-solid.svg" alt=""
+                         width="24" height="24">
+                    <small class="d-block mb-3 text-muted">© 2017-2018</small>
+                </div>
+                <div class="col-6 col-md">
+                    <h5>Features</h5>
+                    <ul class="list-unstyled text-small">
+                        <li><a class="text-muted" href="#">Cool stuff</a></li>
+                        <li><a class="text-muted" href="#">Random feature</a></li>
+                        <li><a class="text-muted" href="#">Team feature</a></li>
+                        <li><a class="text-muted" href="#">Stuff for developers</a></li>
+                        <li><a class="text-muted" href="#">Another one</a></li>
+                        <li><a class="text-muted" href="#">Last time</a></li>
+                    </ul>
+                </div>
+                <div class="col-6 col-md">
+                    <h5>Resources</h5>
+                    <ul class="list-unstyled text-small">
+                        <li><a class="text-muted" href="#">Resource</a></li>
+                        <li><a class="text-muted" href="#">Resource name</a></li>
+                        <li><a class="text-muted" href="#">Another resource</a></li>
+                        <li><a class="text-muted" href="#">Final resource</a></li>
+                    </ul>
+                </div>
+                <div class="col-6 col-md">
+                    <h5>About</h5>
+                    <ul class="list-unstyled text-small">
+                        <li><a class="text-muted" href="#">Team</a></li>
+                        <li><a class="text-muted" href="#">Locations</a></li>
+                        <li><a class="text-muted" href="#">Privacy</a></li>
+                        <li><a class="text-muted" href="#">Terms</a></li>
+                    </ul>
+                </div>
+            </div>
+        </footer>
+    </div>
+{% endblock %}

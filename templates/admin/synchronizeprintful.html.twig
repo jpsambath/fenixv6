@@ -15,5 +15,12 @@
         {{ dump(printful_productlist) }}
     {% endif %}
 
+    {% if printful_variantlist is defined %}
+        {{ dump(printful_variantlist) }}
+    {% endif %}
+
+    {% if printful_shoplist is defined %}
+        {{ dump(printful_shoplist) }}
+    {% endif %}
 
 {% endblock %}

@@ -2,13 +2,11 @@
 
 namespace App\Entity\Printful;
 
-use App\Entity\Printful\AvailabilityStatus;
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping\JoinColumn;
-use Doctrine\ORM\Mapping\JoinTable;
+use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
+use JMS\Serializer\Annotation\SerializedName;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Printful\VariantRepository")
@@ -18,8 +16,9 @@ class Variant
 {
     /**
      * @ORM\Id()
-     * @ORM\GeneratedValue()
+     * @var integer
      * @ORM\Column(type="integer")
+     * @Serializer\Type("integer")
      */
     private $id;
 
@@ -29,6 +28,13 @@ class Variant
      * @Serializer\Type("integer")
      */
     private $product_id;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     * @var string
+     * @Serializer\Type("string")
+     */
+    private $size;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -80,7 +86,7 @@ class Variant
     private $in_stock;
 
     /**
-     * @ORM\Column(type="array", nullable=true)
+     * @ORM\Column(type="json", nullable=true)
      * @var array
      * @Serializer\Type("array")
      */
@@ -90,6 +96,7 @@ class Variant
      * @ORM\OneToMany(targetEntity="App\Entity\Printful\AvailabilityStatus", mappedBy="variant")
      * @var string
      * @Serializer\Type("ArrayCollection<App\Entity\Printful\AvailabilityStatus>")
+     * @SerializedName ("availability_status")
      */
     private $availability_status;
 
@@ -242,15 +249,27 @@ class Variant
         return $this;
     }
 
-    public function getProduct(): ?Product
+    /**
+     * @return string
+     */
+    public function getSize(): ?string
     {
-        return $this->product;
+        return $this->size;
     }
 
-    public function setProduct(?Product $product): self
+    /**
+     * @param string|null $size
+     */
+    public function setSize(?string $size): void
     {
-        $this->product = $product;
+        $this->size = $size;
+    }
 
-        return $this;
+    /**
+     * @param mixed $id
+     */
+    public function setId($id): void
+    {
+        $this->id = $id;
     }
 }

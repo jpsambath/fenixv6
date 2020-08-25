@@ -46,7 +46,7 @@ class Shop
 
     /**
      * @var User
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="shops")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User")
      * @MaxDepth(1)
      * @Serializer\Type("App\Entity\User")
      */

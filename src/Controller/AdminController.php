@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Printful\Product;
 use App\Entity\Printify\Blueprint;
 use App\Entity\Printify\Provider;
 use App\Service\Printful;
@@ -12,7 +13,7 @@ use Symfony\Component\Security\Core\Security;
 
 
 /**
- * @Route("/admin/printify", name="admin_")
+ * @Route("/admin", name="admin_")
  */
 class AdminController extends AbstractController
 {
@@ -89,7 +90,17 @@ class AdminController extends AbstractController
             $printful = new Printful($security, $em);
 
             // RETRIEVE ALL SHOP FOR THIS USER
-            $productlist = $printful->retrieveproductlist();
+            $shoplist = $printful->retrieveshoplist();
+
+            // RETRIEVE PRODUCT FROM PRINTFUL
+ //           $productlist = $printful->retrieveproductlist();
+
+            // RETRIEVE PRODUCT FROM PRINTFUL
+//            $fullproductlist = $this->getDoctrine()->getRepository(Product::class)->findAll();
+//            $variantslist = array();
+//            foreach($fullproductlist as $fullproduct){
+//                    $variantslist[] = $printful->retrievevariantlist($fullproduct);
+//            }
 
 //            // RETRIEVE ALL PROVIDERS FROM PRINTIFY
 //            $providerlist = $printify->retrieveproviderlist();
@@ -126,12 +137,14 @@ class AdminController extends AbstractController
 //            $variantslist[] = $printify->retrievevariants(14, 16);
 
             return $this->render('admin/synchronizeprintful.html.twig', [
-                'printful_productlist' => $productlist,
-//                'printify_blueprintlist' => $blueprintlist,
-//                'printify_providerlist' => $providerlist,
-//                'printify_fullblueprintlist' => $fullblueprintlist,
-//               'printify_shippinglist' => $shippinglist,
-//                'printify_variantlist' => $variantslist,
+                    'printful_shoplist' => $shoplist,
+//                  'printful_productlist' => $productlist,
+//                  'printful_variantlist' => $variantslist
+//                  'printify_blueprintlist' => $blueprintlist,
+//                  'printify_providerlist' => $providerlist,
+//                  'printify_fullblueprintlist' => $fullblueprintlist,
+//                  'printify_shippinglist' => $shippinglist,
+//                  'printify_variantlist' => $variantslist,
             ]);
         }
 

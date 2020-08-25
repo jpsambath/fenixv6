@@ -2,9 +2,8 @@
 
 namespace App\Entity\Printful;
 
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\JoinTable;
 use JMS\Serializer\Annotation as Serializer;
@@ -17,7 +16,6 @@ class Product
 {
     /**
      * @ORM\Id()
-     * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      * @var integer
      * @Serializer\Type("integer")
@@ -88,7 +86,7 @@ class Product
     private $avg_fulfillment_time;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="text", nullable=true)
      * @var string
      * @Serializer\Type("string")
      */
@@ -117,14 +115,16 @@ class Product
     private $options;
 
     /**
-     * @ORM\Column(type="json", nullable=true)
      * @var array
+     * @ORM\Column(type="json", nullable=true)
      * @Serializer\Type("array")
      */
     private $dimensions;
 
     public function __construct()
     {
+        $this->files = new ArrayCollection();
+        $this->options = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -269,6 +269,31 @@ class Product
     }
 
     /**
+     * @param OptionType $option
+     * @return $this
+     */
+    public function addOption(OptionType $option)
+    {
+        if (!$this->options->contains($option)) {
+            $this->options->add($option);
+        }
+        return $this;
+    }
+
+    /**
+     * @param OptionType $option
+     * @return $this
+     */
+    public function removeOption(OptionType $option)
+    {
+        if ($this->options->contains($option)) {
+            $this->options->removeElement($option);
+        }
+        return $this;
+    }
+
+
+    /**
      * @return mixed
      */
     public function getDimensions()
@@ -283,4 +308,56 @@ class Product
     {
         $this->dimensions = $dimensions;
     }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getFiles(): ArrayCollection
+    {
+        return $this->files;
+    }
+
+    /**
+     * @param ArrayCollection $files
+     */
+    public function setFiles(ArrayCollection $files): void
+    {
+        $this->files = $files;
+    }
+
+    /**
+     * @param FileType $file
+     * @return $this
+     */
+    public function addFile(FileType $file)
+    {
+        if (!$this->files->contains($file)) {
+            $this->files->add($file);
+        }
+        return $this;
+    }
+
+    /**
+     * @param FileType $file
+     * @return $this
+     */
+    public function removeFile(FileType $file)
+    {
+        if ($this->files->contains($file)) {
+            $this->files->removeElement($file);
+        }
+        return $this;
+    }
+
+    /**
+     * @param int $id
+     * @return Product
+     */
+    public function setId(int $id): Product
+    {
+        $this->id = $id;
+        return $this;
+    }
+
+
 }

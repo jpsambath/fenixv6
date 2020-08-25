@@ -42,11 +42,6 @@ class User implements UserInterface, Serializable
     private $estActif;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Printify\Shop", mappedBy="user")
-     */
-    private $shops;
-
-    /**
      * @var ArrayCollection
      * @ORM\Column(type="array")
      */

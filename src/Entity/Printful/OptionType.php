@@ -3,11 +3,8 @@
 namespace App\Entity\Printful;
 
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping\JoinColumn;
-use Doctrine\ORM\Mapping\JoinTable;
 use JMS\Serializer\Annotation as Serializer;
+use JMS\Serializer\Annotation\SerializedName;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Printful\OptionTypeRepository")
@@ -18,11 +15,19 @@ class OptionType
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
+     * @var integer
+     * @Serializer\Type("integer")
+     */
+    private $id;
+
+    /**
      * @ORM\Column(type="string")
      * @var string
      * @Serializer\Type("string")
+     * @SerializedName("id")
      */
-    private $id;
+    private $optionid;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -42,6 +47,7 @@ class OptionType
      * @ORM\Column(type="array", nullable=true)
      * @var array
      * @Serializer\Type("array")
+     * @SerializedName ("values")
      */
     private $option_values = [];
 
@@ -122,5 +128,21 @@ class OptionType
         $this->additional_price_breakdown = $additional_price_breakdown;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOptionid(): string
+    {
+        return $this->optionid;
+    }
+
+    /**
+     * @param string $optionid
+     */
+    public function setOptionid(string $optionid): void
+    {
+        $this->optionid = $optionid;
     }
 }

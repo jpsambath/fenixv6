@@ -2,7 +2,7 @@
 
 namespace App\Repository\Printful;
 
-use App\Entity\AvailabilityStatus;
+use App\Entity\Printful\AvailabilityStatus;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 

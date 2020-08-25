@@ -4,6 +4,7 @@ namespace App\Entity\Printful;
 
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
+use JMS\Serializer\Annotation\SerializedName;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Printful\FileTypeRepository")
@@ -14,11 +15,19 @@ class FileType
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
+     * @var integer
+     * @Serializer\Type("integer")
+     */
+    private $id;
+
+    /**
      * @ORM\Column(type="string")
      * @var string
      * @Serializer\Type("string")
+     * @SerializedName ("id")
      */
-    private $id;
+    private $fileid;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -80,5 +89,21 @@ class FileType
         $this->additional_price = $additional_price;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFileid(): string
+    {
+        return $this->fileid;
+    }
+
+    /**
+     * @param string $fileid
+     */
+    public function setFileid(string $fileid): void
+    {
+        $this->fileid = $fileid;
     }
 }

@@ -15,6 +15,7 @@ use App\Service\Printify;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerBuilder;
 use Knp\Component\Pager\PaginatorInterface;
+use phpDocumentor\Reflection\Types\Integer;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -49,29 +50,65 @@ class PrintifyController extends AbstractController
         $printify = new Printify($security, $em);
         $shoplist = $printify->retrieveshoplist();
 
-        return $this->render('printify/shopList.html.twig', [
+        return $this->render('viewShopList.html.twig', [
             'printify_shoplist' => $shoplist
         ]);
     }
 
     /**
-     * @Route("/product/productlist/{shopid}", name="productlist")
+     * @Route("/product/synchronizeproductlist/{shopid}", name="synchronizeproductlist")
      * @ParamConverter("shop", options={"mapping": {"shopid" : "id"}})
      * @param Request $request
      * @param Shop $shop
      * @return Response
      */
-    public function printify_productlist(Request $request, Shop $shop)
+    public function printify_synchronizeproductlist(Request $request, Shop $shop)
     {
         $em = $this->getDoctrine()->getManager();
         $security = new Security($this->container);
 
         $printify = new Printify($security, $em);
-        $productList = $printify->retrieveproductlist($shop->getId(), null);
+        $result = $printify->synchronizeproductlist($shop->getId());
 
-        return $this->render('printify/productList.html.twig', [
+        $productList = $result[2];
+        $last_page = $result[1];
+        $total_product = $result[0];
+
+        return $this->render('synchronizeProductList.html.twig', [
             'productlist' => $productList,
-            'shop' => $shop
+            'last_page' => $last_page,
+            'total_product' => $total_product,
+            'printifyshop' => $shop
+        ]);
+
+    }
+
+
+    /**
+     * @Route("/product/productlist/{shopid}/{page}", name="productlist")
+     * @ParamConverter("shop", options={"mapping": {"shopid" : "id"}})
+     * @param Request $request
+     * @param Shop $shop
+     * @param int|null $page
+     * @return Response
+     */
+    public function printify_productlist(Request $request, Shop $shop, ?int $page)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $security = new Security($this->container);
+
+        $printify = new Printify($security, $em);
+        $result = $printify->retrieveproductlist($shop->getId(), $page);
+
+        $productList = $result[2];
+        $last_page = $result[1];
+        $total_product = $result[0];
+
+        return $this->render('viewProductList.html.twig', [
+            'productlist' => $productList,
+            'last_page' => $last_page,
+            'total_product' => $total_product,
+            'printifyshop' => $shop
         ]);
 
     }
@@ -120,7 +157,7 @@ class PrintifyController extends AbstractController
             //$this->addFlash('success', 'Produit créé! Knowledge is power!');
 
 
-            return $this->render('printify/createProduct.html.twig', [
+            return $this->render('printify/createBulkProduct.html.twig', [
                 'shop' => $shop,
                 'form' => $form->createView(),
                 'filename' => $filename,
@@ -187,7 +224,7 @@ class PrintifyController extends AbstractController
             );
         }
 
-        return $this->render('printify/blueprintsSelector.html.twig', [
+        return $this->render('saveBlueprintToShop.twig', [
             'printify_shoplist' => $shoplist,
             'selectedShop' => $selectedShop,
             'blueprintslist' => $blueprintslist
@@ -214,7 +251,7 @@ class PrintifyController extends AbstractController
 
         }
 
-        return $this->render('printify/templateExporter.html.twig', [
+        return $this->render('exportProductTemplate.html.twig', [
             'printify_shoplist' => $shoplist,
             'selectedShop' => $selectedShop,
             'selectedShopArray' => $selectedShopArray
