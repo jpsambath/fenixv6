@@ -32,6 +32,9 @@
                                                                aria-expanded="false">{{ printifyshop.title }}</a>
                                                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                                                 <li>
+                                                                    <a href="{{ path('printify_synchronizeproductlist', {shopid: printifyshop.id}) }}">Synchronize Products From Shop</a></li>
+                                                                <li>
+                                                                <li>
                                                                     <a href="{{ path('printify_blueprintsselector', {shopid: printifyshop.id}) }}">Blueprints
                                                                         Selector</a></li>
                                                                 <li>

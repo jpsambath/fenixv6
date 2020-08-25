@@ -241,6 +241,59 @@ class Printify
     }
 
     /**
+     * @Route("/synchronizeproductlist", name="synchronizeproductlist")
+     * @param $shopid
+     * @return array|string
+     */
+    public function synchronizeproductlist($shopid)
+    {
+        $client = HttpClient::createForBaseUri(self::BASE_URL, ['headers' => $this->getHeaders()]);
+        $productlist = array();
+        $result = array();
+        try {
+            $response = $client->request('GET', 'https://api.printify.com/v1/shops/' . $shopid . '/products.json?page=1');
+            $statusCode = $response->getStatusCode();
+            $contentType = $response->getHeaders()['content-type'][0];
+            $content = $response->getContent();
+            $last_page = json_decode($content)->last_page;
+            $total_product = json_decode($content)->total;
+
+            $serializer = SerializerBuilder::create()->build();
+            for($page = 1; $page <= $last_page; $page++) {
+                $response = $client->request('GET', 'https://api.printify.com/v1/shops/' . $shopid . '/products.json?page='.$page);
+                $content = $response->getContent();
+                $content = $serializer->deserialize(json_encode(json_decode($content)->data), 'array<App\Entity\Printify\Product>', 'json');
+                foreach ($content as $oneproduct) {
+                    $productlist[] = $this->saveProduct($oneproduct);
+                }
+            }
+
+            $result = array();
+            $result[0] = $total_product;
+            $result[1] = $last_page;
+            $result[2] = $productlist;
+
+        } catch (Exception $e) {
+            echo($e->getMessage());
+        } catch (TransportExceptionInterface $e) {
+            echo($e->getMessage());
+        } catch (ClientExceptionInterface $e) {
+            echo($e->getMessage());
+        } catch (RedirectionExceptionInterface $e) {
+            echo($e->getMessage());
+        } catch (ServerExceptionInterface $e) {
+            echo($e->getMessage());
+        } catch (DecodingExceptionInterface $e) {
+            echo($e->getMessage());
+        } catch (ExceptionInterface $e) {
+            echo($e->getMessage());
+        }
+
+        return $result;
+    }
+
+
+    /**
      * @Route("/retrieveproductlist", name="retrieveproductlist")
      * @param $shopid
      * @param int $pagenumber

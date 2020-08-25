@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\UserEdit;
 use App\Form\UserRegister;
-use App\Form\UserType;
 use LogicException;
 use Swift_Mailer;
 use Swift_Message;

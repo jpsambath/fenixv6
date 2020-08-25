@@ -136,14 +136,14 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="bootstrap" level="application" />
-    <orderEntry type="library" name="jquery-3.4.1" level="application" />
-    <orderEntry type="library" name="bootstrap.bundle" level="application" />
-    <orderEntry type="library" name="popper-utils" level="application" />
-    <orderEntry type="library" name="material-components-web" level="application" />
-    <orderEntry type="library" name="dropzone-amd-module" level="application" />
-    <orderEntry type="library" name="basic" level="application" />
-    <orderEntry type="library" name="animate" level="application" />
-    <orderEntry type="library" name="table2csv" level="application" />
+    <orderEntry type="library" exported="" name="bootstrap" level="application" />
+    <orderEntry type="library" exported="" name="jquery-3.4.1" level="application" />
+    <orderEntry type="library" exported="" name="bootstrap.bundle" level="application" />
+    <orderEntry type="library" exported="" name="popper-utils" level="application" />
+    <orderEntry type="library" exported="" name="material-components-web" level="application" />
+    <orderEntry type="library" exported="" name="dropzone-amd-module" level="application" />
+    <orderEntry type="library" exported="" name="basic" level="application" />
+    <orderEntry type="library" exported="" name="animate" level="application" />
+    <orderEntry type="library" exported="" name="table2csv" level="application" />
   </component>
 </module>

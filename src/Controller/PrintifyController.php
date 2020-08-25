@@ -50,7 +50,7 @@ class PrintifyController extends AbstractController
         $printify = new Printify($security, $em);
         $shoplist = $printify->retrieveshoplist();
 
-        return $this->render('viewShopList.html.twig', [
+        return $this->render('printify/viewProductList.html.twig', [
             'printify_shoplist' => $shoplist
         ]);
     }
@@ -70,11 +70,12 @@ class PrintifyController extends AbstractController
         $printify = new Printify($security, $em);
         $result = $printify->synchronizeproductlist($shop->getId());
 
+
         $productList = $result[2];
         $last_page = $result[1];
         $total_product = $result[0];
 
-        return $this->render('synchronizeProductList.html.twig', [
+        return $this->render('printify/synchronizeProductList.html.twig', [
             'productlist' => $productList,
             'last_page' => $last_page,
             'total_product' => $total_product,
@@ -97,17 +98,10 @@ class PrintifyController extends AbstractController
         $em = $this->getDoctrine()->getManager();
         $security = new Security($this->container);
 
-        $printify = new Printify($security, $em);
-        $result = $printify->retrieveproductlist($shop->getId(), $page);
+        $productList = $this->getDoctrine()->getRepository(Product::class)->findAll();
 
-        $productList = $result[2];
-        $last_page = $result[1];
-        $total_product = $result[0];
-
-        return $this->render('viewProductList.html.twig', [
+        return $this->render('printify/viewProductList.html.twig', [
             'productlist' => $productList,
-            'last_page' => $last_page,
-            'total_product' => $total_product,
             'printifyshop' => $shop
         ]);
 
@@ -116,9 +110,9 @@ class PrintifyController extends AbstractController
     /**
      * @Route("/product/createproduct/{shopid}", name="createproduct")
      * @param Request $request
-     * @ParamConverter("shop", options={"mapping": {"shopid" : "id"}})
      * @param Shop $shop
      * @return Response
+     * @ParamConverter("shop", options={"mapping": {"shopid" : "id"}})
      */
     public function printify_createproduct(Request $request, Shop $shop)
     {
@@ -166,7 +160,7 @@ class PrintifyController extends AbstractController
             ]);
         }
 
-        return $this->render('printify/createProduct.html.twig', [
+        return $this->render('printify/createBulkProduct.html.twig', [
             'shop' => $shop,
             'form' => $form->createView()
         ]);
@@ -224,7 +218,7 @@ class PrintifyController extends AbstractController
             );
         }
 
-        return $this->render('saveBlueprintToShop.twig', [
+        return $this->render('printify/saveBlueprintToShop.twig', [
             'printify_shoplist' => $shoplist,
             'selectedShop' => $selectedShop,
             'blueprintslist' => $blueprintslist
@@ -251,7 +245,7 @@ class PrintifyController extends AbstractController
 
         }
 
-        return $this->render('exportProductTemplate.html.twig', [
+        return $this->render('printify/exportProductTemplate.html.twig', [
             'printify_shoplist' => $shoplist,
             'selectedShop' => $selectedShop,
             'selectedShopArray' => $selectedShopArray
