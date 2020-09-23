@@ -23,13 +23,13 @@ Encore
      * Each entry will result in one JavaScript file (e.g. app.js)
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
-    .addEntry('base', './assets/js/base.js')
-    .addEntry('loadingbar', './assets/js/loading-bar.js')
-    .addEntry('blueprintselector', './assets/js/blueprintselector.js')
-    .addEntry('blueprintexporter', './assets/js/blueprintexporter.js')
-    .addEntry('tableexport', './assets/js/tableexport.js')
+    .addEntry('base', './assets/js/global/base.js')
+    .addEntry('loadingbar', './assets/js/global/loading-bar.js')
+    .addEntry('blueprintselector', './assets/js/printify/blueprintselector.js')
+    .addEntry('blueprintexporter', './assets/js/printify/blueprintexporter.js')
+    .addEntry('tableexport', './assets/js/global/tableexport.js')
 
-    .createSharedEntry('vendor', './assets/js/tableexport.js')
+    .createSharedEntry('vendor', './assets/js/global/tableexport.js')
 
     //.addEntry('page1', './assets/js/page1.js')
     //.addEntry('page2', './assets/js/page2.js')

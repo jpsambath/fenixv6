@@ -57,6 +57,15 @@ class ProviderRepository extends ServiceEntityRepository
 
     }
 
+    public function deleteAll()
+    {
+        $qb = $this->createQueryBuilder('b')
+            ->delete(Provider::class, 'b');
+
+        $query = $qb->getQuery();
+        return $query->execute();
+    }
+
 
 
     // /**

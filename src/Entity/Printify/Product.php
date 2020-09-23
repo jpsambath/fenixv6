@@ -61,8 +61,8 @@ class Product
      * @Serializer\Groups({"createproduct"})
      * @Serializer\Type("ArrayCollection<App\Entity\Printify\Variant>")
      * @JoinTable(name="printify_productsvariants",
-     *     joinColumns={@JoinColumn(name="product_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@JoinColumn(name="variant_id", referencedColumnName="id"), @JoinColumn(name="blueprint_id", referencedColumnName="blueprint_id"), @JoinColumn(name="provider_id", referencedColumnName="provider_id")}
+     *     joinColumns={@JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")},
+     *      inverseJoinColumns={@JoinColumn(name="variant_id", referencedColumnName="id", onDelete="CASCADE"), @JoinColumn(name="blueprint_id", referencedColumnName="blueprint_id"), @JoinColumn(name="provider_id", referencedColumnName="provider_id", onDelete="CASCADE")}
      *     )
      */
     private $variants;
@@ -87,7 +87,7 @@ class Product
      * @ORM\Column(type="datetime", nullable=true)
      * @Serializer\Type("DateTime<'Y-m-d H:i:sP'>")
      */
-    private $update_at;
+    private $updated_at;
 
     /**
      * @var boolean
@@ -143,7 +143,7 @@ class Product
 
     /**
      * @var ArrayCollection
-     * @ORM\Column(type="json", length=255, nullable=true)
+     * @ORM\Column(type="json", nullable=true)
      * @Serializer\Type("ArrayCollection")
      */
     private $external;
@@ -498,27 +498,11 @@ class Product
     }
 
     /**
-     * @param DateTime $created_at
+     * @param DateTime|null $created_at
      */
     public function setCreatedAt(?DateTime $created_at): void
     {
         $this->created_at = $created_at;
-    }
-
-    /**
-     * @return DateTime
-     */
-    public function getUpdateAt(): ?DateTime
-    {
-        return $this->update_at;
-    }
-
-    /**
-     * @param DateTime $update_at
-     */
-    public function setUpdateAt(?DateTime $update_at): void
-    {
-        $this->update_at = $update_at;
     }
 
     /**
@@ -535,6 +519,22 @@ class Product
     public function setExternal(?Collection $external): void
     {
         $this->external = $external;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getUpdatedAt(): DateTime
+    {
+        return $this->updated_at;
+    }
+
+    /**
+     * @param DateTime|null $updated_at
+     */
+    public function setUpdatedAt(?DateTime $updated_at): void
+    {
+        $this->updated_at = $updated_at;
     }
 
 }

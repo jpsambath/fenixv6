@@ -68,6 +68,13 @@ class PrintifyController extends AbstractController
         $security = new Security($this->container);
 
         $printify = new Printify($security, $em);
+
+        $productList = $em->getRepository(Product::class)->findBy(['shop_id' => $shop->getId()]);
+
+        foreach ($productList as $product) {
+            $em->remove($product);
+        }
+
         $result = $printify->synchronizeproductlist($shop->getId());
 
 
@@ -86,19 +93,45 @@ class PrintifyController extends AbstractController
 
 
     /**
-     * @Route("/product/productlist/{shopid}/{page}", name="productlist")
+     * @Route("/product/productlist/{shopid}/{action}", name="productlist")
      * @ParamConverter("shop", options={"mapping": {"shopid" : "id"}})
      * @param Request $request
      * @param Shop $shop
-     * @param int|null $page
+     * @param string $action
      * @return Response
      */
-    public function printify_productlist(Request $request, Shop $shop, ?int $page)
+    public function printify_productlist(Request $request, Shop $shop, string $action)
     {
         $em = $this->getDoctrine()->getManager();
         $security = new Security($this->container);
+        $printify = new Printify($security, $em);
+        $productList = array();
 
-        $productList = $this->getDoctrine()->getRepository(Product::class)->findAll();
+        if ($action == "form") {
+            $data = $request->request->all();
+
+            if ($data["request"] == "delete") {
+                foreach ($data["checked_printifyproduct"] as $productid) {
+                    $printify->deleteproduct($shop->getId(), $productid);
+                }
+            } elseif ($data["request"] == "publish") {
+                foreach ($data["checked_printifyproduct"] as $productid) {
+                    $printify->publishproduct($shop->getId(), $productid);
+                }
+            } elseif ($data["request"] == "edit") {
+                foreach ($data["checked_printifyproduct"] as $productid) {
+                    echo $productid . " - à modifier <br>";
+                }
+            } elseif ($data["request"] == "unpublish") {
+                foreach ($data["checked_printifyproduct"] as $productid) {
+                    $printify->unpublishproduct($shop->getId(), $productid);
+                }
+            }
+        }
+
+
+        $productList = $em->getRepository(Product::class)->findBy(['shop_id' => $shop->getId()], ['created_at' => 'DESC']);
+
 
         return $this->render('printify/viewProductList.html.twig', [
             'productlist' => $productList,
@@ -204,7 +237,7 @@ class PrintifyController extends AbstractController
      */
     public function printify_blueprintsselector(Shop $selectedShop, Request $request, PaginatorInterface $paginator)
     {
-        if ($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY') AND $this->get('security.authorization_checker')->isGranted('ROLE_PRINTIFY')) {
+        if ($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY') and $this->get('security.authorization_checker')->isGranted('ROLE_PRINTIFY')) {
             $user = $this->getUser();
 
             $shoplist = $this->getDoctrine()->getRepository(Shop::class)->findBy(['user' => $user]);
@@ -235,7 +268,7 @@ class PrintifyController extends AbstractController
      */
     public function printify_templateexporter(Shop $selectedShop, Request $request)
     {
-        if ($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY') AND $this->get('security.authorization_checker')->isGranted('ROLE_PRINTIFY')) {
+        if ($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY') and $this->get('security.authorization_checker')->isGranted('ROLE_PRINTIFY')) {
             $user = $this->getUser();
 
             $shoplist = $this->getDoctrine()->getRepository(Shop::class)->findBy(['user' => $user]);

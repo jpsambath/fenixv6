@@ -20,45 +20,61 @@
                     <h4 class="my-0 font-weight-normal">Product List</h4>
                 </div>
                 <div class="card-body">
-                    <div class="justify-content-center m-2"><button type="button" class="btn btn-primary mr-2">Delete Selected Items</button><button type="button" class="btn btn-primary">Modify Selected Items</button></div>
-                    <table class="table table-striped">
-                        <thead>
-                        <tr>
-                            <th><div class="form-check"><label for="all"></label><input type="checkbox" name="checked_printifyproduct" class="form-check-input" id="all"></div></th>
-                            <th>Product Id</th>
-                            <th>Product Title</th>
-                            <th>Product Creation Date</th>
-                            <th>Product Blueprint Id</th>
-                            <th>Product Provider Id</th>
 
-                        </tr>
-                        </thead>
-                        <tbody class="p-0">
-                        {% if productlist is defined and productlist is not empty and productlist is not null %}
-                            {% for oneProduct in productlist %}
-                                <tr>
-                                    <td>
-                                        <div class="form-check">
-                                            <label for="{{ oneProduct.id }}"></label><input type="checkbox" class="form-check-input" id="{{ oneProduct.id }}">
-                                        </div>
-                                    </td>
-                                    <td>{{ oneProduct.id }}</td>
-                                    <td><a href="product/productlist/{{ oneProduct.id }}">{{ oneProduct.title }} </a>
-                                    </td>
-                                    <td>{{ oneProduct.createdat |date('d-m-Y H:i:s')}}</td>
-                                    <td>{{ oneProduct.blueprintid }}</td>
-                                    <td>{{ oneProduct.printproviderid }}</td>
+                    <form id="product_form" role="form" action="{{ path('printify_productlist', {shopid: printifyshop.id, action: 'form'}) }}" name="product_form" method="post">
+                        <div class="justify-content-center m-2">
+                            <button type="submit" name="request" value="delete" class="btn btn-danger mr-2">Delete Selected Items</button>
+                            <button type="submit" name="request" value="edit" class="btn btn-warning mr-2">Modify Selected Items</button>
+                            <button type="submit" name="request" value="publish" class="btn btn-success mr-2">Publish Selected Items</button>
+                            <button type="submit" name="request" value="unpublish" class="btn btn-secondary">Unpublish Selected Items</button>
+                        </div>
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>
+                                    <div class="form-check"><label for="all"></label><input type="checkbox"
+                                                                                            class="form-check-input"
+                                                                                            id="all"></div>
+                                </th>
+                                <th>Product Id</th>
+                                <th>Product Title</th>
+                                <th>Product Creation Date</th>
+                                <th>Product Blueprint Id</th>
+                                <th>Product Provider Id</th>
+
+                            </tr>
+                            </thead>
+                            <tbody class="p-0">
+                            {% if productlist is defined and productlist is not empty and productlist is not null %}
+                                {% for oneProduct in productlist %}
+                                    <tr>
+                                        <td>
+                                            <div class="form-check">
+                                                <label for="{{ oneProduct.id }}"></label><input type="checkbox"
+                                                                                                name="checked_printifyproduct[]"
+                                                                                                class="form-check-input"
+                                                                                                id="{{ oneProduct.id }}"
+                                                                                                value="{{ oneProduct.id }}">
+                                            </div>
+                                        </td>
+                                        <td>{{ oneProduct.id }}</td>
+                                        <td>
+                                            <a href="product/productlist/{{ oneProduct.id }}">{{ oneProduct.title }} </a>
+                                        </td>
+                                        <td>{{ oneProduct.createdat |date('d-m-Y H:i:s') }}</td>
+                                        <td>{{ oneProduct.blueprintid }}</td>
+                                        <td>{{ oneProduct.printproviderid }}</td>
 
 
-                                </tr>
-                            {% endfor %}
-                        {% else %}
-                            No product found!
-                        {% endif %}
+                                    </tr>
+                                {% endfor %}
+                            {% else %}
+                                No product found!
+                            {% endif %}
 
-                        </tbody>
-                    </table>
-
+                            </tbody>
+                        </table>
+                    </form>
 
 
                 </div>

@@ -55,8 +55,8 @@ class Placeholder
      * @ORM\ManyToMany(targetEntity="App\Entity\Printify\Image", inversedBy="placeholder")
      * @Serializer\Groups({"createproduct"})
      * @JoinTable(name="printify_placeholdersimages",
-     *     joinColumns={@JoinColumn(name="placeholder_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@JoinColumn(name="image_id", referencedColumnName="id")}
+     *     joinColumns={@JoinColumn(name="placeholder_id", referencedColumnName="id", onDelete="CASCADE")},
+     *      inverseJoinColumns={@JoinColumn(name="image_id", referencedColumnName="id", onDelete="CASCADE")}
      *     )
      * @MaxDepth(1)
      * @Serializer\Type("ArrayCollection<App\Entity\Printify\Image>")

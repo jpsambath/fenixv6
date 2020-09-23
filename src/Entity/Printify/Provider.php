@@ -45,8 +45,8 @@ class Provider
      * @var ArrayCollection
      * @ORM\ManyToMany(targetEntity="App\Entity\Printify\Blueprint", inversedBy="providers")
      * @JoinTable(name="printify_providersblueprints",
-     *     joinColumns={@JoinColumn(name="provider_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@JoinColumn(name="blueprint_id", referencedColumnName="id")}
+     *     joinColumns={@JoinColumn(name="provider_id", referencedColumnName="id", onDelete="CASCADE")},
+     *      inverseJoinColumns={@JoinColumn(name="blueprint_id", referencedColumnName="id", onDelete="CASCADE")}
      *     )
      * @MaxDepth(1)
      * @Serializer\Type("ArrayCollection<App\Entity\Printify\Blueprint>")

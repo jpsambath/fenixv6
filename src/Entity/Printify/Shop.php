@@ -65,7 +65,7 @@ class Shop
      * @ORM\ManyToMany(targetEntity="App\Entity\Printify\Blueprint")
      * @JoinTable(name="printify_blueprintsshop",
      *      joinColumns={@JoinColumn(name="shop_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@JoinColumn(name="blueprint_id", referencedColumnName="id")}
+     *      inverseJoinColumns={@JoinColumn(name="blueprint_id", referencedColumnName="id", onDelete="CASCADE")}
      *      )
      * @MaxDepth(1)
      * @Serializer\Groups({"blueprintexporter"})

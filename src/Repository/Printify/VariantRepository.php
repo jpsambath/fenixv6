@@ -19,6 +19,15 @@ class VariantRepository extends ServiceEntityRepository
         parent::__construct($registry, Variant::class);
     }
 
+    public function deleteAll()
+    {
+        $qb = $this->createQueryBuilder('b')
+            ->delete(Variant::class, 'b');
+
+        $query = $qb->getQuery();
+        return $query->execute();
+    }
+
     // /**
     //  * @return Variant[] Returns an array of Variant objects
     //  */
