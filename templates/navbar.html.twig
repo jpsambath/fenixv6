@@ -12,7 +12,7 @@
                     <ul class="navbar-nav mr-auto">
                         {% if is_granted('IS_AUTHENTICATED_FULLY') %}
 
-                            {#                            {% if is_granted(['ROLE_PRINTIFY','ROLE_PRINTFUL']) %} #}
+                            {# {% if is_granted(['ROLE_PRINTIFY','ROLE_PRINTFUL']) %} #}
 
                             <li class="dropdown">
                                 <a class="dropdown-toggle" href="#" id="navbarDropdown" role="button"
@@ -32,12 +32,17 @@
                                                                aria-expanded="false">{{ printifyshop.title }}</a>
                                                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                                                 <li>
+                                                                    <a href="{{ path('printify_synchronizeproductlist', {shopid: printifyshop.id}) }}">Synchronize
+                                                                        Products From Shop</a></li>
+                                                                <li>
+                                                                <li>
                                                                     <a href="{{ path('printify_blueprintsselector', {shopid: printifyshop.id}) }}">Blueprints
                                                                         Selector</a></li>
                                                                 <li>
-                                                                    <a href="{{ path('printify_templateexporter', {shopid: printifyshop.id}) }}">Template Exporter</a></li>
+                                                                    <a href="{{ path('printify_templateexporter', {shopid: printifyshop.id}) }}">Template
+                                                                        Exporter</a></li>
                                                                 <li>
-                                                                    <a href="{{ path('printify_productlist', {shopid: printifyshop.id, page: 1}) }}">Product
+                                                                    <a href="{{ path('printify_productlist', {shopid: printifyshop.id, action:'list'}) }}">Product
                                                                         List</a></li>
                                                                 <li>
                                                                     <a href="{{ path('printify_createproduct', {shopid: printifyshop.id}) }}">Create
@@ -67,19 +72,15 @@
                                                                aria-expanded="false">{{ printfulshop.name }}</a>
                                                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                                                 <li>
-                                                                    <a href="{{ path('printify_blueprintsselector', {shopid: printfulshop.id}) }}">Blueprints
-                                                                        Selector</a></li>
+                                                                    <a href="">Blueprints Selector</a></li>
                                                                 <li>
-                                                                    <a href="{{ path('printify_templateexporter', {shopid: printfulshop.id}) }}">Template Exporter</a></li>
+                                                                    <a href="">Template Exporter</a></li>
                                                                 <li>
-                                                                    <a href="{{ path('printify_productlist', {shopid: printfulshop.id, page: 1}) }}">Product
-                                                                        List</a></li>
+                                                                    <a href="">Product List</a></li>
                                                                 <li>
-                                                                    <a href="{{ path('printify_createproduct', {shopid: printfulshop.id}) }}">Create
-                                                                        Products</a></li>
+                                                                    <a href="">Create Products</a></li>
                                                                 <li>
-                                                                    <a href="{{ path('printify_uploadimage', {shopid: printfulshop.id}) }}">Upload
-                                                                        Images</a></li>
+                                                                    <a href="">Upload Images</a></li>
                                                             </ul>
                                                         </li>
                                                     {% endfor %}
@@ -90,9 +91,9 @@
                                     {% endif %}
                                 </ul>
                             </li>
-                            {#                        {% endif %}#}
+                            {# {% endif %} #}
 
-                            {#                        {% if is_granted(['ROLE_SHOPIFY','ROLE_WOOCOMMERCE']) %}#}
+                            {# {% if is_granted(['ROLE_SHOPIFY','ROLE_WOOCOMMERCE']) %} #}
 
                             <li class="dropdown">
                                 <a class="dropdown-toggle" href="#" id="navbarDropdown" role="button"
@@ -127,7 +128,7 @@
                                 </ul>
                             </li>
 
-                            {#                        {% endif %}#}
+                            {# {% endif %} #}
 
                             {% if is_granted('ROLE_SPINNING') %}
 

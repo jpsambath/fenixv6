@@ -45,6 +45,7 @@ class Shipping
     /**
      * @var Blueprint
      * @ORM\ManyToOne(targetEntity="App\Entity\Printify\Blueprint", inversedBy="shippings")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      * @MaxDepth(1)
      * @Serializer\Type("App\Entity\Printify\Blueprint")
      */
@@ -53,6 +54,7 @@ class Shipping
     /**
      * @var Provider
      * @ORM\ManyToOne(targetEntity="App\Entity\Printify\Provider", inversedBy="shippings")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      * @MaxDepth(1)
      * @Serializer\Groups({"blueprintexporter"})
      * @Serializer\Type("App\Entity\Printify\Provider")

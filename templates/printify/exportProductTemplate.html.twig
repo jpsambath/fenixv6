@@ -101,8 +101,6 @@
 {% block javascripts %}
 
     {{ parent() }}
-
-
     <script>
         let shop = JSON.parse({{ selectedShopArray | json_encode |raw }});
     </script>

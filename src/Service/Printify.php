@@ -241,6 +241,170 @@ class Printify
     }
 
     /**
+     * @Route("/synchronizeproductlist", name="synchronizeproductlist")
+     * @param $shopid
+     * @return array|string
+     */
+    public function synchronizeproductlist($shopid)
+    {
+        $client = HttpClient::createForBaseUri(self::BASE_URL, ['headers' => $this->getHeaders()]);
+        $productlist = array();
+        $result = array();
+        try {
+            $response = $client->request('GET', 'https://api.printify.com/v1/shops/' . $shopid . '/products.json?page=1');
+            $statusCode = $response->getStatusCode();
+            $contentType = $response->getHeaders()['content-type'][0];
+            $content = $response->getContent();
+            $last_page = json_decode($content)->last_page;
+            $total_product = json_decode($content)->total;
+
+            $serializer = SerializerBuilder::create()->build();
+            for($page = 1; $page <= $last_page; $page++) {
+                $response = $client->request('GET', 'https://api.printify.com/v1/shops/' . $shopid . '/products.json?page='.$page);
+                $content = $response->getContent();
+                $content = $serializer->deserialize(json_encode(json_decode($content)->data), 'array<App\Entity\Printify\Product>', 'json');
+                foreach ($content as $oneproduct) {
+                    $productlist[] = $this->saveProduct($oneproduct);
+                }
+            }
+
+            $result = array();
+            $result[0] = $total_product;
+            $result[1] = $last_page;
+            $result[2] = $productlist;
+
+        } catch (Exception $e) {
+            echo($e->getMessage());
+        } catch (TransportExceptionInterface $e) {
+            echo($e->getMessage());
+        } catch (ClientExceptionInterface $e) {
+            echo($e->getMessage());
+        } catch (RedirectionExceptionInterface $e) {
+            echo($e->getMessage());
+        } catch (ServerExceptionInterface $e) {
+            echo($e->getMessage());
+        } catch (DecodingExceptionInterface $e) {
+            echo($e->getMessage());
+        } catch (ExceptionInterface $e) {
+            echo($e->getMessage());
+        }
+
+        return $result;
+    }
+
+
+    /**
+     * @Route("/deleteproduct", name="deleteproduct")
+     * @param $shopid
+     * @param $productid
+     */
+    public function deleteproduct($shopid, $productid)
+    {
+        $client = HttpClient::createForBaseUri(self::BASE_URL, ['headers' => $this->getHeaders()]);
+
+        $result = array();
+        try {
+            $response = $client->request('DELETE', 'https://api.printify.com/v1/shops/' . $shopid . '/products/'.$productid.'.json');
+            $statusCode = $response->getStatusCode();
+            $contentType = $response->getHeaders()['content-type'][0];
+            $content = $response->getContent();
+
+            echo $productid.' - delete : '.$statusCode.'<br>';
+
+        } catch (Exception $e) {
+            echo($e->getMessage());
+        } catch (TransportExceptionInterface $e) {
+            echo($e->getMessage());
+        } catch (ClientExceptionInterface $e) {
+            echo($e->getMessage());
+        } catch (RedirectionExceptionInterface $e) {
+            echo($e->getMessage());
+        } catch (ServerExceptionInterface $e) {
+            echo($e->getMessage());
+        } catch (DecodingExceptionInterface $e) {
+            echo($e->getMessage());
+        } catch (ExceptionInterface $e) {
+            echo($e->getMessage());
+        }
+    }
+
+    /**
+     * @Route("/publishproduct", name="publishproduct")
+     * @param $shopid
+     * @param $productid
+     */
+    public function publishproduct($shopid, $productid)
+    {
+        $client = HttpClient::createForBaseUri(self::BASE_URL, ['headers' => $this->getHeaders(), 'body' => '{
+    "title": true,
+    "description": true,
+    "images": true,
+    "variants": true,
+    "tags": true
+}']);
+
+        $result = array();
+        try {
+            $response = $client->request('POST', 'https://api.printify.com/v1/shops/' . $shopid . '/products/'.$productid.'/publish.json');
+            $statusCode = $response->getStatusCode();
+            $contentType = $response->getHeaders()['content-type'][0];
+            $content = $response->getContent();
+
+            echo $productid.' - publish : '.$statusCode.'<br>';
+
+        } catch (Exception $e) {
+            echo($e->getMessage());
+        } catch (TransportExceptionInterface $e) {
+            echo($e->getMessage());
+        } catch (ClientExceptionInterface $e) {
+            echo($e->getMessage());
+        } catch (RedirectionExceptionInterface $e) {
+            echo($e->getMessage());
+        } catch (ServerExceptionInterface $e) {
+            echo($e->getMessage());
+        } catch (DecodingExceptionInterface $e) {
+            echo($e->getMessage());
+        } catch (ExceptionInterface $e) {
+            echo($e->getMessage());
+        }
+    }
+
+    /**
+     * @Route("/unpublishproduct", name="unpublishproduct")
+     * @param $shopid
+     * @param $productid
+     */
+    public function unpublishproduct($shopid, $productid)
+    {
+        $client = HttpClient::createForBaseUri(self::BASE_URL, ['headers' => $this->getHeaders()]);
+
+        $result = array();
+        try {
+            $response = $client->request('POST', 'https://api.printify.com/v1/shops/' . $shopid . '/products/'.$productid.'/unpublish.json');
+            $statusCode = $response->getStatusCode();
+            $contentType = $response->getHeaders()['content-type'][0];
+            $content = $response->getContent();
+
+            echo $productid.' - unpublish : '.$statusCode.'<br>';
+
+        } catch (Exception $e) {
+            echo($e->getMessage());
+        } catch (TransportExceptionInterface $e) {
+            echo($e->getMessage());
+        } catch (ClientExceptionInterface $e) {
+            echo($e->getMessage());
+        } catch (RedirectionExceptionInterface $e) {
+            echo($e->getMessage());
+        } catch (ServerExceptionInterface $e) {
+            echo($e->getMessage());
+        } catch (DecodingExceptionInterface $e) {
+            echo($e->getMessage());
+        } catch (ExceptionInterface $e) {
+            echo($e->getMessage());
+        }
+    }
+
+    /**
      * @Route("/retrieveproductlist", name="retrieveproductlist")
      * @param $shopid
      * @param int $pagenumber
@@ -621,8 +785,10 @@ class Printify
         $recupProduct->setDescription($product->getDescription());
         $recupProduct->setExternal($product->getExternal());
         $recupProduct->setCreatedAt($product->getCreatedAt());
-        $recupProduct->setUpdateAt($product->getUpdateAt());
+        $recupProduct->setUpdatedAt($product->getUpdatedAt());
         $recupProduct->setIsLocked($product->getIsLocked());
+        $recupProduct->setShopId($product->getShopId());
+        $recupProduct->setUserId($this->security->getUser()->getId());
         $recupProduct->setOptions($product->getOptions());
         $recupProduct->setPrintDetails($product->getPrintDetails());
         $recupProduct->setBlueprintId($product->getBlueprintId());

@@ -1,4 +1,4 @@
-import '../css/blueprintselector.css';
+import '../../css/printify/blueprintselector.css';
 
 $(document).ready(function() {
     //set initial state.

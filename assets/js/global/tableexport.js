@@ -16,7 +16,7 @@
  * limitations under the License.
  *
  */
-import '../css/tableexport.css';
+import '../../css/global/tableexport.css';
 (function(root, factory) {
   if (typeof define === "function" && define.amd) {
     // AMD

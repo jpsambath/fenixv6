@@ -19,6 +19,15 @@ class ProfileRepository extends ServiceEntityRepository
         parent::__construct($registry, Profile::class);
     }
 
+    public function deleteAll()
+    {
+        $qb = $this->createQueryBuilder('b')
+            ->delete(Profile::class, 'b');
+
+        $query = $qb->getQuery();
+        return $query->execute();
+    }
+
     // /**
     //  * @return Profile[] Returns an array of Profile objects
     //  */

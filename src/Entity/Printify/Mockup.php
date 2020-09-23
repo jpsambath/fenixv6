@@ -55,7 +55,7 @@ class Mockup
      * @ORM\ManyToOne(targetEntity="App\Entity\Printify\Product", inversedBy="mockups")
      * @JoinTable(name="printify_productmockups",
      *     joinColumns={@JoinColumn(name="mockup_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@JoinColumn(name="product_id", referencedColumnName="id")}
+     *      inverseJoinColumns={@JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")}
      *     )
      * @Serializer\Type("App\Entity\Printify\Product")
      */

@@ -1,4 +1,4 @@
-import '../css/blueprintselector.css';
+import '../../css/printify/blueprintselector.css';
 import('tableexport');
 
 

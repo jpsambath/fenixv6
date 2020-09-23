@@ -6,7 +6,7 @@
  */
 
 // any CSS you import will output into a single css file (app.css in this case)
-import '../css/base.css';
+import '../../css/global/base.css';
 
 
 // Need jQuery? Install it with "yarn add jquery", then uncomment to import it.

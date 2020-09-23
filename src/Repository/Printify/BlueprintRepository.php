@@ -28,6 +28,7 @@ class BlueprintRepository extends ServiceEntityRepository
             ->setParameter('id', $id);
 
         $query = $qb->getQuery();
+
         try {
             return $query->setMaxResults(1)->getOneOrNullResult();
         } catch (NonUniqueResultException $e) {
@@ -51,6 +52,15 @@ class BlueprintRepository extends ServiceEntityRepository
         } catch (NonUniqueResultException $e) {
         }
 
+    }
+
+    public function deleteAll()
+    {
+        $qb = $this->createQueryBuilder('b')
+            ->delete(Blueprint::class, 'b');
+
+        $query = $qb->getQuery();
+        return $query->execute();
     }
 
 

@@ -62,6 +62,7 @@ class Profile
     /**
      * @var Shipping
      * @ORM\ManyToOne(targetEntity="App\Entity\Printify\Shipping", inversedBy="profiles")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      * @MaxDepth(1)
      * @Serializer\Type("App\Entity\Printify\Shipping")
      */

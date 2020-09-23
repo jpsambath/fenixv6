@@ -19,6 +19,15 @@ class ShippingRepository extends ServiceEntityRepository
         parent::__construct($registry, Shipping::class);
     }
 
+    public function deleteAll()
+    {
+        $qb = $this->createQueryBuilder('b')
+            ->delete(Shipping::class, 'b');
+
+        $query = $qb->getQuery();
+        return $query->execute();
+    }
+
     // /**
     //  * @return Shipping[] Returns an array of Shipping objects
     //  */

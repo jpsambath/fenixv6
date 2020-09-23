@@ -99,6 +99,7 @@ class Variant
      * @ORM\Id()
      * @var Blueprint
      * @ORM\ManyToOne(targetEntity="App\Entity\Printify\Blueprint", inversedBy="variants")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      * @Serializer\Type("App\Entity\Printify\Blueprint")
      */
     private $blueprint;
@@ -107,6 +108,7 @@ class Variant
      * @ORM\Id()
      * @var Provider
      * @ORM\ManyToOne(targetEntity="App\Entity\Printify\Provider", inversedBy="variants")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      * @Serializer\Groups({"blueprintexporter"})
      * @Serializer\Type("App\Entity\Printify\Provider")
      */
@@ -116,7 +118,7 @@ class Variant
      * @var ArrayCollection<Placeholder>
      * @ORM\ManyToMany(targetEntity="App\Entity\Printify\Placeholder")
      * @JoinTable(name="printify_variantsplaceholders",
-     *     joinColumns={@JoinColumn(name="variant_id", referencedColumnName="id"), @JoinColumn(name="blueprint_id", referencedColumnName="blueprint_id"), @JoinColumn(name="provider_id", referencedColumnName="provider_id")},
+     *     joinColumns={@JoinColumn(name="variant_id", referencedColumnName="id", onDelete="CASCADE"), @JoinColumn(name="blueprint_id", referencedColumnName="blueprint_id"), @JoinColumn(name="provider_id", referencedColumnName="provider_id")},
      *      inverseJoinColumns={@JoinColumn(name="placeholder_id", referencedColumnName="id")}
      *     )
      * @MaxDepth(1)
