@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Text index{% endblock %}
+
+{% block body %}
+    <h1>Text index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Lines</th>
+                <th>Length</th>
+                <th>Word_count</th>
+                <th>Genre</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for text in texts %}
+            <tr>
+                <td>{{ text.id }}</td>
+                <td>{{ text.name }}</td>
+                <td>{{ text.lines ? text.lines|join(', ') : '' }}</td>
+                <td>{{ text.length }}</td>
+                <td>{{ text.wordCount }}</td>
+                <td>{{ text.genre }}</td>
+                <td>
+                    <a href="{{ path('design_text_show', {'id': text.id}) }}">show</a>
+                    <a href="{{ path('design_text_edit', {'id': text.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('design_text_new') }}">Create new</a>
+{% endblock %}

@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Design\TemplateCategoryRepository")
- * @ORM\Table("design_templatecategory)
+ * @ORM\Table("design_templatecategory")
  */
 class TemplateCategory
 {
@@ -27,6 +27,7 @@ class TemplateCategory
     private $name;
 
     /**
+     * @var array
      * @ORM\ManyToMany(targetEntity="App\Entity\Design\Template", mappedBy="templateCategories")
      */
     private $templates;
@@ -62,6 +63,10 @@ class TemplateCategory
         return $this->templates;
     }
 
+    /**
+     * @param Template $template
+     * @return $this
+     */
     public function addTemplate(Template $template): self
     {
         if (!$this->templates->contains($template)) {
@@ -72,6 +77,10 @@ class TemplateCategory
         return $this;
     }
 
+    /**
+     * @param Template $template
+     * @return $this
+     */
     public function removeTemplate(Template $template): self
     {
         if ($this->templates->contains($template)) {

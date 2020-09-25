@@ -55,10 +55,20 @@ abstract class Design
      */
     private $templates;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Design\Model", inversedBy="designs")
+     *      * @ORM\JoinTable(name="design_design_model",
+     * joinColumns={@ORM\JoinColumn(name="design_model_id", referencedColumnName="id")},
+     * inverseJoinColumns={@ORM\JoinColumn(name="design_design_id", referencedColumnName="id")}
+     * )
+     */
+    private $models;
+
     public function __construct()
     {
         $this->tags = new ArrayCollection();
         $this->templates = new ArrayCollection();
+        $this->models = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -125,6 +135,32 @@ abstract class Design
     {
         if ($this->templates->contains($template)) {
             $this->templates->removeElement($template);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Model[]
+     */
+    public function getModels(): Collection
+    {
+        return $this->models;
+    }
+
+    public function addModel(Model $model): self
+    {
+        if (!$this->models->contains($model)) {
+            $this->models[] = $model;
+        }
+
+        return $this;
+    }
+
+    public function removeModel(Model $model): self
+    {
+        if ($this->models->contains($model)) {
+            $this->models->removeElement($model);
         }
 
         return $this;

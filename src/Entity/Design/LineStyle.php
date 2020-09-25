@@ -39,6 +39,12 @@ class LineStyle
     private $fontColor;
 
     /**
+     * @var boolean
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $majuscule;
+
+    /**
      * @var integer
      * @ORM\Column(type="integer", nullable=true)
      */
@@ -134,5 +140,21 @@ class LineStyle
         }
 
         return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isMajuscule(): bool
+    {
+        return $this->majuscule;
+    }
+
+    /**
+     * @param bool $majuscule
+     */
+    public function setMajuscule(bool $majuscule): void
+    {
+        $this->majuscule = $majuscule;
     }
 }
