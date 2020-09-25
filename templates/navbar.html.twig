@@ -125,6 +125,7 @@
                                             </ul>
                                         </li>
                                     {% endif %}
+
                                 </ul>
                             </li>
 
@@ -135,6 +136,20 @@
                                 <li><a href="#">Spinning Tool</a></li>
 
                             {% endif %}
+
+                            {% if is_granted('ROLE_POD_DESIGN') %}
+                                <li class="dropdown">
+                                    <a class="dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">POD Design</a>
+                                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        <li>
+                                            <a href="{{ path('design_design_index') }}">Design Index</a></li>
+                                        <li>
+                                            <a href="{{ path('design_tag_index') }}">Tag Index</a></li>
+                                    </ul>
+                                </li>
+                            {% endif %}
+
 
                         {% endif %}
                     </ul>

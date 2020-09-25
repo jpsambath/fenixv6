@@ -2,14 +2,27 @@
 
 namespace App\Entity\Design;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\JoinTable;
+
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Design\DesignRepository")
+ * @ORM\Table("design_design")
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="design_type", type="string", length=255)
+ * @ORM\DiscriminatorMap({
+ *     "Img"="Image",
+ *     "Txt"="Text"
+ * })
  */
-class Design
+abstract class Design
 {
     /**
+     * @var integer
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -17,49 +30,36 @@ class Design
     private $id;
 
     /**
+     * @var string
      * @ORM\Column(type="text")
      */
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @var array
+     * @ORM\ManyToMany(targetEntity="App\Entity\Design\Tag", inversedBy="designs")
+     * @JoinTable(name="design_design_tag",
+     * joinColumns={@JoinColumn(name="tag_id", referencedColumnName="id")},
+     * inverseJoinColumns={@JoinColumn(name="design_id", referencedColumnName="id")}
+     * )
      */
-    private $line1;
+    private $tags;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @var array
+     * @ORM\ManyToMany(targetEntity="App\Entity\Design\Template", inversedBy="designs")
+     * @ORM\JoinTable(name="design_design_template",
+     * joinColumns={@ORM\JoinColumn(name="design_template_id", referencedColumnName="id")},
+     * inverseJoinColumns={@ORM\JoinColumn(name="design_design_id", referencedColumnName="id")}
+     * )
      */
-    private $line2;
+    private $templates;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $line3;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $line4;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $line5;
-
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $length;
-
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $word_count;
-
-    /**
-     * @ORM\Column(type="string", length=1, nullable=true)
-     */
-    private $genre;
+    public function __construct()
+    {
+        $this->tags = new ArrayCollection();
+        $this->templates = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -78,98 +78,54 @@ class Design
         return $this;
     }
 
-    public function getLine1(): ?string
+    /**
+     * @return Collection|Tag[]
+     */
+    public function getTags(): Collection
     {
-        return $this->line1;
+        return $this->tags;
     }
 
-    public function setLine1(string $line1): self
+    public function addTag(Tag $tag): self
     {
-        $this->line1 = $line1;
+        if (!$this->tags->contains($tag)) {
+            $this->tags[] = $tag;
+        }
 
         return $this;
     }
 
-    public function getLine2(): ?string
+    public function removeTag(Tag $tag): self
     {
-        return $this->line2;
-    }
-
-    public function setLine2(string $line2): self
-    {
-        $this->line2 = $line2;
+        if ($this->tags->contains($tag)) {
+            $this->tags->removeElement($tag);
+        }
 
         return $this;
     }
 
-    public function getLine3(): ?string
+    /**
+     * @return Collection|Template[]
+     */
+    public function getTemplates(): Collection
     {
-        return $this->line3;
+        return $this->templates;
     }
 
-    public function setLine3(string $line3): self
+    public function addTemplate(Template $template): self
     {
-        $this->line3 = $line3;
+        if (!$this->templates->contains($template)) {
+            $this->templates[] = $template;
+        }
 
         return $this;
     }
 
-    public function getLine4(): ?string
+    public function removeTemplate(Template $template): self
     {
-        return $this->line4;
-    }
-
-    public function setLine4(string $line4): self
-    {
-        $this->line4 = $line4;
-
-        return $this;
-    }
-
-    public function getLine5(): ?string
-    {
-        return $this->line5;
-    }
-
-    public function setLine5(string $line5): self
-    {
-        $this->line5 = $line5;
-
-        return $this;
-    }
-
-    public function getLength(): ?int
-    {
-        return $this->length;
-    }
-
-    public function setLength(int $length): self
-    {
-        $this->length = $length;
-
-        return $this;
-    }
-
-    public function getWordCount(): ?int
-    {
-        return $this->word_count;
-    }
-
-    public function setWordCount(int $word_count): self
-    {
-        $this->word_count = $word_count;
-
-        return $this;
-    }
-
-    public function getGenre(): ?string
-    {
-        return $this->genre;
-    }
-
-    public function setGenre(string $genre): self
-    {
-        $this->genre = $genre;
+        if ($this->templates->contains($template)) {
+            $this->templates->removeElement($template);
+        }
 
         return $this;
     }

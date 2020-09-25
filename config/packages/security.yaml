@@ -42,5 +42,6 @@ security:
         - { path: ^/shop/woocommerce, roles: ROLE_WOOCOMMERCE }
         - { path: ^/tools/spinning, roles: ROLE_SPINNING }
         - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/design, roles: ROLE_POD_DESIGN }
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
