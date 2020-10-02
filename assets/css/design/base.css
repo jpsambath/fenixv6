@@ -1,0 +1,9 @@
+.faicon{
+    font-size: 18px;
+    color: black;
+}
+
+.faicon:hover{
+    color: grey;
+    font-weight: 800;
+}

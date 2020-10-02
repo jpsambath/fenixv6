@@ -17,7 +17,7 @@ class Text extends Design
      * @var array
      * @ORM\Column(type="array", nullable=true)
      */
-    private $lines;
+    private $cuts;
 
     /**
      * @var integer
@@ -52,20 +52,14 @@ class Text extends Design
     {
         parent::__construct();
         $this->images = new ArrayCollection();
-        $this->lines = new ArrayCollection([
-            1 => null,
-            2 => null,
-            3 => null,
-            4 => null,
-            5 => null,
-        ]);
+        $this->cuts = array_fill(0,5,null);
 
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getLength(): int
+    public function getLength(): ?int
     {
         return $this->length;
     }
@@ -79,9 +73,9 @@ class Text extends Design
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getWordCount(): int
+    public function getWordCount(): ?int
     {
         return $this->word_count;
     }
@@ -95,9 +89,9 @@ class Text extends Design
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getGenre(): string
+    public function getGenre(): ?string
     {
         return $this->genre;
     }
@@ -139,29 +133,29 @@ class Text extends Design
     /**
      * @return array
      */
-    public function getLines(): array
+    public function getCuts(): array
     {
-        return $this->lines;
+        return $this->cuts;
     }
 
     /**
-     * @param array $lines
+     * @param array $cuts
      */
-    public function setLines(array $lines): void
+    public function setCuts(array $cuts): void
     {
-        $this->lines = $lines;
+        $this->cuts = $cuts;
     }
 
-    public function replaceLine(int $key, string $line): self
+    public function replaceCut(int $key, string $cut): self
     {
-        $this->lines[$key] = $line;
+        $this->cuts[$key] = $cut;
 
         return $this;
     }
 
-    public function clearLine(int $key): self
+    public function clearCut(int $key): self
     {
-        $this->lines[$key] = null;
+        $this->cuts[$key] = null;
 
         return $this;
     }

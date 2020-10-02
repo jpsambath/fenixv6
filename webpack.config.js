@@ -29,6 +29,10 @@ Encore
     .addEntry('blueprintexporter', './assets/js/printify/blueprintexporter.js')
     .addEntry('tableexport', './assets/js/global/tableexport.js')
 
+    .addEntry('design_base', './assets/js/design/base.js')
+    .addEntry('design_index', './assets/js/design/index.js')
+
+
     .createSharedEntry('vendor', './assets/js/global/tableexport.js')
 
     //.addEntry('page1', './assets/js/page1.js')

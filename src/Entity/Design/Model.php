@@ -90,7 +90,7 @@ class Model
     /**
      * @return string
      */
-    public function getPattern(): string
+    public function getPattern(): ?string
     {
         return $this->pattern;
     }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="JavaScriptLibraryMappings">
-    <file url="file://$PROJECT_DIR$" libraries="{animate, basic, bootstrap, bootstrap.bundle, dropzone-amd-module, jquery-3.4.1, material-components-web, popper-utils, table2csv}" />
+    <file url="file://$PROJECT_DIR$" libraries="{@popperjs, all, animate.css, bootstrap, bootstrap-table, bootstrap.bundle, browse, font-awesome, jquery-3.4.1, jquery.tablesorter, material-components-web, notify, select2, tableexport.jquery.plugin, tablefilter}" />
   </component>
 </project>

@@ -4,8 +4,10 @@ namespace App\Form\Design;
 
 use App\Entity\Design\Image;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 
 class ImageType extends AbstractType
 {
@@ -13,15 +15,33 @@ class ImageType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('src')
+            ->add('src', FileType::class, [
+                'attr' =>
+                    ['placeholder' => 'Sélectionner une image',]
+            ])
             ->add('height')
             ->add('width')
             ->add('size')
             ->add('format')
-            ->add('tags')
+            ->add('tags', Select2EntityType::class, [
+                'multiple' => true,
+                'remote_route' => 'design_tag_list',
+                'remote_params' => [],
+                'class' => 'App\Entity\Design\Tag',
+                'primary_key' => 'id',
+                'text_property' => 'name',
+                'minimum_input_length' => 2,
+                'page_limit' => 10,
+                'allow_clear' => true,
+                'delay' => 250,
+                'cache' => true,
+                'cache_timeout' => 60000, // if 'cache' is true
+                'language' => 'en',
+                'placeholder' => 'Selectionner un tag',
+                // 'object_manager' => $objectManager, // inject a custom object / entity manager
+            ])
             ->add('templates')
             ->add('models')
-            ->add('texts')
         ;
     }
 

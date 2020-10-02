@@ -38,7 +38,7 @@ class Image extends Design
 
     /**
      * @var string
-     * @ORM\Column(type="string", length=4)
+     * @ORM\Column(type="string", length=4, nullable=true)
      */
     private $format;
 
@@ -82,9 +82,9 @@ class Image extends Design
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getSrc(): string
+    public function getSrc(): ?string
     {
         return $this->src;
     }
@@ -98,9 +98,9 @@ class Image extends Design
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getHeight(): int
+    public function getHeight(): ?int
     {
         return $this->height;
     }
@@ -114,9 +114,9 @@ class Image extends Design
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getWidth(): int
+    public function getWidth(): ?int
     {
         return $this->width;
     }
@@ -130,9 +130,9 @@ class Image extends Design
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getSize(): int
+    public function getSize(): ?int
     {
         return $this->size;
     }
@@ -146,9 +146,9 @@ class Image extends Design
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getFormat(): string
+    public function getFormat(): ?string
     {
         return $this->format;
     }

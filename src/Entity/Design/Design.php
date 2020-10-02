@@ -13,13 +13,14 @@ use Doctrine\ORM\Mapping\JoinTable;
  * @ORM\Entity(repositoryClass="App\Repository\Design\DesignRepository")
  * @ORM\Table("design_design")
  * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="design_type", type="string", length=255)
+ * @ORM\DiscriminatorColumn(name="type", type="string", length=255)
  * @ORM\DiscriminatorMap({
+ *     "Des"="Design",
  *     "Img"="Image",
  *     "Txt"="Text"
  * })
  */
-abstract class Design
+class Design
 {
     /**
      * @var integer
@@ -165,4 +166,5 @@ abstract class Design
 
         return $this;
     }
+
 }

@@ -14,7 +14,6 @@ class TemplateType extends AbstractType
         $builder
             ->add('name')
             ->add('lineStyles')
-            ->add('designs')
             ->add('templateCategories')
         ;
     }

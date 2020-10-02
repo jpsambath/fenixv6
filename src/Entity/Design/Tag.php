@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\JoinTable;
 use Doctrine\ORM\Mapping\JoinColumn;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Design\TagRepository")
@@ -25,6 +26,7 @@ class Tag
     /**
      * @var string
      * @ORM\Column(type="string", length=255)
+     * @SerializedName("text")
      */
     private $name;
 

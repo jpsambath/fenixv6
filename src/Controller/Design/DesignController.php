@@ -5,7 +5,13 @@ namespace App\Controller\Design;
 use App\Entity\Design\Design;
 use App\Form\Design\DesignType;
 use App\Repository\Design\DesignRepository;
+use App\Repository\Design\ModelCategoryRepository;
+use App\Repository\Design\ModelRepository;
+use App\Repository\Design\TagRepository;
+use App\Repository\Design\TemplateCategoryRepository;
+use App\Repository\Design\TemplateRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,21 +21,39 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class DesignController extends AbstractController
 {
+
+
     /**
      * @Route("/", name="design_design_index", methods={"GET"})
+     * @param DesignRepository $designRepository
+     * @param TagRepository $tagRepository
+     * @param ModelRepository $modelRepository
+     * @param TemplateRepository $templateRepository
+     * @param ModelCategoryRepository $modelCategoryRepository
+     * @param TemplateCategoryRepository $templateCategoryRepository
+     * @return Response
      */
-    public function index(DesignRepository $designRepository): Response
+    public function index(DesignRepository $designRepository, TagRepository $tagRepository, ModelRepository $modelRepository, TemplateRepository $templateRepository, ModelCategoryRepository $modelCategoryRepository, TemplateCategoryRepository $templateCategoryRepository): Response
     {
         return $this->render('design/design/index.html.twig', [
             'designs' => $designRepository->findAll(),
+            'tags' => $tagRepository->findAll(),
+            'models' => $modelRepository->findAll(),
+            'modelCategories' => $modelCategoryRepository->findAll(),
+            'templates' => $templateRepository->findAll(),
+            'templateCategories' => $templateCategoryRepository->findAll()
         ]);
     }
 
     /**
      * @Route("/new", name="design_design_new", methods={"GET","POST"})
+     * @param Request $request
+     * @return Response
      */
     public function new(Request $request): Response
     {
+
+
         $design = new Design();
         $form = $this->createForm(DesignType::class, $design);
         $form->handleRequest($request);
@@ -46,10 +70,13 @@ class DesignController extends AbstractController
             'design' => $design,
             'form' => $form->createView(),
         ]);
+
     }
 
     /**
      * @Route("/{id}", name="design_design_show", methods={"GET"})
+     * @param Design $design
+     * @return Response
      */
     public function show(Design $design): Response
     {
@@ -60,35 +87,57 @@ class DesignController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="design_design_edit", methods={"GET","POST"})
+     * @param Request $request
+     * @param Design $design
+     * @return Response
      */
     public function edit(Request $request, Design $design): Response
     {
-        $form = $this->createForm(DesignType::class, $design);
-        $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('design_design_index');
-        }
+            $form = $this->createForm(DesignType::class, $design);
+            $form->handleRequest($request);
 
-        return $this->render('design/design/edit.html.twig', [
-            'design' => $design,
-            'form' => $form->createView(),
-        ]);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $this->getDoctrine()->getManager()->flush();
+            }
+
+            return $this->render('design/design/edit.html.twig', [
+                'design' => $design,
+                'form' => $form->createView(),
+            ]);
+
     }
 
     /**
-     * @Route("/{id}", name="design_design_delete", methods={"DELETE"})
+     * @Route("/delete/{id}", name="design_design_delete")
+     * @param Request $request
+     * @param Design $design
+     * @return Response
      */
     public function delete(Request $request, Design $design): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$design->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($design);
-            $entityManager->flush();
-        }
+        //if ($this->isCsrfTokenValid('delete'.$design->getId(), $request->request->get('_token'))) {
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($design);
+        $entityManager->flush();
+        //}
 
         return $this->redirectToRoute('design_design_index');
+    }
+
+    /**
+     * @Route("/ajaxaddtag", name="design_design_ajaxaddtag")
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function ajax_add_tags(Request $request)
+    {
+        if ($request->isXMLHttpRequest()) {
+            return new JsonResponse();
+        }
+        else{
+            $this->redirectToRoute('design_design_index');
+        }
     }
 }

@@ -30,6 +30,8 @@ class TextController extends AbstractController
 
     /**
      * @Route("/new", name="design_text_new", methods={"GET","POST"})
+     * @param Request $request
+     * @return Response
      */
     public function new(Request $request): Response
     {
@@ -53,6 +55,8 @@ class TextController extends AbstractController
 
     /**
      * @Route("/{id}", name="design_text_show", methods={"GET"})
+     * @param Text $text
+     * @return Response
      */
     public function show(Text $text): Response
     {
@@ -63,6 +67,9 @@ class TextController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="design_text_edit", methods={"GET","POST"})
+     * @param Request $request
+     * @param Text $text
+     * @return Response
      */
     public function edit(Request $request, Text $text): Response
     {
@@ -82,7 +89,10 @@ class TextController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="design_text_delete", methods={"DELETE"})
+     * @Route("/delete/{id}", name="design_text_delete")
+     * @param Request $request
+     * @param Text $text
+     * @return Response
      */
     public function delete(Request $request, Text $text): Response
     {

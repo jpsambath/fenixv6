@@ -16,7 +16,6 @@ class ModelType extends AbstractType
             ->add('src')
             ->add('pattern')
             ->add('modelCategories')
-            ->add('designs')
         ;
     }
 

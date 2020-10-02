@@ -6,9 +6,11 @@ use App\Entity\Design\Tag;
 use App\Form\Design\TagType;
 use App\Repository\Design\TagRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
 /**
  * @Route("/design/tag")
@@ -16,7 +18,24 @@ use Symfony\Component\Routing\Annotation\Route;
 class TagController extends AbstractController
 {
     /**
+     * @Route("/taglist", name="design_tag_list", methods={"GET"})
+     * @param TagRepository $tagRepository
+     * @return JsonResponse
+     */
+    public function taglist(TagRepository $tagRepository): JsonResponse
+    {
+//        var_dump( $this->json($tagRepository->findAll()));
+//        return $this->json($tagRepository->findAll());
+
+    return $this->json($tagRepository->findAll(), 200,[],[AbstractNormalizer::ATTRIBUTES => ['id', 'name']]);
+
+    }
+
+
+    /**
      * @Route("/", name="design_tag_index", methods={"GET"})
+     * @param TagRepository $tagRepository
+     * @return Response
      */
     public function index(TagRepository $tagRepository): Response
     {
@@ -27,6 +46,8 @@ class TagController extends AbstractController
 
     /**
      * @Route("/new", name="design_tag_new", methods={"GET","POST"})
+     * @param Request $request
+     * @return Response
      */
     public function new(Request $request): Response
     {
