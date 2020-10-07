@@ -1,0 +1,10 @@
+.closebtn{
+    color: #000000;
+    text-decoration: none;
+}
+
+.closebtn:hover{
+    color: #ffc107;
+    text-decoration: none;
+    font-weight:600;
+}

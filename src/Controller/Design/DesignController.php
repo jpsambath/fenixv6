@@ -3,6 +3,7 @@
 namespace App\Controller\Design;
 
 use App\Entity\Design\Design;
+use App\Entity\Design\Tag;
 use App\Form\Design\DesignType;
 use App\Repository\Design\DesignRepository;
 use App\Repository\Design\ModelCategoryRepository;
@@ -10,6 +11,7 @@ use App\Repository\Design\ModelRepository;
 use App\Repository\Design\TagRepository;
 use App\Repository\Design\TemplateCategoryRepository;
 use App\Repository\Design\TemplateRepository;
+use JMS\Serializer\SerializerBuilder;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -95,17 +97,17 @@ class DesignController extends AbstractController
     {
 
 
-            $form = $this->createForm(DesignType::class, $design);
-            $form->handleRequest($request);
+        $form = $this->createForm(DesignType::class, $design);
+        $form->handleRequest($request);
 
-            if ($form->isSubmitted() && $form->isValid()) {
-                $this->getDoctrine()->getManager()->flush();
-            }
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+        }
 
-            return $this->render('design/design/edit.html.twig', [
-                'design' => $design,
-                'form' => $form->createView(),
-            ]);
+        return $this->render('design/design/edit.html.twig', [
+            'design' => $design,
+            'form' => $form->createView(),
+        ]);
 
     }
 
@@ -129,14 +131,73 @@ class DesignController extends AbstractController
     /**
      * @Route("/ajaxaddtag", name="design_design_ajaxaddtag")
      * @param Request $request
+     * @param TagRepository $tagRepository
+     * @param DesignRepository $designRepository
      * @return JsonResponse
      */
-    public function ajax_add_tags(Request $request)
+    public function ajax_add_tags(Request $request, TagRepository $tagRepository, DesignRepository $designRepository)
     {
         if ($request->isXMLHttpRequest()) {
-            return new JsonResponse();
-        }
-        else{
+            $data = $request->request->all();
+
+            $entityManager = $this->getDoctrine()->getManager();
+
+            $serializer = SerializerBuilder::create()->build();
+            $tagArgument = $serializer->deserialize($data['tags'], "array", "json");
+            $designArgument = $serializer->deserialize($data['designs'], "array", "json");
+
+            $designList = array();
+            $oneDesign = new Design();
+
+            $tagList = array();
+            $oneTag = new Tag();
+
+            $htmlresponse = "";
+            $htmltag = "";
+            $i = 0;
+
+            foreach ($tagArgument as $tag) {
+                if (is_numeric($tag)) {
+                    $oneTag = $tagRepository->find($tag);
+                    $tagList[] = $oneTag;
+                } else {
+                    $oneTag->setName($tag);
+                    $entityManager->persist($oneTag);
+                    $entityManager->flush();
+                    $tagList[] = $oneTag;
+                }
+            }
+
+            foreach ($designArgument as $design) {
+                $htmltag = "";
+                $oneDesign = $designRepository->find($design['id']);
+
+                foreach ($tagList as $tag) {
+                    $oneDesign->addTag($tag);
+                }
+
+                $entityManager->persist($oneDesign);
+                $entityManager->flush();
+                $designList[] = $oneDesign;
+
+//                foreach($oneDesign->getTags() as $tag){
+//                    $htmltag .= $tag->getName()." ";
+//                }
+//
+//                $htmlresponse .= "<tr data-index=\"".$i."\" class=\"selected\"><td class=\"bs-checkbox \" style=\"width: 36px; \"><label>
+//            <input data-index=\"".$i."\" name=\"id\" type=\"checkbox\" value=\"".$oneDesign->getId()."\">
+//            <span></span>
+//            </label></td><td>".$oneDesign->getId()."</td><td>".$oneDesign->getName()."</td><td>".$htmltag."</td><td></td><td></td><td><a href=\"/design/design/".$oneDesign->getId()."\"><span class=\"faicon\"><i class=\"fas fa-eye\"></i></span></a>
+//                                    <a href=\"/design/design/".$oneDesign->getId()."/edit\"><span class=\"faicon\"><i class=\"fas fa-edit\"></i></span></a>
+//                                    <a href=\"/design/design/delete/".$oneDesign->getId()."\"><span class=\"faicon\"><i class=\"fas fa-trash-alt\"></i></span></a></td></tr>";
+//
+//                $i++;
+
+            }
+            $designListJson = $serializer->serialize($designList, "json");
+
+            return new JsonResponse($designListJson);
+        } else {
             $this->redirectToRoute('design_design_index');
         }
     }

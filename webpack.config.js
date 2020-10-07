@@ -29,6 +29,14 @@ Encore
     .addEntry('blueprintexporter', './assets/js/printify/blueprintexporter.js')
     .addEntry('tableexport', './assets/js/global/tableexport.js')
 
+    .addEntry('global_notifyjs', './assets/js/global/notify.js')
+
+
+    .addEntry('global_bootstraptable', './assets/js/global/bootstrap-table-master/dist/bootstrap-table.min.js')
+    .addEntry('global_bootstraptable_editable', './assets/js/global/bootstrap-table-master/dist/extensions/editable/bootstrap-table-editable.min.js')
+    .addEntry('global_bootstraptable_export', './assets/js/global/bootstrap-table-master/dist/extensions/export/bootstrap-table-export.min.js')
+    .addEntry('global_bootstraptable_filtercontrol', './assets/js/global/bootstrap-table-master/dist/extensions/filter-control/bootstrap-table-filter-control.min.js')
+
     .addEntry('design_base', './assets/js/design/base.js')
     .addEntry('design_index', './assets/js/design/index.js')
 
