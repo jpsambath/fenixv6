@@ -2,7 +2,52 @@ import '../../css/design/index.css';
 
 $(document).ready(function () {
 
-    $("#applytag").click(function () {
+    $(document).on('click', '.unlinktagbtn', function (event) {
+
+        console.log($(this).attr('href'));
+        $.ajax({
+            url: $(this).attr('href'),
+            type: 'POST',
+            success: function (data, status) {
+                $("#menu_area").notify("Tag Successfully Deleted", {
+                    position: "bottom right",
+                    className: "success"
+                });
+
+                let design = JSON.parse(data);
+                console.log(design.id + ">" + design.name);
+
+                //$('#table').bootstrapTable('removeByUniqueId', design.id);
+
+                let taglist = "";
+
+                $.each(design.tags, function (t, tag) {
+                    taglist += "<span class='taglabel'><span href='/design/design/ajaxunlinktag/" + design.id + "/" + tag.id + "' class='closebtn unlinktagbtn'>×</span>" + tag.name + "</span>";
+                })
+
+
+                $('#table').bootstrapTable('updateCellByUniqueId', {
+                    id: design.id,
+                    field: 'tags',
+                    value: taglist
+                });
+
+                majactivetags();
+
+
+            },
+            error:
+                function (data, status, message) {
+                    $("#menu_area").notify("Tag Deletion Failed", {
+                        position: "bottom right",
+                        className: "error"
+                    });
+                }
+        });
+
+    });
+
+    $("#applytag").on('click', function () {
 
         $.ajax({
             url: "/design/design/ajaxaddtag",
@@ -19,40 +64,32 @@ $(document).ready(function () {
                     className: "success"
                 });
 
-                //console.log(data);
+                //Suppression des lignes précédemment cochées
+                // let ids = $.map($('#table').bootstrapTable('getSelections'), function (row) {
+                //     return row.id
+                // })
+                // $('#table').bootstrapTable('remove', {
+                //     field: 'id',
+                //     values: ids
+                // });
 
                 $.each(JSON.parse(data), function (key, design) {
-                    let ids = $.map($('#table').bootstrapTable('getSelections'), function (row) {
-                        return row.id
-                    })
 
                     let taglist = "";
 
                     $.each(design.tags, function (t, tag) {
-                        taglist += "<span class='btn btn-outline-secondary btn-sm'><a href=\"#\" class='closebtn'><span>X</span></a>"+ tag.name+"</span>"
+                        taglist += "<span class='taglabel'><span href='/design/design/ajaxunlinktag/" + design.id + "/" + tag.id + "' class='closebtn unlinktagbtn'>×</span>" + tag.name + "</span>";
                     })
 
-                    $('#table').bootstrapTable('remove', {
-                        field: 'id',
-                        values: ids
+
+                    $('#table').bootstrapTable('updateCellByUniqueId', {
+                        id: design.id,
+                        field: 'tags',
+                        value: taglist
                     });
-                    $('#table').bootstrapTable('insertRow', {
-                        index: 0,
-                        row: {
-                            id: design.id,
-                            name: design.name,
-                            tags: taglist,
-                            models: design.models,
-                            templates: design.templates,
-                            actions: "<a href=\"/design/design/" + design.id + "\"><span class=\"faicon\"><i class=\"fas fa-eye\"></i></span></a> " +
-                                "<a href=\"/design/design/" + design.id + "/edit\"><span class=\"faicon\"><i class=\"fas fa-edit\"></i></span></a> " +
-                                "<a href=\"/design/design/delete/" + design.id + "\"><span class=\"faicon\"><i class=\"fas fa-trash-alt\"></i></span>"
-                        }
-                    });
-                    $('#table').bootstrapTable('check', 0);
-                    console.log(key + " : " + design.name);
-                })
-                ;
+
+                    majactivetags();
+                });
                 // $('#table tbody').find('.selected').remove();
                 // $('#table tbody').prepend(data);
                 // $('#table').bootstrapTable('refresh');
@@ -66,9 +103,47 @@ $(document).ready(function () {
                         className: "error"
                     });
                 }
-        })
-        ;
+        });
+
+
     });
+
+    $('#table').on('check.bs.table uncheck.bs.table uncheck-all.bs.table check-all.bs.table', majactivetags);
 
 });
 
+
+function cleantags(mystring) {
+    let res = mystring.replace(/(<([^>]+)>)/ig, "").replace(/\n|\r|(\n\r)/g, "").split("×");
+
+    return res.filter(function (elem) {
+        return elem !== '×' && elem !== '';
+    });
+
+}
+
+function unique(array) {
+    return $.grep(array, function (el, index) {
+        return index === $.inArray(el, array);
+    });
+}
+
+
+function majactivetags() {
+    let rowlist = $('#table').bootstrapTable('getSelections');
+    let taglist = '';
+    let tags = [];
+
+
+    $.each(rowlist, function (t, row) {
+        $.merge(tags, cleantags(row.tags));
+    });
+
+    tags = unique(tags);
+
+    $.each(tags, function (t, tag) {
+        taglist += "<span class='taglabel'><span class='closebtn unlinktagselection'>×</span>" + tag + "</span>";
+    })
+
+    $('#activetags').html(taglist);
+}

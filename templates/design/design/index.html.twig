@@ -41,62 +41,14 @@
                         <div class="form-group col-2">
                             <button id="applytag" class="btn btn-primary btn-block">Apply Tags</button>
                         </div>
+
+                        <div id="activetags" class="form-group col-6 border border-dark rounded">
+
+                        </div>
+
+
                     </div>
 
-
-                    <div class="row">
-                        <div class="form-group col-4">
-                            <select multiple class="js-example-basic-single js-states form-control select-to-apply" id="selecttemplate" data-allow-clear="1">
-
-                                {% for template in templates %}
-                                    <option value="{{ template.id }}">{{ template.name }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <div class="form-group col-2">
-                            <a href="#" class="btn btn-primary btn-block">Apply Template</a>
-                        </div>
-
-                        <div class="form-group col-4">
-                            <select multiple class="js-example-basic-single js-states form-control select-to-apply"
-                                    id="selecttemplatecategories" data-allow-clear="1">
-
-                                {% for templateCategory in templateCategories %}
-                                    <option value="{{ templateCategory.id }}">{{ templateCategory.name }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <div class="form-group col-2">
-                            <a href="#" class="btn btn-primary btn-block">Apply Template Category</a>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="form-group col-4">
-                            <select multiple class="js-example-basic-single js-states form-control select-to-apply" id="selectmodel" data-allow-clear="1">
-
-                                {% for model in models %}
-                                    <option value="{{ model.id }}">{{ model.name }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <div class="form-group col-2">
-                            <a href="#" class="btn btn-primary btn-block">Apply Model</a>
-                        </div>
-
-                        <div class="form-group col-4">
-                            <select multiple class="js-example-basic-single js-states form-control select-to-apply"
-                                    id="selectmodelcategories" data-allow-clear="1">
-
-                                {% for modelCategory in modelCategories %}
-                                    <option value="{{ modelCategory.id }}">{{ modelCategory.name }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <div class="form-group col-2">
-                            <a href="#" class="btn btn-primary btn-block">Apply Model Category</a>
-                        </div>
-                    </div>
 
 
                     <table id="table"
@@ -105,6 +57,7 @@
                            data-filter-control="true"
                            data-show-export="true"
                            data-click-to-select="true"
+                           data-unique-id="id"
                            data-toolbar="#toolbar"
                            data-show-columns="true"
                            data-id-field="id"
@@ -137,7 +90,7 @@
                                 <td>{{ design.name }}</td>
 
                                 <td>{% for tag in design.tags %}
-                                        <span class='btn btn-outline-secondary btn-sm'><a href="#" class="closebtn"><span>X</span></a> {{ tag.name }}</span>
+                                        <span class='taglabel'><span href='/design/design/ajaxunlinktag/{{ design.id }}/{{ tag.id}}' class='closebtn unlinktagbtn'>×</span>{{ tag.name }}</span>
                                     {% endfor %}</td>
                                 <td>{% for model in design.models %}
                                         {{ model.name }}

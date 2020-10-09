@@ -12,6 +12,7 @@ use App\Repository\Design\TagRepository;
 use App\Repository\Design\TemplateCategoryRepository;
 use App\Repository\Design\TemplateRepository;
 use JMS\Serializer\SerializerBuilder;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -158,14 +159,17 @@ class DesignController extends AbstractController
 
             foreach ($tagArgument as $tag) {
                 if (is_numeric($tag)) {
+                    $oneTag = new Tag();
                     $oneTag = $tagRepository->find($tag);
                     $tagList[] = $oneTag;
                 } else {
+                    $oneTag = new Tag();
                     $oneTag->setName($tag);
                     $entityManager->persist($oneTag);
                     $entityManager->flush();
                     $tagList[] = $oneTag;
                 }
+
             }
 
             foreach ($designArgument as $design) {
@@ -197,6 +201,34 @@ class DesignController extends AbstractController
             $designListJson = $serializer->serialize($designList, "json");
 
             return new JsonResponse($designListJson);
+        } else {
+            $this->redirectToRoute('design_design_index');
+        }
+    }
+
+    /**
+     * @Route("/ajaxunlinktag/{designid}/{tagid}", name="design_design_ajaxunlinktag")
+     * @param Request $request
+     * @param Design $design
+     * @param Tag $tag
+     * @return JsonResponse
+     * @ParamConverter("design", options={"mapping": {"designid" : "id"}})
+     * @ParamConverter("tag", options={"mapping": {"tagid" : "id"}})
+     */
+    public function ajax_unlink_tag(Request $request, Design $design, Tag $tag)
+    {
+        if ($request->isXMLHttpRequest()) {
+            $entityManager = $this->getDoctrine()->getManager();
+
+            $design->removeTag($tag);
+            $entityManager->persist($design);
+            $entityManager->flush();
+
+            $serializer = SerializerBuilder::create()->build();
+
+            $designJson = $serializer->serialize($design, "json");
+
+            return new JsonResponse($designJson);
         } else {
             $this->redirectToRoute('design_design_index');
         }
