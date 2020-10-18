@@ -1,0 +1,19 @@
+{
+  "build/0.js": "/build/0.js",
+  "build/1.js": "/build/1.js",
+  "build/base.css": "/build/base.css",
+  "build/base.js": "/build/base.js",
+  "build/blueprintexporter.css": "/build/blueprintexporter.css",
+  "build/blueprintexporter.js": "/build/blueprintexporter.js",
+  "build/blueprintselector.css": "/build/blueprintselector.css",
+  "build/blueprintselector.js": "/build/blueprintselector.js",
+  "build/loadingbar.js": "/build/loadingbar.js",
+  "build/runtime.js": "/build/runtime.js",
+  "build/tableexport.js": "/build/tableexport.js",
+  "build/vendor.css": "/build/vendor.css",
+  "build/vendor.js": "/build/vendor.js",
+  "build/images/csv.svg": "/build/images/csv.c696b5a6.svg",
+  "build/images/txt.svg": "/build/images/txt.6874049b.svg",
+  "build/images/xls.svg": "/build/images/xls.e5b1fcb0.svg",
+  "build/images/xlsx.svg": "/build/images/xlsx.c33ed346.svg"
+}

@@ -1,0 +1,11 @@
+.blueprintdetail{
+    padding:0!important;
+    border:0!important;
+}
+
+tr:hover{
+    background-color: aliceblue;
+    cursor: pointer;
+}
+
+/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8vYmx1ZXByaW50c2VsZWN0b3IuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0lBQ0ksbUJBQW1CO0lBQ25CLGtCQUFrQjtBQUN0Qjs7QUFFQTtJQUNJLDJCQUEyQjtJQUMzQixlQUFlO0FBQ25CLEMiLCJmaWxlIjoiYmx1ZXByaW50ZXhwb3J0ZXIuY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLmJsdWVwcmludGRldGFpbHtcclxuICAgIHBhZGRpbmc6MCFpbXBvcnRhbnQ7XHJcbiAgICBib3JkZXI6MCFpbXBvcnRhbnQ7XHJcbn1cclxuXHJcbnRyOmhvdmVye1xyXG4gICAgYmFja2dyb3VuZC1jb2xvcjogYWxpY2VibHVlO1xyXG4gICAgY3Vyc29yOiBwb2ludGVyO1xyXG59Il0sInNvdXJjZVJvb3QiOiIifQ==*/
