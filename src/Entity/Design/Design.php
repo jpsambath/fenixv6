@@ -65,6 +65,8 @@ class Design
      */
     private $models;
 
+
+
     public function __construct()
     {
         $this->tags = new ArrayCollection();
@@ -166,5 +168,7 @@ class Design
 
         return $this;
     }
+
+
 
 }

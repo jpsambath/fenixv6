@@ -4,6 +4,8 @@ namespace App\Controller\Design;
 
 use App\Entity\Design\Design;
 use App\Entity\Design\Tag;
+use App\Entity\Design\Text;
+use App\Entity\Design\Image;
 use App\Form\Design\DesignType;
 use App\Repository\Design\DesignRepository;
 use App\Repository\Design\ModelCategoryRepository;
@@ -38,8 +40,15 @@ class DesignController extends AbstractController
      */
     public function index(DesignRepository $designRepository, TagRepository $tagRepository, ModelRepository $modelRepository, TemplateRepository $templateRepository, ModelCategoryRepository $modelCategoryRepository, TemplateCategoryRepository $templateCategoryRepository): Response
     {
+
+        $texts = $this->getDoctrine()
+            ->getRepository(Text::class)
+            ->findAll();
+
         return $this->render('design/design/index.html.twig', [
             'designs' => $designRepository->findAll(),
+            'texts' => $this->getDoctrine()->getRepository(Text::class)->findAll(),
+            'images' => $this->getDoctrine()->getRepository(Image::class)->findAll(),
             'tags' => $tagRepository->findAll(),
             'models' => $modelRepository->findAll(),
             'modelCategories' => $modelCategoryRepository->findAll(),
@@ -233,4 +242,43 @@ class DesignController extends AbstractController
             $this->redirectToRoute('design_design_index');
         }
     }
+
+    /**
+     * @Route("/ajaxunlinktagfromselection/{tagid}", name="design_design_ajaxunlinktagfromselection")
+     * @param Request $request
+     * @param Tag $tag
+     * @return JsonResponse
+     * @ParamConverter("tag", options={"mapping": {"tagid" : "id"}})
+     */
+    public function ajax_unlink_tag_from_selection(Request $request, Tag $tag, DesignRepository $designRepository)
+    {
+        if ($request->isXMLHttpRequest()) {
+            $data = $request->request->all();
+
+            $entityManager = $this->getDoctrine()->getManager();
+
+            $serializer = SerializerBuilder::create()->build();
+            $designArgument = $serializer->deserialize($data['designs'], "array", "json");
+
+            $designList = array();
+
+            foreach ($designArgument as $design) {
+
+                $oneDesign = $designRepository->find($design['id']);
+                $oneDesign->removeTag($tag);
+
+                $entityManager->persist($oneDesign);
+                $entityManager->flush();
+                $designList[] = $oneDesign;
+            }
+            $designListJson = $serializer->serialize($designList, "json");
+
+            return new JsonResponse($designListJson);
+        } else {
+            $this->redirectToRoute('design_design_index');
+        }
+    }
+
+
+
 }

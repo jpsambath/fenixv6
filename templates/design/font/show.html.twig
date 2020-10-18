@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Font{% endblock %}
+
+{% block body %}
+    <h1>Font</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ font.id }}</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>{{ font.name }}</td>
+            </tr>
+            <tr>
+                <th>PostscriptName</th>
+                <td>{{ font.postscriptName }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('design_font_index') }}">back to list</a>
+
+    <a href="{{ path('design_font_edit', {'id': font.id}) }}">edit</a>
+
+    {{ include('design_font/_delete_form.html.twig') }}
+{% endblock %}

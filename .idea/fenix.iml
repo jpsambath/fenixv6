@@ -122,7 +122,6 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/tetranz/select2entity-bundle" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/twig/extra-bundle" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/twig/twig" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/webimpress/safe-writer" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/webmozart/assert" />
     </content>
     <orderEntry type="inheritedJdk" />
@@ -130,12 +129,7 @@
     <orderEntry type="library" exported="" name="bootstrap" level="application" />
     <orderEntry type="library" exported="" name="jquery-3.4.1" level="application" />
     <orderEntry type="library" exported="" name="bootstrap.bundle" level="application" />
-    <orderEntry type="library" exported="" name="popper-utils" level="application" />
     <orderEntry type="library" exported="" name="material-components-web" level="application" />
-    <orderEntry type="library" exported="" name="dropzone-amd-module" level="application" />
-    <orderEntry type="library" exported="" name="basic" level="application" />
-    <orderEntry type="library" exported="" name="animate" level="application" />
-    <orderEntry type="library" exported="" name="table2csv" level="application" />
     <orderEntry type="library" name="animate.css" level="application" />
     <orderEntry type="library" name="select2" level="application" />
     <orderEntry type="library" name="material-components-web" level="application" />
@@ -153,5 +147,12 @@
     <orderEntry type="library" name="notify" level="application" />
     <orderEntry type="library" name="jquery-ui" level="application" />
     <orderEntry type="library" name="jquery-3.5.1" level="application" />
+    <orderEntry type="library" name="@popperjs" level="application" />
+    <orderEntry type="library" name="jquery.tablesorter" level="application" />
+    <orderEntry type="library" name="tableexport.jquery.plugin" level="application" />
+    <orderEntry type="library" name="all" level="application" />
+    <orderEntry type="library" name="jquery-ui" level="application" />
+    <orderEntry type="library" name="jquery-3.5.1" level="application" />
+    <orderEntry type="library" name="select2" level="application" />
   </component>
 </module>
