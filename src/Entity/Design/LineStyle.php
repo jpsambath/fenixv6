@@ -24,25 +24,49 @@ class LineStyle
      * @var string
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $policeName;
-
-    /**
-     * @var string
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $postPostScriptName;
-
-    /**
-     * @var string
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
     private $fontColor;
 
     /**
      * @var boolean
      * @ORM\Column(type="boolean", nullable=true)
      */
-    private $majuscule;
+    private $uppercase;
+
+    /**
+     * @var boolean
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $lowercase;
+
+    /**
+     * @var boolean
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $capitalize;
+
+
+    /**
+     * @var boolean
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $bold;
+    /**
+     * @var boolean
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $italic;
+
+    /**
+     * @var boolean
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $underline;
+
+    /**
+     * @var boolean
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $linethrough;
 
     /**
      * @var integer
@@ -56,6 +80,11 @@ class LineStyle
      */
     private $templates;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Design\Font", inversedBy="lineStyles")
+     */
+    private $font;
+
     public function __construct()
     {
         $this->templates = new ArrayCollection();
@@ -64,30 +93,6 @@ class LineStyle
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getPoliceName(): ?string
-    {
-        return $this->policeName;
-    }
-
-    public function setPoliceName(?string $policeName): self
-    {
-        $this->policeName = $policeName;
-
-        return $this;
-    }
-
-    public function getPostPostScriptName(): ?string
-    {
-        return $this->postPostScriptName;
-    }
-
-    public function setPostPostScriptName(?string $postPostScriptName): self
-    {
-        $this->postPostScriptName = $postPostScriptName;
-
-        return $this;
     }
 
     public function getFontColor(): ?string
@@ -143,18 +148,139 @@ class LineStyle
     }
 
     /**
-     * @return bool
+     * @param mixed $font
      */
-    public function isMajuscule(): bool
+    public function setFont($font): void
     {
-        return $this->majuscule;
+        $this->font = $font;
     }
 
     /**
-     * @param bool $majuscule
+     * @return mixed
      */
-    public function setMajuscule(bool $majuscule): void
+    public function getFont()
     {
-        $this->majuscule = $majuscule;
+        return $this->font;
+    }
+
+
+    /**
+     * @param bool|null $snakecase
+     */
+    public function setSnakecase(?bool $snakecase): void
+    {
+        $this->snakecase = $snakecase;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function isLinethrough(): ?bool
+    {
+        return $this->linethrough;
+    }
+
+    /**
+     * @param bool $linethrough
+     */
+    public function setLinethrough(bool $linethrough): void
+    {
+        $this->linethrough = $linethrough;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function isUnderline(): ?bool
+    {
+        return $this->underline;
+    }
+
+    /**
+     * @param bool $underline
+     */
+    public function setUnderline(bool $underline): void
+    {
+        $this->underline = $underline;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function isItalic(): ?bool
+    {
+        return $this->italic;
+    }
+
+    /**
+     * @param bool $italic
+     */
+    public function setItalic(bool $italic): void
+    {
+        $this->italic = $italic;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function isBold(): ?bool
+    {
+        return $this->bold;
+    }
+
+    /**
+     * @param bool $bold
+     */
+    public function setBold(bool $bold): void
+    {
+        $this->bold = $bold;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function isCapitalize(): ?bool
+    {
+        return $this->capitalize;
+    }
+
+    /**
+     * @param bool $capitalize
+     */
+    public function setCapitalize(bool $capitalize): void
+    {
+        $this->capitalize = $capitalize;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function isLowercase(): ?bool
+    {
+        return $this->lowercase;
+    }
+
+    /**
+     * @param bool $lowercase
+     */
+    public function setLowercase(bool $lowercase): void
+    {
+        $this->lowercase = $lowercase;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function isUppercase(): ?bool
+    {
+        return $this->uppercase;
+    }
+
+    /**
+     * @param bool $uppercase
+     */
+    public function setUppercase(bool $uppercase): void
+    {
+        $this->uppercase = $uppercase;
     }
 }

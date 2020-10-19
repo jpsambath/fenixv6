@@ -1,4 +1,69 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+
+
+<div class="row">
+    <div class="col-6">
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">{{ form_label(form.name) }}</label>
+            <div class="col-sm-10">
+                {{ form_widget(form.name, {'attr': {'class': 'form-control', 'placeholder': 'Design name'}}) }}
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">{{ form_label(form.tags) }}</label>
+            <div class="col-sm-10">
+                {{ form_widget(form.tags, {'attr': {'class': 'form-control', 'placeholder': 'Tags'}}) }}
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">{{ form_label(form.templates) }}</label>
+            <div class="col-sm-10">
+                {{ form_widget(form.templates, {'attr': {'class': 'form-control', 'placeholder': 'Templates'}}) }}
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">{{ form_label(form.models) }}</label>
+            <div class="col-sm-10">
+                {{ form_widget(form.models, {'attr': {'class': 'form-control', 'placeholder': 'Templates'}}) }}
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">{{ form_label(form.images) }}</label>
+            <div class="col-sm-10">
+                {{ form_widget(form.images, {'attr': {'class': 'form-control', 'placeholder': 'Templates'}}) }}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-6">
+
+
+        <div class="form-group row">
+            <label class="col-sm-12 col-form-label">{{ form_label(form.cuts) }}</label>
+            <button class="btn btn-primary">Add Cut</button>
+        </div>
+
+        {% for cut in form.cuts %}
+        <div class="form-group row">
+            <label class="col-sm-1 col-form-label">{{ form_label(cut) }}</label>
+            <button class="btn btn-primary col-sm-2">Add Part</button>
+            <div class="col-sm-9"></div>
+            <div class="col-sm-2">
+                {{ form_widget(cut.linecount, {'attr': {'class': 'form-control', 'placeholder': 'Templates'}}) }}
+            </div>
+            {% for part in cut.parts %}
+            <div class="col-sm-2">
+                {{ form_label(part) }} {{ form_widget(part, {'attr': {'class': 'form-control', 'placeholder': 'Templates'}}) }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endfor %}
+
+    </div>
+</div>
+<button class="btn">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}

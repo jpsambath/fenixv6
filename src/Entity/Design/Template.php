@@ -26,8 +26,14 @@ class Template
     private $name;
 
     /**
+     * @var integer
+     * @ORM\Column(type="integer")
+     */
+    private $linecount;
+
+    /**
      * @var array
-     * @ORM\ManyToMany(targetEntity="App\Entity\Design\LineStyle", inversedBy="templates")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Design\LineStyle", inversedBy="templates", cascade={"persist"})
      * @ORM\JoinTable(name="design_template_linestyle",
      * joinColumns={@ORM\JoinColumn(name="linestyle_id", referencedColumnName="id")},
      * inverseJoinColumns={@ORM\JoinColumn(name="template_id", referencedColumnName="id")}
@@ -41,18 +47,18 @@ class Template
     private $designs;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Design\TemplateCategory", inversedBy="templates")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Design\TemplateCategory", mappedBy="templates")
+     * @ORM\JoinTable(name="design_template_templatecategory",
+     * joinColumns={@ORM\JoinColumn(name="design_templatecategory_id", referencedColumnName="id")},
+     * inverseJoinColumns={@ORM\JoinColumn(name="design_template_id", referencedColumnName="id")}
+     * )
      */
     private $templateCategories;
 
     public function __construct()
     {
         $this->lineStyles = new ArrayCollection([
-            1 => null,
-            2 => null,
-            3 => null,
-            4 => null,
-            5 => null,
+            1 => null
         ]);
         $this->designs = new ArrayCollection();
         $this->templateCategories = new ArrayCollection();
@@ -86,10 +92,9 @@ class Template
 
     public function addLineStyle(LineStyle $lineStyle): self
     {
-        if (!$this->lineStyles->contains($lineStyle)) {
+        //if (!$this->lineStyles->contains($lineStyle)) {
             $this->lineStyles[] = $lineStyle;
-        }
-
+        //}
         return $this;
     }
 
@@ -154,6 +159,31 @@ class Template
         }
 
         return $this;
+    }
+
+
+    /**
+     * @return int|null
+     */
+    public function getLinecount(): ?int
+    {
+        return $this->linecount;
+    }
+
+    /**
+     * @param int $linecount
+     */
+    public function setLinecount(int $linecount): void
+    {
+        $this->linecount = $linecount;
+    }
+
+    /**
+     * @param array $lineStyles
+     */
+    public function setLineStyles(array $lineStyles): void
+    {
+        $this->lineStyles = $lineStyles;
     }
 
 }

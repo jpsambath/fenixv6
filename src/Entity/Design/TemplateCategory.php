@@ -28,7 +28,7 @@ class TemplateCategory
 
     /**
      * @var array
-     * @ORM\ManyToMany(targetEntity="App\Entity\Design\Template", mappedBy="templateCategories")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Design\Template", inversedBy="templateCategories")
      */
     private $templates;
 

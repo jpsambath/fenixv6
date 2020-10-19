@@ -1,0 +1,169 @@
+{
+  "entrypoints": {
+    "base": {
+      "js": [
+        "/build/runtime.js",
+        "/build/vendor.js",
+        "/build/base.js"
+      ],
+      "css": [
+        "/build/vendor.css",
+        "/build/base.css"
+      ]
+    },
+    "loadingbar": {
+      "js": [
+        "/build/runtime.js",
+        "/build/vendor.js",
+        "/build/loadingbar.js"
+      ],
+      "css": [
+        "/build/vendor.css"
+      ]
+    },
+    "blueprintselector": {
+      "js": [
+        "/build/runtime.js",
+        "/build/vendor.js",
+        "/build/blueprintselector.js"
+      ],
+      "css": [
+        "/build/vendor.css",
+        "/build/blueprintselector.css"
+      ]
+    },
+    "blueprintexporter": {
+      "js": [
+        "/build/runtime.js",
+        "/build/vendor.js",
+        "/build/blueprintexporter.js"
+      ],
+      "css": [
+        "/build/vendor.css",
+        "/build/blueprintexporter.css"
+      ]
+    },
+    "tableexport": {
+      "js": [
+        "/build/runtime.js",
+        "/build/vendor.js",
+        "/build/tableexport.js"
+      ],
+      "css": [
+        "/build/vendor.css"
+      ]
+    },
+    "global_notifyjs": {
+      "js": [
+        "/build/runtime.js",
+        "/build/vendor.js",
+        "/build/global_notifyjs.js"
+      ],
+      "css": [
+        "/build/vendor.css"
+      ]
+    },
+    "global_bootstraptable": {
+      "js": [
+        "/build/runtime.js",
+        "/build/vendor.js",
+        "/build/global_bootstraptable.js"
+      ],
+      "css": [
+        "/build/vendor.css"
+      ]
+    },
+    "global_bootstraptable_editable": {
+      "js": [
+        "/build/runtime.js",
+        "/build/vendor.js",
+        "/build/global_bootstraptable_editable.js"
+      ],
+      "css": [
+        "/build/vendor.css"
+      ]
+    },
+    "global_bootstraptable_export": {
+      "js": [
+        "/build/runtime.js",
+        "/build/vendor.js",
+        "/build/global_bootstraptable_export.js"
+      ],
+      "css": [
+        "/build/vendor.css"
+      ]
+    },
+    "global_bootstraptable_filtercontrol": {
+      "js": [
+        "/build/runtime.js",
+        "/build/vendor.js",
+        "/build/global_bootstraptable_filtercontrol.js"
+      ],
+      "css": [
+        "/build/vendor.css"
+      ]
+    },
+    "design_base": {
+      "js": [
+        "/build/runtime.js",
+        "/build/design_base.js"
+      ],
+      "css": [
+        "/build/design_base.css"
+      ]
+    },
+    "design_design_index": {
+      "js": [
+        "/build/runtime.js",
+        "/build/vendor.js",
+        "/build/design_design_index.js"
+      ],
+      "css": [
+        "/build/vendor.css",
+        "/build/design_design_index.css"
+      ]
+    },
+    "design_design_new": {
+      "js": [
+        "/build/runtime.js",
+        "/build/vendor.js",
+        "/build/design_design_new.js"
+      ],
+      "css": [
+        "/build/vendor.css",
+        "/build/design_design_new.css"
+      ]
+    },
+    "design_linestyle_new": {
+      "js": [
+        "/build/runtime.js",
+        "/build/vendor.js",
+        "/build/design_linestyle_new.js"
+      ],
+      "css": [
+        "/build/vendor.css",
+        "/build/design_linestyle_new.css"
+      ]
+    },
+    "design_template_new": {
+      "js": [
+        "/build/runtime.js",
+        "/build/vendor.js",
+        "/build/design_template_new.js"
+      ],
+      "css": [
+        "/build/vendor.css",
+        "/build/design_template_new.css"
+      ]
+    },
+    "design_template_index": {
+      "js": [
+        "/build/runtime.js",
+        "/build/design_template_index.js"
+      ],
+      "css": [
+        "/build/design_template_index.css"
+      ]
+    }
+  }
+}

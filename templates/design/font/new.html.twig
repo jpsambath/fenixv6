@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Font{% endblock %}
+
+{% block body %}
+    <h1>Create new Font</h1>
+
+    {{ include('design_font/_form.html.twig') }}
+
+    <a href="{{ path('design_font_index') }}">back to list</a>
+{% endblock %}

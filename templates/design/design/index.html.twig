@@ -2,17 +2,12 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    {{ encore_entry_link_tags('design_index') }}
+    {{ encore_entry_link_tags('design_design_index') }}
 {% endblock %}
 
 {% block title %}Design index{% endblock %}
 
 {% block body %}
-    {% for msg in app.session.flashBag.get('success') %}
-        <div class="alert alert-success">
-            {{ msg }}
-        </div>
-    {% endfor %}
 
     <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
         <h1 class="display-4">Design index</h1>
@@ -49,7 +44,34 @@
 
                     </div>
 
+                    <div class="row">
+                        <div class="form-group col-4">
+                            <select multiple="multiple"
+                                    class="js-example-basic-single js-states form-control select-to-apply"
+                                    id="selecttemplate" data-allow-clear="1">
+                                <optgroup label="Template Category">
 
+                                    {% for templateCategory in templateCategories %}
+                                        <option type="templatecategory" value="{{ templateCategory.id }}">{{ templateCategory.name }}</option>
+                                    {% endfor %}
+                                </optgroup>
+                                <optgroup label="Template">
+                                    {% for template in templates %}
+                                        <option type="template" value="{{ template.id }}">{{ template.name }}</option>
+                                    {% endfor %}
+                                </optgroup>
+                            </select>
+                        </div>
+                        <div class="form-group col-2">
+                            <button id="applytemplate" class="btn btn-primary btn-block">Apply Templates</button>
+                        </div>
+
+                        <div id="activetags" class="form-group col-6 border border-dark rounded">
+
+                        </div>
+
+
+                    </div>
 
                     <table id="table"
                            data-toggle="table"
@@ -62,7 +84,8 @@
                            data-show-columns="true"
                            data-id-field="id"
                            data-select-item-name="id"
-                           class="table-sm table-borderless table-bordered table-hover">
+                           data-loading-template=" "
+                           class="table table-sm table-bordered table-striped table-hover">
                         <thead class="thead-light">
                         <tr>
                             <th data-field="state" data-checkbox="true">
@@ -72,49 +95,133 @@
                             </th>
                             <th data-field="id">Id</th>
                             <th data-field="name" data-filter-control="input" data-sortable="true">Name</th>
+                            <th data-field="type" data-filter-control="input" data-sortable="true">Type</th>
                             <th data-field="tags" data-filter-control="input" data-sortable="true">Tags</th>
-                            <th data-field="models" data-filter-control="input" data-sortable="true">Models</th>
+                            <th data-field="models" data-filter-control="input" data-sortable="true"
+                                data-visible="false">Models
+                            </th>
                             <th data-field="templates" data-filter-control="input" data-sortable="true">Templates</th>
-                            <th data-field="actions" >Actions</th>
+                            <th data-field="genre" data-filter-control="input" data-sortable="true"
+                                data-visible="false">Genre
+                            </th>
+                            <th data-field="wordcount" data-filter-control="input" data-sortable="true"
+                                data-visible="false">Nb mots
+                            </th>
+                            <th data-field="length" data-filter-control="input" data-sortable="true"
+                                data-visible="false">Nb Car
+                            </th>
+                            <th data-field="src" data-filter-control="input" data-sortable="true" data-visible="false">
+                                Src
+                            </th>
+                            <th data-field="height" data-filter-control="input" data-sortable="true"
+                                data-visible="false">Height
+                            </th>
+                            <th data-field="width" data-filter-control="input" data-sortable="true"
+                                data-visible="false">Width
+                            </th>
+                            <th data-field="size" data-filter-control="input" data-sortable="true" data-visible="false">
+                                Size
+                            </th>
+                            <th data-field="format" data-filter-control="input" data-sortable="true"
+                                data-visible="false">Format
+                            </th>
+
+                            <th data-field="actions">Actions</th>
                         </tr>
                         </thead>
                         <tbody id="designlist">
-                        {% for design in designs %}
+                        {% for text in texts %}
                             <tr>
                                 <td>
                                     {# <label> #}
                                     {# <input type="checkbox" id="{{ design.id }}" value="{{ design.id }}" name="checkeddesign"/> #}
                                     {# </label> #}
                                 </td>
-                                <td>{{ design.id }}</td>
-                                <td>{{ design.name }}</td>
+                                <td>{{ text.id }}</td>
+                                <td>{{ text.name }}</td>
+                                <td>Txt</td>
 
-                                <td>{% for tag in design.tags %}
-                                        <span class='taglabel'><span href='/design/design/ajaxunlinktag/{{ design.id }}/{{ tag.id}}' class='closebtn unlinktagbtn'>×</span>{{ tag.name }}</span>
+
+                                <td>{% for tag in text.tags %}
+                                        <span class='taglabel'><span
+                                                    href='/design/design/ajaxunlinktag/{{ text.id }}/{{ tag.id }}'
+                                                    tagid='{{ tag.id }}' tagname='{{ tag.name }}'
+                                                    class='closebtn unlinktagbtn'>×</span>{{ tag.name }}</span>
                                     {% endfor %}</td>
-                                <td>{% for model in design.models %}
-                                        {{ model.name }}
+                                <td>{% for model in text.models %}
+                                        {{ text.name }}
                                     {% endfor %}</td>
-                                <td>{% for template in design.templates %}
-                                        {{ template.name }}
+                                <td>{% for template in text.templates %}
+                                        {{ text.name }}
                                     {% endfor %}</td>
+
+                                <td>{{ text.genre }}</td>
+                                <td>{{ text.wordCount }}</td>
+                                <td>{{ text.length }}</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+
 
                                 <td>
-
-
-                                    <a href="{{ path('design_design_show', {'id': design.id}) }}"><span
+                                    <a href="{{ path('design_design_show', {'id': text.id}) }}"><span
                                                 class="faicon"><i class="fas fa-eye"></i></span></a>
-                                    <a href="{{ path('design_design_edit', {'id': design.id}) }}"><span
+                                    <a href="{{ path('design_design_edit', {'id': text.id}) }}"><span
                                                 class="faicon"><i class="fas fa-edit"></i></span></a>
-                                    <a href="{{ path('design_design_delete', {'id': design.id}) }}"><span
+                                    <a href="{{ path('design_design_delete', {'id': text.id}) }}"><span
                                                 class="faicon"><i class="fas fa-trash-alt"></i></span></a>
                                 </td>
                             </tr>
-                        {% else %}
+                        {% endfor %}
+
+                        {% for image in images %}
                             <tr>
-                                <td colspan="3">no records found</td>
+                                <td>
+                                    {# <label> #}
+                                    {# <input type="checkbox" id="{{ design.id }}" value="{{ design.id }}" name="checkeddesign"/> #}
+                                    {# </label> #}
+                                </td>
+                                <td>{{ image.id }}</td>
+                                <td>{{ image.name }}</td>
+                                <td>Img</td>
+
+
+                                <td>{% for tag in image.tags %}
+                                        <span class='taglabel'><span
+                                                    href='/design/design/ajaxunlinktag/{{ image.id }}/{{ tag.id }}'
+                                                    tagid='{{ tag.id }}' tagname='{{ tag.name }}'
+                                                    class='closebtn unlinktagbtn'>×</span>{{ tag.name }}</span>
+                                    {% endfor %}</td>
+                                <td>{% for model in image.models %}
+                                        {{ image.name }}
+                                    {% endfor %}</td>
+                                <td>{% for template in image.templates %}
+                                        {{ image.name }}
+                                    {% endfor %}</td>
+
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>{{ image.src }}</td>
+                                <td>{{ image.height }}</td>
+                                <td>{{ image.width }}</td>
+                                <td>{{ image.size }}</td>
+                                <td>{{ image.format }}</td>
+
+
+                                <td>
+                                    <a href="{{ path('design_design_show', {'id': image.id}) }}"><span
+                                                class="faicon"><i class="fas fa-eye"></i></span></a>
+                                    <a href="{{ path('design_design_edit', {'id': image.id}) }}"><span
+                                                class="faicon"><i class="fas fa-edit"></i></span></a>
+                                    <a href="{{ path('design_design_delete', {'id': image.id}) }}"><span
+                                                class="faicon"><i class="fas fa-trash-alt"></i></span></a>
+                                </td>
                             </tr>
                         {% endfor %}
+
                         </tbody>
                     </table>
 
@@ -167,8 +274,8 @@
     </div>
 
     <script>
-        $('.select-to-apply').each(function (idx, ele) {
-            $(ele).select2({
+        $('.select-to-apply').each(function (index, item) {
+            $(item).select2({
                 theme: "classic",
                 tags: true
             });
@@ -179,7 +286,7 @@
 
 {% block javascripts %}
     {{ parent() }}
-    {{ encore_entry_script_tags('design_index') }}
+    {{ encore_entry_script_tags('design_design_index') }}
 
 {% endblock %}
 

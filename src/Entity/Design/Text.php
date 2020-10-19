@@ -13,11 +13,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Text extends Design
 {
-    /**
-     * @var array
-     * @ORM\Column(type="array", nullable=true)
-     */
-    private $cuts;
 
     /**
      * @var integer
@@ -47,12 +42,23 @@ class Text extends Design
      */
     private $images;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Cut::class, mappedBy="text")
+     */
+    private $cuts;
+
 
     public function __construct()
     {
         parent::__construct();
         $this->images = new ArrayCollection();
-        $this->cuts = array_fill(0,5,null);
+        $this->cuts = new ArrayCollection([
+            1 => null,
+            2 => null,
+            3 => null,
+            4 => null,
+            5 => null
+        ]);
 
     }
 
@@ -131,33 +137,33 @@ class Text extends Design
     }
 
     /**
-     * @return array
+     * @return Collection|Cut[]
      */
-    public function getCuts(): array
+    public function getCuts(): Collection
     {
         return $this->cuts;
     }
 
-    /**
-     * @param array $cuts
-     */
-    public function setCuts(array $cuts): void
+    public function addCut(Cut $cut): self
     {
-        $this->cuts = $cuts;
-    }
-
-    public function replaceCut(int $key, string $cut): self
-    {
-        $this->cuts[$key] = $cut;
+        if (!$this->cuts->contains($cut)) {
+            $this->cuts[] = $cut;
+            $cut->setDesign($this);
+        }
 
         return $this;
     }
 
-    public function clearCut(int $key): self
+    public function removeCut(Cut $cut): self
     {
-        $this->cuts[$key] = null;
+        if ($this->cuts->contains($cut)) {
+            $this->cuts->removeElement($cut);
+            // set the owning side to null (unless already changed)
+            if ($cut->getDesign() === $this) {
+                $cut->setDesign(null);
+            }
+        }
 
         return $this;
     }
-
 }
