@@ -58,7 +58,7 @@ class Template
     public function __construct()
     {
         $this->lineStyles = new ArrayCollection([
-            1 => null
+            1 => new LineStyle()
         ]);
         $this->designs = new ArrayCollection();
         $this->templateCategories = new ArrayCollection();

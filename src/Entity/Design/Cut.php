@@ -5,9 +5,11 @@ namespace App\Entity\Design;
 use App\Repository\Design\CutRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use phpDocumentor\Reflection\Types\Collection;
 
 /**
  * @ORM\Entity(repositoryClass=CutRepository::class)
+ * @ORM\Table("design_cut")
  */
 class Cut
 {
@@ -24,7 +26,7 @@ class Cut
     private $linecount;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="array")
      */
     private $parts;
 
@@ -37,10 +39,6 @@ class Cut
     {
         $this->parts = new ArrayCollection([
             1 => "",
-            2 => "",
-            3 => "",
-            4 => "",
-            5 => ""
         ]);
     }
 
@@ -64,7 +62,7 @@ class Cut
     /**
      * @return array|ArrayCollection|null
      */
-    public function getParts(): ?array
+    public function getParts(): ?ArrayCollection
     {
         return $this->parts;
     }

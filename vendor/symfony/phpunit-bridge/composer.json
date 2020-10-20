@@ -45,8 +45,5 @@
             "name": "phpunit/phpunit",
             "url": "https://github.com/sebastianbergmann/phpunit"
         }
-    },
-    "require-dev": {
-        "symfony/deprecation-contracts": "^2.1"
     }
 }

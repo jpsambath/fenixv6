@@ -10,6 +10,7 @@ use App\Entity\Design\Template;
 use App\Entity\Design\Text;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -25,8 +26,15 @@ class TextType extends AbstractType
                 'entry_type' => CutType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
+                'prototype_name' => '__cutname__'
             ])
-            ->add('genre')
+            ->add('genre', ChoiceType::class, [
+                'choices'  => [
+                    'Masculin' => 'Masculin',
+                    'Féminin' => 'Féminin',
+                    'Neutre' => 'Neutre',
+                ],
+            ])
             ->add('tags', EntityType::class, [
                 'multiple' => true,
                 'class' =>  Tag::class,

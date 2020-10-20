@@ -117,7 +117,7 @@ class EntitiesToPropertyTransformer implements DataTransformerInterface
             ->getQuery()
             ->getResult();
 
-        // this will happen if the form submits invalid data
+          // this will happen if the form submits invalid data
         if (count($entities) != count($values)) {
             throw new TransformationFailedException('One or more id values are invalid');
         }

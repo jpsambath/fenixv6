@@ -121,7 +121,7 @@ class Select2EntityType extends AbstractType
             $view->vars['full_name'] .= '[]';
         }
 
-        $view->vars['class_type'] = $options['class_type'];
+	    $view->vars['class_type'] = $options['class_type'];
     }
 
     /**

@@ -317,10 +317,6 @@ font-family: 'Microsoft Tai Le Bold';
 src: url('/build/fonts/taileb.ttf') format('truetype');
 }
 @font-face {
-font-family: 'Microsoft YaHei & Microsoft YaHei UI';
-src: url('/build/fonts/msyh.ttc') format('truetype');
-}
-@font-face {
 font-family: 'Microsoft YaHei Bold & Microsoft YaHei UI Bold';
 src: url('/build/fonts/msyhbd.ttc') format('truetype');
 }

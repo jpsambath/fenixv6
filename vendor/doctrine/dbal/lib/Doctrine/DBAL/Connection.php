@@ -541,7 +541,7 @@ class Connection implements DriverConnection
      * Prepares and executes an SQL query and returns the first row of the result
      * as an associative array.
      *
-     * @deprecated Use fetchAssociative()
+     * @deprecated Use fetchAllAssociative()
      *
      * @param string         $sql    The query SQL
      * @param mixed[]        $params The query parameters
@@ -560,7 +560,7 @@ class Connection implements DriverConnection
      * Prepares and executes an SQL query and returns the first row of the result
      * as a numerically indexed array.
      *
-     * @deprecated Use fetchNumeric()
+     * @deprecated Use fetchAllNumeric()
      *
      * @param string         $sql    The query SQL
      * @param mixed[]        $params The query parameters

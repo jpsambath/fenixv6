@@ -19,6 +19,8 @@
   "build/design_template_index.js": "/build/design_template_index.js",
   "build/design_template_new.css": "/build/design_template_new.css",
   "build/design_template_new.js": "/build/design_template_new.js",
+  "build/design_text_new.css": "/build/design_text_new.css",
+  "build/design_text_new.js": "/build/design_text_new.js",
   "build/global_bootstraptable.js": "/build/global_bootstraptable.js",
   "build/global_bootstraptable_editable.js": "/build/global_bootstraptable_editable.js",
   "build/global_bootstraptable_export.js": "/build/global_bootstraptable_export.js",

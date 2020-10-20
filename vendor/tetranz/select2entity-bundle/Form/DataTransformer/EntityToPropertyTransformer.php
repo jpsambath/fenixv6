@@ -3,11 +3,11 @@
 namespace Tetranz\Select2EntityBundle\Form\DataTransformer;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
+use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * Data transformer for single mode (i.e., multiple = false)
@@ -18,7 +18,7 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
  */
 class EntityToPropertyTransformer implements DataTransformerInterface
 {
-    /** @var ObjectManager */
+    /** @var EntityManagerInterface */
     protected $em;
     /** @var  string */
     protected $className;

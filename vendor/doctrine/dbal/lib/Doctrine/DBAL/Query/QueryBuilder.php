@@ -8,7 +8,6 @@ use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Query\Expression\CompositeExpression;
 use Doctrine\DBAL\Query\Expression\ExpressionBuilder;
 
-use function array_filter;
 use function array_key_exists;
 use function array_keys;
 use function array_unshift;
@@ -830,7 +829,6 @@ class QueryBuilder
     public function andWhere($where)
     {
         $args  = func_get_args();
-        $args  = array_filter($args); // https://github.com/doctrine/dbal/issues/4282
         $where = $this->getQueryPart('where');
 
         if ($where instanceof CompositeExpression && $where->getType() === CompositeExpression::TYPE_AND) {
@@ -864,7 +862,6 @@ class QueryBuilder
     public function orWhere($where)
     {
         $args  = func_get_args();
-        $args  = array_filter($args); // https://github.com/doctrine/dbal/issues/4282
         $where = $this->getQueryPart('where');
 
         if ($where instanceof CompositeExpression && $where->getType() === CompositeExpression::TYPE_OR) {
@@ -1013,7 +1010,6 @@ class QueryBuilder
     public function andHaving($having)
     {
         $args   = func_get_args();
-        $args   = array_filter($args); // https://github.com/doctrine/dbal/issues/4282
         $having = $this->getQueryPart('having');
 
         if ($having instanceof CompositeExpression && $having->getType() === CompositeExpression::TYPE_AND) {
@@ -1037,7 +1033,6 @@ class QueryBuilder
     public function orHaving($having)
     {
         $args   = func_get_args();
-        $args   = array_filter($args); // https://github.com/doctrine/dbal/issues/4282
         $having = $this->getQueryPart('having');
 
         if ($having instanceof CompositeExpression && $having->getType() === CompositeExpression::TYPE_OR) {

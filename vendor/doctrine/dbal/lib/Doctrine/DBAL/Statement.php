@@ -264,15 +264,7 @@ class Statement implements IteratorAggregate, DriverStatement, Result
      */
     public function fetchAll($fetchMode = null, $fetchArgument = null, $ctorArgs = null)
     {
-        if ($ctorArgs !== null) {
-            return $this->stmt->fetchAll($fetchMode, $fetchArgument, $ctorArgs);
-        }
-
-        if ($fetchArgument !== null) {
-            return $this->stmt->fetchAll($fetchMode, $fetchArgument);
-        }
-
-        return $this->stmt->fetchAll($fetchMode);
+        return $this->stmt->fetchAll($fetchMode, $fetchArgument, $ctorArgs);
     }
 
     /**

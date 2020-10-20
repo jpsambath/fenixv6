@@ -21,6 +21,10 @@ use Symfony\Component\Routing\RequestContext;
 class SwiftmailerTransportFactory
 {
     /**
+     * @param array                         $options
+     * @param RequestContext|null           $requestContext
+     * @param \Swift_Events_EventDispatcher $eventDispatcher
+     *
      * @return \Swift_Transport
      *
      * @throws \InvalidArgumentException if the scheme is not a built-in Swiftmailer transport
@@ -51,7 +55,6 @@ class SwiftmailerTransportFactory
             $transport->setEncryption($options['encryption']);
             $transport->setTimeout($options['timeout']);
             $transport->setSourceIp($options['source_ip']);
-            $transport->setStreamOptions($options['stream_options']);
 
             $smtpTransportConfigurator = new SmtpTransportConfigurator($options['local_domain'], $requestContext);
             $smtpTransportConfigurator->configure($transport);
@@ -75,6 +78,8 @@ class SwiftmailerTransportFactory
     }
 
     /**
+     * @param array $options
+     *
      * @return array options
      */
     public static function resolveOptions(array $options)
@@ -91,7 +96,6 @@ class SwiftmailerTransportFactory
             'encryption' => null,
             'auth_mode' => null,
             'command' => null,
-            'stream_options' => [],
         ];
 
         if (isset($options['url'])) {

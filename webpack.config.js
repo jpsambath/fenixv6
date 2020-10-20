@@ -48,6 +48,7 @@ Encore
     .addEntry('design_design_index', './assets/js/design/design/index.js')
     .addEntry('design_design_new', './assets/js/design/design/new.js')
 
+    .addEntry('design_text_new', './assets/js/design/text/new.js')
 
     .addEntry('design_linestyle_new', './assets/js/design/linestyle/new.js')
 

@@ -53,11 +53,7 @@ class Text extends Design
         parent::__construct();
         $this->images = new ArrayCollection();
         $this->cuts = new ArrayCollection([
-            1 => null,
-            2 => null,
-            3 => null,
-            4 => null,
-            5 => null
+            1 => new Cut()
         ]);
 
     }
