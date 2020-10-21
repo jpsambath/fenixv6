@@ -19,8 +19,8 @@ class HomeController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $user = $this->getUser();
 
-            $shoplist = $this->getDoctrine()->getRepository(Shop::class)->findBy(['user' => $user]);
-
+            $printifyshoplist = $this->getDoctrine()->getRepository(Shop::class)->findBy(['user' => $user]);
+            $printfulshoplist = $this->getDoctrine()->getRepository(\App\Entity\Printful\Shop::class)->findBy(['user' => $user]);
 
 
 //            $providerlist = $printify->retrieveproviderlist();
@@ -33,7 +33,8 @@ class HomeController extends AbstractController
 //            }
 
             return $this->render('home/index.html.twig', [
-                'printify_shoplist' => $shoplist,
+                'printify_shoplist' => $printifyshoplist,
+                'printful_shoplist' => $printfulshoplist,
 //                'printify_blueprintlist' => $blueprintlist,
 //                'printify_providerlist' => $providerlist,
 //                'printify_fullproviderlist' => $fullproviderlist

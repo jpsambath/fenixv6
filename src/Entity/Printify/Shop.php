@@ -13,7 +13,7 @@ use Symfony\Component\Serializer\Annotation\MaxDepth;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\ShopRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\Printify\ShopRepository")
  * @ORM\Table(name="printify_shop")
  */
 class Shop
@@ -46,7 +46,7 @@ class Shop
 
     /**
      * @var User
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="shops")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User")
      * @MaxDepth(1)
      * @Serializer\Type("App\Entity\User")
      */
@@ -65,7 +65,7 @@ class Shop
      * @ORM\ManyToMany(targetEntity="App\Entity\Printify\Blueprint")
      * @JoinTable(name="printify_blueprintsshop",
      *      joinColumns={@JoinColumn(name="shop_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@JoinColumn(name="blueprint_id", referencedColumnName="id")}
+     *      inverseJoinColumns={@JoinColumn(name="blueprint_id", referencedColumnName="id", onDelete="CASCADE")}
      *      )
      * @MaxDepth(1)
      * @Serializer\Groups({"blueprintexporter"})

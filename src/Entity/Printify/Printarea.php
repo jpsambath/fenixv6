@@ -11,7 +11,7 @@ use JMS\Serializer\Annotation as Serializer;
 use phpDocumentor\Reflection\Types\Integer;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\PrintareaRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\Printify\PrintareaRepository")
  * @ORM\Table(name="printify_printarea")
  */
 class Printarea
@@ -71,7 +71,7 @@ class Printarea
      * @ORM\ManyToOne(targetEntity="App\Entity\Printify\Product", inversedBy="print_areas")
      * @JoinTable(name="printify_productprintareas",
      *     joinColumns={@JoinColumn(name="printarea_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@JoinColumn(name="product_id", referencedColumnName="id")}
+     *      inverseJoinColumns={@JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")}
      *     )
      * @Serializer\Type("App\Entity\Printify\Product")
      */

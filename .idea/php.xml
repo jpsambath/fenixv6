@@ -5,15 +5,10 @@
       <path value="$PROJECT_DIR$/vendor/phpdocumentor/reflection-docblock" />
       <path value="$PROJECT_DIR$/vendor/phpdocumentor/reflection-common" />
       <path value="$PROJECT_DIR$/vendor/phpdocumentor/type-resolver" />
-      <path value="$PROJECT_DIR$/vendor/ocramius/package-versions" />
       <path value="$PROJECT_DIR$/vendor/monolog/monolog" />
       <path value="$PROJECT_DIR$/vendor/twig/twig" />
       <path value="$PROJECT_DIR$/vendor/ocramius/proxy-manager" />
       <path value="$PROJECT_DIR$/vendor/twig/extra-bundle" />
-      <path value="$PROJECT_DIR$/vendor/jdorn/sql-formatter" />
-      <path value="$PROJECT_DIR$/vendor/zendframework/zend-code" />
-      <path value="$PROJECT_DIR$/vendor/zendframework/zend-eventmanager" />
-      <path value="$PROJECT_DIR$/vendor/nikic/php-parser" />
       <path value="$PROJECT_DIR$/vendor/sensio/framework-extra-bundle" />
       <path value="$PROJECT_DIR$/vendor/doctrine/cache" />
       <path value="$PROJECT_DIR$/vendor/doctrine/inflector" />
@@ -42,13 +37,11 @@
       <path value="$PROJECT_DIR$/vendor/doctrine/migrations" />
       <path value="$PROJECT_DIR$/vendor/symfony/twig-pack" />
       <path value="$PROJECT_DIR$/vendor/symfony/security-http" />
-      <path value="$PROJECT_DIR$/vendor/symfony/web-profiler-bundle" />
       <path value="$PROJECT_DIR$/vendor/doctrine/persistence" />
       <path value="$PROJECT_DIR$/vendor/symfony/http-foundation" />
       <path value="$PROJECT_DIR$/vendor/symfony/mailer" />
       <path value="$PROJECT_DIR$/vendor/symfony/validator" />
       <path value="$PROJECT_DIR$/vendor/symfony/orm-pack" />
-      <path value="$PROJECT_DIR$/vendor/symfony/browser-kit" />
       <path value="$PROJECT_DIR$/vendor/symfony/security-bundle" />
       <path value="$PROJECT_DIR$/vendor/symfony/dependency-injection" />
       <path value="$PROJECT_DIR$/vendor/symfony/property-access" />
@@ -63,18 +56,13 @@
       <path value="$PROJECT_DIR$/vendor/symfony/translation-contracts" />
       <path value="$PROJECT_DIR$/vendor/symfony/twig-bridge" />
       <path value="$PROJECT_DIR$/vendor/symfony/notifier" />
-      <path value="$PROJECT_DIR$/vendor/symfony/phpunit-bridge" />
       <path value="$PROJECT_DIR$/vendor/symfony/polyfill-intl-grapheme" />
-      <path value="$PROJECT_DIR$/vendor/symfony/maker-bundle" />
-      <path value="$PROJECT_DIR$/vendor/symfony/profiler-pack" />
       <path value="$PROJECT_DIR$/vendor/symfony/polyfill-intl-idn" />
-      <path value="$PROJECT_DIR$/vendor/symfony/debug-pack" />
       <path value="$PROJECT_DIR$/vendor/symfony/monolog-bridge" />
       <path value="$PROJECT_DIR$/vendor/symfony/service-contracts" />
       <path value="$PROJECT_DIR$/vendor/symfony/mime" />
       <path value="$PROJECT_DIR$/vendor/symfony/polyfill-php73" />
       <path value="$PROJECT_DIR$/vendor/symfony/error-handler" />
-      <path value="$PROJECT_DIR$/vendor/symfony/test-pack" />
       <path value="$PROJECT_DIR$/vendor/symfony/security-csrf" />
       <path value="$PROJECT_DIR$/vendor/symfony/inflector" />
       <path value="$PROJECT_DIR$/vendor/symfony/config" />
@@ -85,7 +73,6 @@
       <path value="$PROJECT_DIR$/vendor/symfony/cache-contracts" />
       <path value="$PROJECT_DIR$/vendor/symfony/string" />
       <path value="$PROJECT_DIR$/vendor/symfony/http-client" />
-      <path value="$PROJECT_DIR$/vendor/symfony/css-selector" />
       <path value="$PROJECT_DIR$/vendor/symfony/flex" />
       <path value="$PROJECT_DIR$/vendor/symfony/finder" />
       <path value="$PROJECT_DIR$/vendor/symfony/monolog-bundle" />
@@ -98,10 +85,8 @@
       <path value="$PROJECT_DIR$/vendor/symfony/serializer" />
       <path value="$PROJECT_DIR$/vendor/symfony/security-core" />
       <path value="$PROJECT_DIR$/vendor/symfony/var-dumper" />
-      <path value="$PROJECT_DIR$/vendor/symfony/debug-bundle" />
       <path value="$PROJECT_DIR$/vendor/psr/link" />
       <path value="$PROJECT_DIR$/vendor/symfony/event-dispatcher" />
-      <path value="$PROJECT_DIR$/vendor/symfony/dom-crawler" />
       <path value="$PROJECT_DIR$/vendor/psr/log" />
       <path value="$PROJECT_DIR$/vendor/psr/cache" />
       <path value="$PROJECT_DIR$/vendor/psr/container" />
@@ -113,25 +98,121 @@
       <path value="$PROJECT_DIR$/vendor/symfony/webpack-encore-bundle" />
       <path value="$PROJECT_DIR$/vendor/knplabs/knp-paginator-bundle" />
       <path value="$PROJECT_DIR$/vendor/knplabs/knp-components" />
-      <path value="$PROJECT_DIR$/vendor/jms/serializer-bundle" />
       <path value="$PROJECT_DIR$/vendor/jms/serializer" />
       <path value="$PROJECT_DIR$/vendor/jms/metadata" />
-      <path value="$PROJECT_DIR$/vendor/hoa/ustring" />
-      <path value="$PROJECT_DIR$/vendor/hoa/stream" />
-      <path value="$PROJECT_DIR$/vendor/hoa/zformat" />
-      <path value="$PROJECT_DIR$/vendor/hoa/visitor" />
-      <path value="$PROJECT_DIR$/vendor/hoa/math" />
-      <path value="$PROJECT_DIR$/vendor/hoa/iterator" />
-      <path value="$PROJECT_DIR$/vendor/hoa/regex" />
-      <path value="$PROJECT_DIR$/vendor/hoa/protocol" />
-      <path value="$PROJECT_DIR$/vendor/hoa/event" />
-      <path value="$PROJECT_DIR$/vendor/hoa/consistency" />
-      <path value="$PROJECT_DIR$/vendor/hoa/file" />
-      <path value="$PROJECT_DIR$/vendor/hoa/exception" />
-      <path value="$PROJECT_DIR$/vendor/hoa/compiler" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/sql-formatter" />
+      <path value="$PROJECT_DIR$/vendor/jms/serializer-bundle" />
+      <path value="$PROJECT_DIR$/vendor/tetranz/select2entity-bundle" />
+      <path value="$PROJECT_DIR$/vendor/laminas/laminas-code" />
+      <path value="$PROJECT_DIR$/vendor/laminas/laminas-eventmanager" />
+      <path value="$PROJECT_DIR$/vendor/laminas/laminas-zendframework-bridge" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-php80" />
+      <path value="$PROJECT_DIR$/vendor/symfony/deprecation-contracts" />
+      <path value="$PROJECT_DIR$/vendor/select2/select2" />
+      <path value="$PROJECT_DIR$/vendor/nikic/php-parser" />
+      <path value="$PROJECT_DIR$/vendor/webimpress/safe-writer" />
+      <path value="$PROJECT_DIR$/vendor/symfony/test-pack" />
+      <path value="$PROJECT_DIR$/vendor/symfony/debug-bundle" />
+      <path value="$PROJECT_DIR$/vendor/symfony/maker-bundle" />
+      <path value="$PROJECT_DIR$/vendor/symfony/phpunit-bridge" />
+      <path value="$PROJECT_DIR$/vendor/symfony/web-profiler-bundle" />
+      <path value="$PROJECT_DIR$/vendor/symfony/css-selector" />
+      <path value="$PROJECT_DIR$/vendor/symfony/debug-pack" />
+      <path value="$PROJECT_DIR$/vendor/symfony/dom-crawler" />
+      <path value="$PROJECT_DIR$/vendor/symfony/profiler-pack" />
+      <path value="$PROJECT_DIR$/vendor/symfony/browser-kit" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="7.2" />
+  <component name="PhpRuntimeConfiguration">
+    <extensions>
+      <extension name="Ev" enabled="false" />
+      <extension name="SQLite" enabled="false" />
+      <extension name="SplType" enabled="false" />
+      <extension name="Zend OPcache" enabled="false" />
+      <extension name="ZendDebugger" enabled="false" />
+      <extension name="ZendUtils" enabled="false" />
+      <extension name="amqp" enabled="false" />
+      <extension name="apache" enabled="false" />
+      <extension name="apcu" enabled="false" />
+      <extension name="cassandra" enabled="false" />
+      <extension name="couchbase" enabled="false" />
+      <extension name="cubrid" enabled="false" />
+      <extension name="dba" enabled="false" />
+      <extension name="decimal" enabled="false" />
+      <extension name="enchant" enabled="false" />
+      <extension name="fann" enabled="false" />
+      <extension name="ffmpeg" enabled="false" />
+      <extension name="ftp" enabled="false" />
+      <extension name="gearman" enabled="false" />
+      <extension name="geoip" enabled="false" />
+      <extension name="geos" enabled="false" />
+      <extension name="gmagick" enabled="false" />
+      <extension name="gnupg" enabled="false" />
+      <extension name="grpc" enabled="false" />
+      <extension name="http" enabled="false" />
+      <extension name="ibm_db2" enabled="false" />
+      <extension name="igbinary" enabled="false" />
+      <extension name="imagick" enabled="false" />
+      <extension name="inotify" enabled="false" />
+      <extension name="interbase" enabled="false" />
+      <extension name="judy" enabled="false" />
+      <extension name="libevent" enabled="false" />
+      <extension name="libsodium" enabled="false" />
+      <extension name="mailparse" enabled="false" />
+      <extension name="mcrypt" enabled="false" />
+      <extension name="memcache" enabled="false" />
+      <extension name="memcached" enabled="false" />
+      <extension name="ming" enabled="false" />
+      <extension name="mongo" enabled="false" />
+      <extension name="mongodb" enabled="false" />
+      <extension name="mosquitto-php" enabled="false" />
+      <extension name="mqseries" enabled="false" />
+      <extension name="mssql" enabled="false" />
+      <extension name="mysql" enabled="false" />
+      <extension name="mysql_xdevapi" enabled="false" />
+      <extension name="ncurses" enabled="false" />
+      <extension name="newrelic" enabled="false" />
+      <extension name="oauth" enabled="false" />
+      <extension name="oci8" enabled="false" />
+      <extension name="odbc" enabled="false" />
+      <extension name="pcntl" enabled="false" />
+      <extension name="pdflib" enabled="false" />
+      <extension name="pdo_ibm" enabled="false" />
+      <extension name="pdo_pgsql" enabled="false" />
+      <extension name="pgsql" enabled="false" />
+      <extension name="posix" enabled="false" />
+      <extension name="pspell" enabled="false" />
+      <extension name="pthreads" enabled="false" />
+      <extension name="radius" enabled="false" />
+      <extension name="rar" enabled="false" />
+      <extension name="recode" enabled="false" />
+      <extension name="redis" enabled="false" />
+      <extension name="rrd" enabled="false" />
+      <extension name="shmop" enabled="false" />
+      <extension name="snmp" enabled="false" />
+      <extension name="sodium" enabled="false" />
+      <extension name="sqlite3" enabled="false" />
+      <extension name="sqlsrv" enabled="false" />
+      <extension name="ssh2" enabled="false" />
+      <extension name="suhosin" enabled="false" />
+      <extension name="svn" enabled="false" />
+      <extension name="sybase" enabled="false" />
+      <extension name="sysvmsg" enabled="false" />
+      <extension name="sysvsem" enabled="false" />
+      <extension name="sysvshm" enabled="false" />
+      <extension name="tidy" enabled="false" />
+      <extension name="v8js" enabled="false" />
+      <extension name="wddx" enabled="false" />
+      <extension name="win32service" enabled="false" />
+      <extension name="wincache" enabled="false" />
+      <extension name="xdebug" enabled="false" />
+      <extension name="xhprof" enabled="false" />
+      <extension name="yaml" enabled="false" />
+      <extension name="zend" enabled="false" />
+      <extension name="zmq" enabled="false" />
+    </extensions>
+  </component>
   <component name="PhpUnit">
     <phpunit_settings>
       <PhpUnitSettings configuration_file_path="$PROJECT_DIR$/phpunit.xml.dist" custom_loader_path="$PROJECT_DIR$/vendor/autoload.php" use_configuration_file="true" />
