@@ -52,7 +52,8 @@
                                 <optgroup label="Template Category">
 
                                     {% for templateCategory in templateCategories %}
-                                        <option type="templatecategory" value="{{ templateCategory.id }}">{{ templateCategory.name }}</option>
+                                        <option type="templatecategory"
+                                                value="{{ templateCategory.id }}">{{ templateCategory.name }}</option>
                                     {% endfor %}
                                 </optgroup>
                                 <optgroup label="Template">
@@ -101,6 +102,8 @@
                                 data-visible="false">Models
                             </th>
                             <th data-field="templates" data-filter-control="input" data-sortable="true">Templates</th>
+                            <th data-field="cuts" data-filter-control="input" data-sortable="true">Cuts</th>
+
                             <th data-field="genre" data-filter-control="input" data-sortable="true"
                                 data-visible="false">Genre
                             </th>
@@ -152,8 +155,29 @@
                                         {{ text.name }}
                                     {% endfor %}</td>
                                 <td>{% for template in text.templates %}
-                                        {{ text.name }}
+                                        <span class='templatelabel'><span
+                                                    href='/design/design/ajaxunlinktemplate/{{ text.id }}/{{ template.id }}'
+                                                    tagid='{{ template.id }}' tagname='{{ template.name }}'
+                                                    class='closebtn unlinktemplatebtn'>×</span>{{ template.name }} <span
+                                                    class="badge badge-secondary">{{ template.linestyles | length }} </span></span>
+
                                     {% endfor %}</td>
+                                <td>
+                                    {% for cut in text.cuts %}
+                                        {% set sameline = false %}
+                                        {% for template in text.templates %}
+                                            {% if template.linestyles | length == cut.linecount %}
+                                                {% set sameline = true %}
+                                            {% endif %}
+                                        {% endfor %}
+
+                                        {% if sameline == true %}
+                                            <span class="badge badge-success">{{ cut.linecount }}</span>
+                                        {% else %}
+                                            <span class="badge badge-danger">{{ cut.linecount }}</span>
+                                        {% endif %}
+                                    {% endfor %}
+                                </td>
 
                                 <td>{{ text.genre }}</td>
                                 <td>{{ text.wordCount }}</td>
@@ -200,6 +224,7 @@
                                 <td>{% for template in image.templates %}
                                         {{ image.name }}
                                     {% endfor %}</td>
+                                <td></td>
 
                                 <td></td>
                                 <td></td>

@@ -2,12 +2,17 @@
 
 namespace App\Controller\Design;
 
+use App\Entity\Design\Design;
 use App\Entity\Design\Text;
 use App\Form\Design\TextType;
+use App\Repository\Design\CutRepository;
+use App\Repository\Design\DesignRepository;
+use App\Service\DesignService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
 
 /**
  * @Route("/design/text")
@@ -35,16 +40,24 @@ class TextController extends AbstractController
      */
     public function new(Request $request): Response
     {
+        $em = $this->getDoctrine()->getManager();
+        $security = new Security($this->container);
+
+        $designService = new DesignService($security, $em);
+
         $text = new Text();
         $form = $this->createForm(TextType::class, $text);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($text);
-            $entityManager->flush();
+            $text->setLength(strlen($text->getName()));
+            $text->setWordCount(str_word_count($text->getName(),0));
+            $designService->saveText($text);
+//            $entityManager = $this->getDoctrine()->getManager();
+//            $entityManager->persist($text);
+//            $entityManager->flush();
 
-            return $this->redirectToRoute('design_text_index');
+            return $this->redirectToRoute('design_design_index');
         }
 
         return $this->render('design/text/new.html.twig', [
@@ -96,12 +109,14 @@ class TextController extends AbstractController
      */
     public function delete(Request $request, Text $text): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$text->getId(), $request->request->get('_token'))) {
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($text);
             $entityManager->flush();
-        }
+
 
         return $this->redirectToRoute('design_text_index');
     }
+
+
 }

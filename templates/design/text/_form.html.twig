@@ -1,21 +1,22 @@
 {% import _self as newtextmacros %}
 
 {% macro printPart(part, index) %}
-    <div class="col-sm">
+    <div class="col-sm part-item">
         {{ form_widget(part, {'attr': {'placeholder': 'Text'}}) }}
     </div>
 {% endmacro %}
 
 {% macro printCut(cut, index) %}
-    <div class="form-group row">
+    <div class="form-group row cut-item">
         <div class="col-sm-2"><label>{{ form_label(cut) }}</label></div>
         <div class="col-sm-2"><label>{{ form_label(cut.parts) }}</label>
             <button class="btn btn-primary btn-sm ml-1 rounded rounded-pill addnewpart" cutnumber={{ index }}><i class="fas fa-plus-circle"></i></button>
+            <button class="btn btn-primary btn-sm ml-1 rounded rounded-pill removepart" cutnumber={{ index }}><i class="fas fa-minus-circle"></i></button>
         </div>
         <div class="col-sm-8"></div>
 
         <div class="col-sm-2">
-            {{ form_widget(cut.linecount, {'attr': {'class': 'form-control', 'placeholder': 'Nb parts', 'value' : 1}}) }}
+            {{ form_widget(cut.linecount, {'attr': {'class': 'form-control', 'placeholder': 'Nb parts', 'value': 1, 'cutnumber': index }}) }}
         </div>
 
         <div id="parts_wrapper" class="col-sm-10 row" data-prototype="{{ newtextmacros.printPart(cut.parts.vars.prototype, 0)|e('html_attr') }}" partnumber="{{ cut.parts|length }}" cutnumber={{ index }}>
@@ -85,7 +86,8 @@
 
         <div class="form-group row">
             <div class="col-sm-12"><label>{{ form_label(form.cuts) }}</label>
-                <button id="addnewcut" class="btn btn-primary btn-sm ml-1 rounded rounded-pill"><i class="fas fa-plus-circle"></i></button>
+                <button class="btn btn-primary btn-sm ml-1 rounded rounded-pill addnewcut"><i class="fas fa-plus-circle"></i></button>
+                <button class="btn btn-primary btn-sm ml-1 rounded rounded-pill removecut"><i class="fas fa-minus-circle"></i></button>
             </div>
 
         </div>
@@ -103,5 +105,6 @@
 
     </div>
 </div>
+{{ form_row(form._token) }}
 <button class="btn btn-primary">{{ button_label|default('Save') }}</button>
 {{ form_end(form, {'render_rest': false}) }}

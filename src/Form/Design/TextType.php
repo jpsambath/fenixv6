@@ -26,7 +26,9 @@ class TextType extends AbstractType
                 'entry_type' => CutType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
-                'prototype_name' => '__cutname__'
+                'prototype_name' => '__cutname__',
+                'required' => false
+
             ])
             ->add('genre', ChoiceType::class, [
                 'choices'  => [
@@ -34,30 +36,35 @@ class TextType extends AbstractType
                     'Féminin' => 'Féminin',
                     'Neutre' => 'Neutre',
                 ],
+                'required' => false
             ])
             ->add('tags', EntityType::class, [
                 'multiple' => true,
                 'class' =>  Tag::class,
                 'choice_label' => 'name',
-                'placeholder' => 'Select one or several tags'
+                'placeholder' => 'Select one or several tags',
+                'required' => false
             ])
             ->add('templates', EntityType::class, [
                 'multiple' => true,
                 'class' =>  Template::class,
                 'choice_label' => 'name',
-                'placeholder' => 'Select one or several templates'
+                'placeholder' => 'Select one or several templates',
+                'required' => false
             ])
             ->add('models', EntityType::class, [
                 'multiple' => true,
                 'class' =>  Model::class,
                 'choice_label' => 'name',
-                'placeholder' => 'Select one or several models'
+                'placeholder' => 'Select one or several models',
+                'required' => false
             ])
             ->add('images', EntityType::class, [
                 'multiple' => true,
                 'class' =>  Image::class,
                 'choice_label' => 'name',
-                'placeholder' => 'Select one or several images you want to link'
+                'placeholder' => 'Select one or several images you want to link',
+                'required' => false
             ])
         ;
     }

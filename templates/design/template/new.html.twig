@@ -92,7 +92,7 @@
                             <div id="linestyles_wrapper" class="linestyles_wrapper" data-prototype="{{ newtemplatemacros.printLineStyle(form.lineStyles.vars.prototype, 0)|e('html_attr') }}" data-index="{{ form.lineStyles|length }}">
 
                                 {% for key, linestyle in form.lineStyles %}
-                                    {{ newtemplatemacros.printLineStyle(linestyle, key+1) }}
+                                    {{ newtemplatemacros.printLineStyle(linestyle, key) }}
                                 {% endfor %}
                             </div>
                             {# </div> #}

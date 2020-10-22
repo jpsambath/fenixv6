@@ -132,7 +132,7 @@ class Printful
         $productlist = array();
         $variantlist = array();
         try {
-            $response = $client->request('GET', 'https://api.printful.com/products/'.$product->getId());
+            $response = $client->request('GET', 'https://api.printful.com/products/' . $product->getId());
             $statusCode = $response->getStatusCode();
             $contentType = $response->getHeaders()['content-type'][0];
             $content = $response->getContent();
@@ -182,25 +182,24 @@ class Printful
             $oneshop = $serializer->deserialize(json_encode(json_decode($content)->result), 'App\Entity\Printful\Shop', 'json');
 
 
-                $recupShop = $this->em->getRepository(Shop::class)->find($oneshop->getId());
+            $recupShop = $this->em->getRepository(Shop::class)->find($oneshop->getId());
 
-                if ($recupShop == null) {
-                    $oneshop->setUser($this->security->getUser());
-                    $this->em->persist($oneshop);
-                    $shoplist[] = $oneshop;
+            if ($recupShop == null) {
+                $oneshop->setUser($this->security->getUser());
+                $this->em->persist($oneshop);
+                $shoplist[] = $oneshop;
 
-                } else {
-                    $recupShop->setName($oneshop->getName());
-                    $recupShop->setType($oneshop->getType());
-                    $recupShop->setCurrency($oneshop->getCurrency());
-                    $recupShop->setCreated($oneshop->getCreated());
-                    $recupShop->setUser($this->security->getUser());
-                    $recupShop->setWebsite($oneshop->getWebsite());
-                    $this->em->persist($recupShop);
-                    $shoplist[] = $recupShop;
-                }
-                $this->em->flush();
-
+            } else {
+                $recupShop->setName($oneshop->getName());
+                $recupShop->setType($oneshop->getType());
+                $recupShop->setCurrency($oneshop->getCurrency());
+                $recupShop->setCreated($oneshop->getCreated());
+                $recupShop->setUser($this->security->getUser());
+                $recupShop->setWebsite($oneshop->getWebsite());
+                $this->em->persist($recupShop);
+                $shoplist[] = $recupShop;
+            }
+            $this->em->flush();
 
 
         } catch (Exception $e) {
@@ -232,7 +231,7 @@ class Printful
         $recupProduct = $this->em->getRepository(Product::class)->find($product->getId());
 
         if (null == $recupProduct) {
-            $recupProduct = New Product();
+            $recupProduct = new Product();
             $recupProduct->setId($product->getId());
         }
 
@@ -252,12 +251,12 @@ class Printful
         $this->em->flush();
 
         foreach ($product->getFiles() as $file) {
-            if(null != $file){
+            if (null != $file) {
                 $recupProduct->addFile($this->saveFile($file));
             }
         }
         foreach ($product->getOptions() as $option) {
-            if(null != $option) {
+            if (null != $option) {
                 $recupProduct->addOption($this->saveOption($option));
             }
         }
@@ -282,7 +281,7 @@ class Printful
         ]);
 
         if ($recupFile == null) {
-            $recupFile = New FileType();
+            $recupFile = new FileType();
         }
 
         $recupFile->setFileid($file->getFileid());
@@ -309,7 +308,7 @@ class Printful
         ]);
 
         if ($recupOption == null) {
-            $recupOption = New OptionType();
+            $recupOption = new OptionType();
         }
 
         $recupOption->setOptionid($option->getOptionid());
@@ -334,7 +333,7 @@ class Printful
         $recupVariant = $this->em->getRepository(Variant::class)->find($variant->getId());
 
         if (null == $recupVariant) {
-            $recupVariant = New Variant();
+            $recupVariant = new Variant();
             $recupVariant->setId($variant->getId());
         }
 
@@ -354,7 +353,7 @@ class Printful
 
         foreach ($variant->getAvailabilityStatus() as $availabilityStatus) {
             //var_dump($availabilityStatus);
-            if(null != $availabilityStatus){
+            if (null != $availabilityStatus) {
                 $availabilityStatus->setVariant($recupVariant);
                 $recupVariant->addAvailabilityStatus($this->saveAvailabilityStatus($availabilityStatus));
             }
@@ -379,7 +378,7 @@ class Printful
         ]);
 
         if ($recupAvailabilityStatus == null) {
-            $recupAvailabilityStatus = New AvailabilityStatus();
+            $recupAvailabilityStatus = new AvailabilityStatus();
         }
 
         $recupAvailabilityStatus->setVariant($availabilityStatus->getVariant());

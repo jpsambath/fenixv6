@@ -37,7 +37,6 @@ class Design
     private $name;
 
     /**
-     * @var array
      * @ORM\ManyToMany(targetEntity="App\Entity\Design\Tag", inversedBy="designs")
      * @JoinTable(name="design_design_tag",
      * joinColumns={@JoinColumn(name="tag_id", referencedColumnName="id")},
@@ -47,7 +46,6 @@ class Design
     private $tags;
 
     /**
-     * @var array
      * @ORM\ManyToMany(targetEntity="App\Entity\Design\Template", inversedBy="designs")
      * @ORM\JoinTable(name="design_design_template",
      * joinColumns={@ORM\JoinColumn(name="design_template_id", referencedColumnName="id")},
@@ -169,6 +167,29 @@ class Design
         return $this;
     }
 
+    /**
+     * @param Collection $models
+     */
+    public function setModels(Collection $models): void
+    {
+        $this->models = $models;
+    }
+
+    /**
+     * @param Collection $templates
+     */
+    public function setTemplates(Collection $templates): void
+    {
+        $this->templates = $templates;
+    }
+
+    /**
+     * @param Collection $tags
+     */
+    public function setTags(Collection $tags): void
+    {
+        $this->tags = $tags;
+    }
 
 
 }

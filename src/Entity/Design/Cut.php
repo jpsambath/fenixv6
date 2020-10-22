@@ -32,6 +32,10 @@ class Cut
 
     /**
      * @ORM\ManyToOne(targetEntity=Text::class, inversedBy="cuts")
+     * @ORM\JoinTable(name="design_cut_text",
+     * joinColumns={@ORM\JoinColumn(name="design_text_id", referencedColumnName="id")},
+     * inverseJoinColumns={@ORM\JoinColumn(name="design_cut_id", referencedColumnName="id")}
+     * )
      */
     private $text;
 

@@ -28,12 +28,11 @@ class Text extends Design
 
     /**
      * @var string
-     * @ORM\Column(type="string", length=1, nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $genre;
 
     /**
-     * @var array
      * @ORM\ManyToMany(targetEntity="App\Entity\Design\Image", inversedBy="texts")
      * @ORM\JoinTable(name="design_text_image",
      * joinColumns={@ORM\JoinColumn(name="design_image_id", referencedColumnName="id")},
@@ -43,7 +42,7 @@ class Text extends Design
     private $images;
 
     /**
-     * @ORM\OneToMany(targetEntity=Cut::class, mappedBy="text")
+     * @ORM\OneToMany(targetEntity=Cut::class, mappedBy="text", cascade={"persist"})
      */
     private $cuts;
 
@@ -52,9 +51,7 @@ class Text extends Design
     {
         parent::__construct();
         $this->images = new ArrayCollection();
-        $this->cuts = new ArrayCollection([
-            1 => new Cut()
-        ]);
+        $this->cuts = new ArrayCollection();
 
     }
 
@@ -144,7 +141,7 @@ class Text extends Design
     {
         if (!$this->cuts->contains($cut)) {
             $this->cuts[] = $cut;
-            $cut->setDesign($this);
+            $cut->setText($this);
         }
 
         return $this;
@@ -155,11 +152,28 @@ class Text extends Design
         if ($this->cuts->contains($cut)) {
             $this->cuts->removeElement($cut);
             // set the owning side to null (unless already changed)
-            if ($cut->getDesign() === $this) {
-                $cut->setDesign(null);
+            if ($cut->getText() === $this) {
+                $cut->setText(null);
             }
         }
 
         return $this;
+    }
+
+
+    /**
+     * @param ArrayCollection $cuts
+     */
+    public function setCuts(ArrayCollection $cuts): void
+    {
+        $this->cuts = $cuts;
+    }
+
+    /**
+     * @param Collection $images
+     */
+    public function setImages(Collection $images): void
+    {
+        $this->images = $images;
     }
 }
