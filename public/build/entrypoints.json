@@ -145,6 +145,17 @@
         "/build/design_text_new.css"
       ]
     },
+    "design_image_new": {
+      "js": [
+        "/build/runtime.js",
+        "/build/vendor.js",
+        "/build/design_image_new.js"
+      ],
+      "css": [
+        "/build/vendor.css",
+        "/build/design_image_new.css"
+      ]
+    },
     "design_linestyle_new": {
       "js": [
         "/build/runtime.js",

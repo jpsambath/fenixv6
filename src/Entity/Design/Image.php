@@ -7,6 +7,8 @@ namespace App\Entity\Design;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * @ORM\Entity
@@ -19,6 +21,12 @@ class Image extends Design
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $src;
+
+    /**
+     * Unmapped property to handle file uploads
+     * @var UploadedFile
+     */
+    private $file;
 
     /**
      * @var integer
@@ -51,6 +59,22 @@ class Image extends Design
     {
         parent::__construct();
         $this->texts = new ArrayCollection();
+    }
+
+    /**
+     * @param UploadedFile|null $file
+     */
+    public function setFile(UploadedFile $file = null)
+    {
+        $this->file = $file;
+    }
+
+    /**
+     * @return UploadedFile
+     */
+    public function getFile()
+    {
+        return $this->file;
     }
 
     /**

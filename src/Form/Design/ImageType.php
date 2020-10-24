@@ -3,6 +3,7 @@
 namespace App\Form\Design;
 
 use App\Entity\Design\Image;
+use App\Entity\Design\Model;
 use App\Entity\Design\Tag;
 use App\Entity\Design\Template;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -10,7 +11,6 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 
 class ImageType extends AbstractType
 {
@@ -18,9 +18,9 @@ class ImageType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('src', FileType::class, [
+            ->add('file', FileType::class, [
                 'attr' =>
-                    ['placeholder' => 'Sélectionner une image',]
+                    ['placeholder' => 'Select a picture',]
             ])
             ->add('height')
             ->add('width')
@@ -28,18 +28,25 @@ class ImageType extends AbstractType
             ->add('format')
             ->add('tags', EntityType::class, [
                 'multiple' => true,
-                'class' =>  Tag::class,
+                'class' => Tag::class,
                 'choice_label' => 'name',
-                'placeholder' => 'Select one or several tags'
+                'placeholder' => 'Select one or several tags',
+                'required' => false
             ])
             ->add('templates', EntityType::class, [
                 'multiple' => true,
-                'class' =>  Template::class,
+                'class' => Template::class,
                 'choice_label' => 'name',
-                'placeholder' => 'Select one or several templates'
+                'placeholder' => 'Select one or several templates',
+                'required' => false
             ])
-            ->add('models')
-        ;
+            ->add('models', EntityType::class, [
+                'multiple' => true,
+                'class' => Model::class,
+                'choice_label' => 'name',
+                'placeholder' => 'Select one or several models',
+                'required' => false
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

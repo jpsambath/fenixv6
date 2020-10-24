@@ -50,6 +50,8 @@ Encore
 
     .addEntry('design_text_new', './assets/js/design/text/new.js')
 
+    .addEntry('design_image_new', './assets/js/design/image/new.js')
+
     .addEntry('design_linestyle_new', './assets/js/design/linestyle/new.js')
 
     .addEntry('design_template_new', './assets/js/design/template/new.js')
