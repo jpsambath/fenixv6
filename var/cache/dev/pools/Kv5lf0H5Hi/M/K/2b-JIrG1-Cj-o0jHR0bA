@@ -4,6 +4,7 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
     $o = [
         clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Doctrine\\ORM\\Mapping\\Id'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\Id')),
         clone ($p['Doctrine\\ORM\\Mapping\\ManyToOne'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\ManyToOne')),
+        clone ($p['Doctrine\\ORM\\Mapping\\JoinColumn'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\JoinColumn')),
         clone ($p['JMS\\Serializer\\Annotation\\Type'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('JMS\\Serializer\\Annotation\\Type')),
     ],
     null,
@@ -15,8 +16,11 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
             'inversedBy' => [
                 1 => 'variants',
             ],
+            'onDelete' => [
+                2 => 'CASCADE',
+            ],
             'name' => [
-                2 => 'App\\Entity\\Printify\\Blueprint',
+                3 => 'App\\Entity\\Printify\\Blueprint',
             ],
         ],
     ],
@@ -24,6 +28,7 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
         $o[0],
         $o[1],
         $o[2],
+        $o[3],
     ],
     []
 ); }];

@@ -12,9 +12,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
             'targetEntity' => [
                 'App\\Entity\\User',
             ],
-            'inversedBy' => [
-                'shops',
-            ],
             'name' => [
                 2 => 'App\\Entity\\User',
             ],

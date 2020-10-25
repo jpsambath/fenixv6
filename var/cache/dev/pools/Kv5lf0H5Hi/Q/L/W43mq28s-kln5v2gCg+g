@@ -34,6 +34,10 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                     $o[3],
                 ],
             ],
+            'onDelete' => [
+                2 => 'CASCADE',
+                'CASCADE',
+            ],
         ],
         'Symfony\\Component\\Serializer\\Annotation\\MaxDepth' => [
             'maxDepth' => [

@@ -38,6 +38,9 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                     $o[5],
                 ],
             ],
+            'onDelete' => [
+                2 => 'CASCADE',
+            ],
             'referencedColumnName' => [
                 3 => 'blueprint_id',
                 'provider_id',
