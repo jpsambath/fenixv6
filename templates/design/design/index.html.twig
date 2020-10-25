@@ -222,7 +222,11 @@
                                         {{ image.name }}
                                     {% endfor %}</td>
                                 <td>{% for template in image.templates %}
-                                        {{ image.name }}
+                                        <span class='templatelabel'><span
+                                                    href='/design/design/ajaxunlinktemplate/{{ image.id }}/{{ template.id }}'
+                                                    tagid='{{ template.id }}' tagname='{{ template.name }}'
+                                                    class='closebtn unlinktemplatebtn'>×</span>{{ template.name }} <span
+                                                    class="badge badge-secondary">{{ template.linestyles | length }} </span></span>
                                     {% endfor %}</td>
                                 <td></td>
 

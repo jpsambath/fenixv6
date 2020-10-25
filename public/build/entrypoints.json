@@ -156,6 +156,17 @@
         "/build/design_image_new.css"
       ]
     },
+    "design_image_edit": {
+      "js": [
+        "/build/runtime.js",
+        "/build/vendor.js",
+        "/build/design_image_edit.js"
+      ],
+      "css": [
+        "/build/vendor.css",
+        "/build/design_image_edit.css"
+      ]
+    },
     "design_linestyle_new": {
       "js": [
         "/build/runtime.js",
@@ -185,6 +196,28 @@
       ],
       "css": [
         "/build/design_template_index.css"
+      ]
+    },
+    "design_model_new": {
+      "js": [
+        "/build/runtime.js",
+        "/build/vendor.js",
+        "/build/design_model_new.js"
+      ],
+      "css": [
+        "/build/vendor.css",
+        "/build/design_model_new.css"
+      ]
+    },
+    "design_model_edit": {
+      "js": [
+        "/build/runtime.js",
+        "/build/vendor.js",
+        "/build/design_model_edit.js"
+      ],
+      "css": [
+        "/build/vendor.css",
+        "/build/design_model_edit.css"
       ]
     }
   }

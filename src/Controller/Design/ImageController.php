@@ -55,8 +55,8 @@ class ImageController extends AbstractController
 
                 // Move the file to the directory where brochures are stored
                 try {
-                    $img->move($this->getParameter('kernel.project_dir').'\public\build\images', $newFilename);
-                    $image->setSrc($this->getParameter('kernel.project_dir').'\public\build\images\\'.$newFilename);
+                    $img->move($this->getParameter('kernel.project_dir').'\public\images', $newFilename);
+                    $image->setSrc($this->getParameter('kernel.project_dir').'\public\images\\'.$newFilename);
 
                 } catch (FileException $e) {
                     echo $e->getMessage();
@@ -92,12 +92,11 @@ class ImageController extends AbstractController
      * @Route("/{id}/edit", name="design_image_edit", methods={"GET","POST"})
      * @param Request $request
      * @param Image $image
+     * @param SluggerInterface $slugger
      * @return Response
      */
-    public function edit(Request $request, Image $image): Response
+    public function edit(Request $request, Image $image, SluggerInterface $slugger): Response
     {
-        var_dump(pathinfo($image->getSrc(), PATHINFO_DIRNAME));
-        var_dump(pathinfo($image->getSrc(), PATHINFO_BASENAME));
         $image->setFile(
             new UploadedFile(
                 $image->getSrc(),
@@ -107,11 +106,30 @@ class ImageController extends AbstractController
         //dd($image);
 
         $form = $this->createForm(ImageType::class, $image);
-
         $form->get('file')->setData($image->getFile());
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+                $img = $form->get('file')->getData();
+
+                if ($img) {
+                    $originalFilename = pathinfo($img->getClientOriginalName(), PATHINFO_FILENAME);
+                    // this is needed to safely include the file name as part of the URL
+                    $safeFilename = $slugger->slug($originalFilename);
+                    $newFilename = $safeFilename . '-' . uniqid() . '.' . $img->guessExtension();
+
+                    // Move the file to the directory where brochures are stored
+                    try {
+                        $img->move($this->getParameter('kernel.project_dir').'\public\images', $newFilename);
+                        $image->setSrc($this->getParameter('kernel.project_dir').'\public\images\\'.$newFilename);
+
+                    } catch (FileException $e) {
+                        echo $e->getMessage();
+                    }
+                }
+
+
+
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('design_image_index');
@@ -124,16 +142,19 @@ class ImageController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="design_image_delete", methods={"DELETE"})
+     * @Route("/delete/{id}", name="design_image_delete")
+     * @param Request $request
+     * @param Image $image
+     * @return Response
      */
     public function delete(Request $request, Image $image): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$image->getId(), $request->request->get('_token'))) {
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($image);
             $entityManager->flush();
-        }
 
-        return $this->redirectToRoute('design_image_index');
+
+        return $this->redirectToRoute('design_design_index');
     }
 }

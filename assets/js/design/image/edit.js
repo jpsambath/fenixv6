@@ -1,8 +1,16 @@
-import '../../../css/design/image/new.css';
+import '../../../css/design/image/edit.css';
 
 $(document).ready(function () {
+    let filename = $('#image_file').attr('file');
+    let filepath = $('#image_src').val();
+    console.log(filepath)
 
-
+    if(filename !== undefined && filename !== "" && filepath !== undefined && filepath !== ""){
+        $('.custom-file-label').html(filename);
+        $('.custom-file-label').addClass('text-left');
+        $('#imgthumbnail').removeAttr('hidden');
+        $('#image_file').removeAttr('required');
+    }
 
     $(document).on('change', '#image_file', function (event) {
 

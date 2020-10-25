@@ -51,11 +51,15 @@ Encore
     .addEntry('design_text_new', './assets/js/design/text/new.js')
 
     .addEntry('design_image_new', './assets/js/design/image/new.js')
+    .addEntry('design_image_edit', './assets/js/design/image/edit.js')
 
     .addEntry('design_linestyle_new', './assets/js/design/linestyle/new.js')
 
     .addEntry('design_template_new', './assets/js/design/template/new.js')
     .addEntry('design_template_index', './assets/js/design/template/index.js')
+
+    .addEntry('design_model_new', './assets/js/design/model/new.js')
+    .addEntry('design_model_edit', './assets/js/design/model/edit.js')
 
 
     .createSharedEntry('vendor', './assets/js/global/tableexport.js')

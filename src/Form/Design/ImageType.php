@@ -9,6 +9,7 @@ use App\Entity\Design\Template;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -22,6 +23,7 @@ class ImageType extends AbstractType
                 'attr' =>
                     ['placeholder' => 'Select a picture',]
             ])
+            ->add('src', HiddenType::class)
             ->add('height')
             ->add('width')
             ->add('size')
