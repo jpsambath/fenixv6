@@ -9,27 +9,30 @@
         <thead>
             <tr>
                 <th>Id</th>
-                <th>PoliceName</th>
-                <th>PostPostScriptName</th>
+                <th>Font</th>
                 <th>FontColor</th>
                 <th>Majuscule</th>
                 <th>FontSize</th>
-                <th>actions</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
         {% for line_style in line_styles %}
             <tr>
                 <td>{{ line_style.id }}</td>
-                <td>{{ line_style.policeName }}</td>
-                <td>{{ line_style.postPostScriptName }}</td>
-                <td>{{ line_style.fontColor }}</td>
-                <td>{{ line_style.majuscule ? 'Yes' : 'No' }}</td>
+                <td>{{ line_style.font.name }}</td>
+                <td style="background-color:{{ line_style.fontColor }};">{{ line_style.fontColor }}</td>
+                <td>{{ line_style.uppercase ? 'Yes' : 'No' }}</td>
                 <td>{{ line_style.fontSize }}</td>
                 <td>
-                    <a href="{{ path('design_line_style_show', {'id': line_style.id}) }}">show</a>
-                    <a href="{{ path('design_line_style_edit', {'id': line_style.id}) }}">edit</a>
+                    <a href="{{ path('design_line_style_show', {'id': line_style.id}) }}"><span
+                                class="faicon"><i class="fas fa-eye"></i></span></a>
+                    <a href="{{ path('design_line_style_edit', {'id': line_style.id}) }}"><span
+                                class="faicon"><i class="fas fa-edit"></i></span></a>
+                    <a href="{{ path('design_line_style_delete', {'id': line_style.id}) }}"><span
+                                class="faicon"><i class="fas fa-trash-alt"></i></span></a>
                 </td>
+
             </tr>
         {% else %}
             <tr>

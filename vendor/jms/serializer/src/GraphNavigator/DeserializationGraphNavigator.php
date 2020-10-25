@@ -15,9 +15,9 @@ use JMS\Serializer\Exception\ExpressionLanguageRequiredException;
 use JMS\Serializer\Exception\LogicException;
 use JMS\Serializer\Exception\NotAcceptableException;
 use JMS\Serializer\Exception\RuntimeException;
+use JMS\Serializer\Exception\SkipHandlerException;
 use JMS\Serializer\Exclusion\ExpressionLanguageExclusionStrategy;
 use JMS\Serializer\Expression\ExpressionEvaluatorInterface;
-use JMS\Serializer\Functions;
 use JMS\Serializer\GraphNavigator;
 use JMS\Serializer\GraphNavigatorInterface;
 use JMS\Serializer\Handler\HandlerRegistryInterface;
@@ -134,7 +134,7 @@ final class DeserializationGraphNavigator extends GraphNavigator implements Grap
                 return $this->visitor->visitDouble($data, $type);
 
             case 'iterable':
-                return $this->visitor->visitArray(Functions::iterableToArray($data), $type);
+                return $this->visitor->visitArray($data, $type);
 
             case 'array':
                 return $this->visitor->visitArray($data, $type);
@@ -157,10 +157,14 @@ final class DeserializationGraphNavigator extends GraphNavigator implements Grap
                 // before loading metadata because the type name might not be a class, but
                 // could also simply be an artifical type.
                 if (null !== $handler = $this->handlerRegistry->getHandler(GraphNavigatorInterface::DIRECTION_DESERIALIZATION, $type['name'], $this->format)) {
-                    $rs = \call_user_func($handler, $this->visitor, $data, $type, $this->context);
-                    $this->context->decreaseDepth();
+                    try {
+                        $rs = \call_user_func($handler, $this->visitor, $data, $type, $this->context);
+                        $this->context->decreaseDepth();
 
-                    return $rs;
+                        return $rs;
+                    } catch (SkipHandlerException $e) {
+                        // Skip handler, fallback to default behavior
+                    }
                 }
 
                 /** @var ClassMetadata $metadata */

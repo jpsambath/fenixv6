@@ -5,6 +5,7 @@ namespace App\Entity\Design;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Design\ModelRepository")
@@ -31,6 +32,12 @@ class Model
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $src;
+
+    /**
+     * Unmapped property to handle file uploads
+     * @var UploadedFile
+     */
+    private $file;
 
     /**
      * @var string
@@ -155,5 +162,21 @@ class Model
         }
 
         return $this;
+    }
+
+    /**
+     * @return UploadedFile|null
+     */
+    public function getFile(): ?UploadedFile
+    {
+        return $this->file;
+    }
+
+    /**
+     * @param UploadedFile $file
+     */
+    public function setFile(UploadedFile $file): void
+    {
+        $this->file = $file;
     }
 }

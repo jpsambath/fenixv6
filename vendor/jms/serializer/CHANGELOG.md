@@ -1,5 +1,73 @@
 # Changelog
 
+## [3.9.0](https://github.com/schmittjoh/serializer/tree/3.9.0) (2020-08-26)
+
+**Implemented enhancements:**
+
+- Add support for skippable \(de\)serialization handlers [\#1238](https://github.com/schmittjoh/serializer/pull/1238) ([bobvandevijver](https://github.com/bobvandevijver))
+- added support for milliseconds in DateInterval deserialization [\#1234](https://github.com/schmittjoh/serializer/pull/1234) ([ivoba](https://github.com/ivoba))
+
+**Fixed bugs:**
+
+- Do not load entities when deserializing if their identifier is not ex… [\#1247](https://github.com/schmittjoh/serializer/pull/1247) ([goetas](https://github.com/goetas))
+- Do not use excluded fields when fetching entities [\#1246](https://github.com/schmittjoh/serializer/pull/1246) ([goetas](https://github.com/goetas))
+- Ensure accessors are cached per property when using reflection [\#1237](https://github.com/schmittjoh/serializer/pull/1237) ([goetas](https://github.com/goetas))
+
+**Merged pull requests:**
+
+- remove missing deprecated removal on hasData [\#1245](https://github.com/schmittjoh/serializer/pull/1245) ([rflavien](https://github.com/rflavien))
+- Change return type of SerializerBuilder::build\(\) to Serializer [\#1241](https://github.com/schmittjoh/serializer/pull/1241) ([icanhazstring](https://github.com/icanhazstring))
+- docs: add note about array key type being ignored when serializing [\#1235](https://github.com/schmittjoh/serializer/pull/1235) ([eduardoweiland](https://github.com/eduardoweiland))
+- Sort packages in composer.json [\#1228](https://github.com/schmittjoh/serializer/pull/1228) ([simPod](https://github.com/simPod))
+- fix xml embeddable data getReference for DoctrineObjectConstructor [\#1224](https://github.com/schmittjoh/serializer/pull/1224) ([gam6itko](https://github.com/gam6itko))
+- fixed exception for strict\_types [\#1222](https://github.com/schmittjoh/serializer/pull/1222) ([ivoba](https://github.com/ivoba))
+
+## [3.8.0](https://github.com/schmittjoh/serializer/tree/3.8.0) (2020-06-28)
+
+**Implemented enhancements:**
+
+- Use doctrine/lexer instead of hoa/compiler [\#1212](https://github.com/schmittjoh/serializer/pull/1212) ([goetas](https://github.com/goetas))
+
+**Fixed bugs:**
+
+- Consider exclude rules on parents if defined [\#1206](https://github.com/schmittjoh/serializer/pull/1206) ([goetas](https://github.com/goetas))
+- hoa/protocol package conflicts with laravel helper [\#1154](https://github.com/schmittjoh/serializer/issues/1154)
+
+**Merged pull requests:**
+
+- Remove conflicts to hoa packages [\#1216](https://github.com/schmittjoh/serializer/pull/1216) ([alexander-schranz](https://github.com/alexander-schranz))
+- Test also agains twig 3 [\#1215](https://github.com/schmittjoh/serializer/pull/1215) ([alexander-schranz](https://github.com/alexander-schranz))
+- Allow doctrine/persistence v2/v3 [\#1210](https://github.com/schmittjoh/serializer/pull/1210) ([goetas](https://github.com/goetas))
+
+## [3.7.0](https://github.com/schmittjoh/serializer/tree/3.7.0) (2020-05-23)
+
+**Implemented enhancements:**
+
+- Allow deserialization of typehinted DateTimeInterface to DateTime class [\#1193](https://github.com/schmittjoh/serializer/pull/1193) ([goetas](https://github.com/goetas))
+- Infer types from PHP 7.4 type declarations [\#1192](https://github.com/schmittjoh/serializer/pull/1192) ([goetas](https://github.com/goetas))
+- Support conditional exclude for classes [\#1099](https://github.com/schmittjoh/serializer/pull/1099) ([arneee](https://github.com/arneee))
+
+**Fixed bugs:**
+
+- Exclude if at class level are not merge [\#1203](https://github.com/schmittjoh/serializer/issues/1203)
+- Class level expression exclusion strategy should work with hierarchies   [\#1204](https://github.com/schmittjoh/serializer/pull/1204) ([goetas](https://github.com/goetas))
+
+**Closed issues:**
+
+- Specify Type as nullable? [\#1191](https://github.com/schmittjoh/serializer/issues/1191)
+- Does someone know how to use phpdoc with serializer? [\#1185](https://github.com/schmittjoh/serializer/issues/1185)
+- Serializer doesn't keep types but convert them if not it can [\#1181](https://github.com/schmittjoh/serializer/issues/1181)
+- ConditionalExpose/Exclude annotation does not work on class level [\#1098](https://github.com/schmittjoh/serializer/issues/1098)
+
+**Merged pull requests:**
+
+- Fix deprecated assertFileNotExist [\#1197](https://github.com/schmittjoh/serializer/pull/1197) ([mpoiriert](https://github.com/mpoiriert))
+- \[Docs\] Improve documentation on dynamic exclusion strategy [\#1188](https://github.com/schmittjoh/serializer/pull/1188) ([arneee](https://github.com/arneee))
+- Fix Support conditional exclude for classes [\#1187](https://github.com/schmittjoh/serializer/pull/1187) ([arneee](https://github.com/arneee))
+- Fix travis tests [\#1183](https://github.com/schmittjoh/serializer/pull/1183) ([peter279k](https://github.com/peter279k))
+- Replace "Exclude" by "Expose" [\#1180](https://github.com/schmittjoh/serializer/pull/1180) ([kpn13](https://github.com/kpn13))
+- add .gitattributes [\#1177](https://github.com/schmittjoh/serializer/pull/1177) ([Tobion](https://github.com/Tobion))
+
 ## [3.6.0](https://github.com/schmittjoh/serializer/tree/3.6.0) (2020-03-21)
 
 **Implemented enhancements:**

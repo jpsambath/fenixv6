@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Font index{% endblock %}
+
+{% block body %}
+    <h1>Font index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>PostscriptName</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for font in fonts %}
+            <tr>
+                <td>{{ font.id }}</td>
+                <td>{{ font.name }}</td>
+                <td>{{ font.postscriptName }}</td>
+                <td>
+                    <a href="{{ path('design_font_show', {'id': font.id}) }}">show</a>
+                    <a href="{{ path('design_font_edit', {'id': font.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('design_font_new') }}">Create new</a>
+{% endblock %}

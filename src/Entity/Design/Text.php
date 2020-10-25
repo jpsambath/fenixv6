@@ -13,11 +13,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Text extends Design
 {
-    /**
-     * @var array
-     * @ORM\Column(type="array", nullable=true)
-     */
-    private $cuts;
 
     /**
      * @var integer
@@ -33,12 +28,11 @@ class Text extends Design
 
     /**
      * @var string
-     * @ORM\Column(type="string", length=1, nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $genre;
 
     /**
-     * @var array
      * @ORM\ManyToMany(targetEntity="App\Entity\Design\Image", inversedBy="texts")
      * @ORM\JoinTable(name="design_text_image",
      * joinColumns={@ORM\JoinColumn(name="design_image_id", referencedColumnName="id")},
@@ -47,12 +41,17 @@ class Text extends Design
      */
     private $images;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Cut::class, mappedBy="text", cascade={"persist"})
+     */
+    private $cuts;
+
 
     public function __construct()
     {
         parent::__construct();
         $this->images = new ArrayCollection();
-        $this->cuts = array_fill(0,5,null);
+        $this->cuts = new ArrayCollection();
 
     }
 
@@ -131,33 +130,50 @@ class Text extends Design
     }
 
     /**
-     * @return array
+     * @return Collection|Cut[]
      */
-    public function getCuts(): array
+    public function getCuts(): Collection
     {
         return $this->cuts;
     }
 
+    public function addCut(Cut $cut): self
+    {
+        if (!$this->cuts->contains($cut)) {
+            $this->cuts[] = $cut;
+            $cut->setText($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCut(Cut $cut): self
+    {
+        if ($this->cuts->contains($cut)) {
+            $this->cuts->removeElement($cut);
+            // set the owning side to null (unless already changed)
+            if ($cut->getText() === $this) {
+                $cut->setText(null);
+            }
+        }
+
+        return $this;
+    }
+
+
     /**
-     * @param array $cuts
+     * @param ArrayCollection $cuts
      */
-    public function setCuts(array $cuts): void
+    public function setCuts(ArrayCollection $cuts): void
     {
         $this->cuts = $cuts;
     }
 
-    public function replaceCut(int $key, string $cut): self
+    /**
+     * @param Collection $images
+     */
+    public function setImages(Collection $images): void
     {
-        $this->cuts[$key] = $cut;
-
-        return $this;
+        $this->images = $images;
     }
-
-    public function clearCut(int $key): self
-    {
-        $this->cuts[$key] = null;
-
-        return $this;
-    }
-
 }

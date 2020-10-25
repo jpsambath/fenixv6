@@ -93,7 +93,10 @@ $passthruOrFail = function ($command) {
     }
 };
 
-if (PHP_VERSION_ID >= 70200) {
+if (PHP_VERSION_ID >= 80000) {
+    // PHP 8 requires PHPUnit 9.3+
+    $PHPUNIT_VERSION = $getEnvVar('SYMFONY_PHPUNIT_VERSION', '9.3');
+} elseif (PHP_VERSION_ID >= 70200) {
     // PHPUnit 8 requires PHP 7.2+
     $PHPUNIT_VERSION = $getEnvVar('SYMFONY_PHPUNIT_VERSION', '8.3');
 } elseif (PHP_VERSION_ID >= 70100) {
@@ -134,6 +137,7 @@ $defaultEnvs = [
     'COMPOSER' => 'composer.json',
     'COMPOSER_VENDOR_DIR' => 'vendor',
     'COMPOSER_BIN_DIR' => 'bin',
+    'SYMFONY_SIMPLE_PHPUNIT_BIN_DIR' => __DIR__,
 ];
 
 foreach ($defaultEnvs as $envName => $envValue) {
@@ -163,7 +167,46 @@ if (!file_exists("$PHPUNIT_DIR/$PHPUNIT_VERSION_DIR/phpunit") || $configurationH
         rename("$PHPUNIT_VERSION_DIR", "$PHPUNIT_VERSION_DIR.old");
         passthru(sprintf('\\' === DIRECTORY_SEPARATOR ? 'rmdir /S /Q %s' : 'rm -rf %s', "$PHPUNIT_VERSION_DIR.old"));
     }
-    $passthruOrFail("$COMPOSER create-project --no-install --prefer-dist --no-scripts --no-plugins --no-progress --ansi phpunit/phpunit $PHPUNIT_VERSION_DIR \"$PHPUNIT_VERSION.*\"");
+
+    $info = [];
+    foreach (explode("\n", `$COMPOSER info --no-ansi -a -n phpunit/phpunit "$PHPUNIT_VERSION.*"`) as $line) {
+        $line = rtrim($line);
+
+        if (!$info && preg_match('/^versions +: /', $line)) {
+            $info['versions'] = explode(', ', ltrim(substr($line, 9), ': '));
+        } elseif (isset($info['requires'])) {
+            if ('' === $line) {
+                break;
+            }
+
+            $line = explode(' ', $line, 2);
+            $info['requires'][$line[0]] = $line[1];
+        } elseif ($info && 'requires' === $line) {
+            $info['requires'] = [];
+        }
+    }
+
+    if (in_array('--colors=never', $argv, true) || (isset($argv[$i = array_search('never', $argv, true) - 1]) && '--colors' === $argv[$i])) {
+        $COMPOSER .= ' --no-ansi';
+    } else {
+        $COMPOSER .= ' --ansi';
+    }
+
+    $info += [
+        'versions' => [],
+        'requires' => ['php' => '*'],
+    ];
+
+    $stableVersions = array_filter($info['versions'], function($v) {
+        return !preg_match('/-dev$|^dev-/', $v);
+    });
+
+    if (!$stableVersions) {
+        $passthruOrFail("$COMPOSER create-project --ignore-platform-reqs --no-install --prefer-dist --no-scripts --no-plugins --no-progress -s dev phpunit/phpunit $PHPUNIT_VERSION_DIR \"$PHPUNIT_VERSION.*\"");
+    } else {
+        $passthruOrFail("$COMPOSER create-project --ignore-platform-reqs --no-install --prefer-dist --no-scripts --no-plugins --no-progress phpunit/phpunit $PHPUNIT_VERSION_DIR \"$PHPUNIT_VERSION.*\"");
+    }
+
     @copy("$PHPUNIT_VERSION_DIR/phpunit.xsd", 'phpunit.xsd');
     chdir("$PHPUNIT_VERSION_DIR");
     if ($SYMFONY_PHPUNIT_REMOVE) {
@@ -173,7 +216,11 @@ if (!file_exists("$PHPUNIT_DIR/$PHPUNIT_VERSION_DIR/phpunit") || $configurationH
         $passthruOrFail("$COMPOSER require --no-update phpunit/phpunit-mock-objects \"~3.1.0\"");
     }
 
-    $passthruOrFail("$COMPOSER config --unset platform.php");
+    if (preg_match('{\^((\d++\.)\d++)[\d\.]*$}', $info['requires']['php'], $phpVersion) && version_compare($phpVersion[2].'99', PHP_VERSION, '<')) {
+        $passthruOrFail("$COMPOSER config platform.php \"$phpVersion[1].99\"");
+    } else {
+        $passthruOrFail("$COMPOSER config --unset platform.php");
+    }
     if (file_exists($path = $root.'/vendor/symfony/phpunit-bridge')) {
         $passthruOrFail("$COMPOSER require --no-update symfony/phpunit-bridge \"*@dev\"");
         $passthruOrFail("$COMPOSER config repositories.phpunit-bridge path ".escapeshellarg(str_replace('/', DIRECTORY_SEPARATOR, $path)));
@@ -187,7 +234,7 @@ if (!file_exists("$PHPUNIT_DIR/$PHPUNIT_VERSION_DIR/phpunit") || $configurationH
     putenv("COMPOSER_ROOT_VERSION=$PHPUNIT_VERSION.99");
     $q = '\\' === DIRECTORY_SEPARATOR ? '"' : '';
     // --no-suggest is not in the list to keep compat with composer 1.0, which is shipped with Ubuntu 16.04LTS
-    $exit = proc_close(proc_open("$q$COMPOSER install --no-dev --prefer-dist --no-progress --ansi$q", [], $p, getcwd()));
+    $exit = proc_close(proc_open("$q$COMPOSER install --no-dev --prefer-dist --no-progress $q", [], $p, getcwd()));
     putenv('COMPOSER_ROOT_VERSION'.(false !== $prevRoot ? '='.$prevRoot : ''));
     if ($exit) {
         exit($exit);
@@ -212,15 +259,20 @@ if (!file_exists("$PHPUNIT_DIR/$PHPUNIT_VERSION_DIR/phpunit") || $configurationH
 define('PHPUNIT_COMPOSER_INSTALL', __DIR__.'/vendor/autoload.php');
 require PHPUNIT_COMPOSER_INSTALL;
 
-if (!class_exists('SymfonyBlacklistPhpunit', false)) {
-    class SymfonyBlacklistPhpunit {}
+if (!class_exists('SymfonyExcludeListPhpunit', false)) {
+    class SymfonyExcludeListPhpunit {}
 }
-if (class_exists('PHPUnit_Util_Blacklist')) {
-    PHPUnit_Util_Blacklist::$blacklistedClassNames['SymfonyBlacklistPhpunit'] = 1;
-    PHPUnit_Util_Blacklist::$blacklistedClassNames['SymfonyBlacklistSimplePhpunit'] = 1;
+if (method_exists('PHPUnit\Util\ExcludeList', 'addDirectory')) {
+    (new PHPUnit\Util\Excludelist())->getExcludedDirectories();
+    PHPUnit\Util\ExcludeList::addDirectory(\dirname((new \ReflectionClass('SymfonyExcludeListPhpunit'))->getFileName()));
+    PHPUnit\Util\ExcludeList::addDirectory(\dirname((new \ReflectionClass('SymfonyExcludeListSimplePhpunit'))->getFileName()));
+} elseif (method_exists('PHPUnit\Util\Blacklist', 'addDirectory')) {
+    (new PHPUnit\Util\BlackList())->getBlacklistedDirectories();
+    PHPUnit\Util\Blacklist::addDirectory(\dirname((new \ReflectionClass('SymfonyExcludeListPhpunit'))->getFileName()));
+    PHPUnit\Util\Blacklist::addDirectory(\dirname((new \ReflectionClass('SymfonyExcludeListSimplePhpunit'))->getFileName()));
 } else {
-    PHPUnit\Util\Blacklist::$blacklistedClassNames['SymfonyBlacklistPhpunit'] = 1;
-    PHPUnit\Util\Blacklist::$blacklistedClassNames['SymfonyBlacklistSimplePhpunit'] = 1;
+    PHPUnit\Util\Blacklist::$blacklistedClassNames['SymfonyExcludeListPhpunit'] = 1;
+    PHPUnit\Util\Blacklist::$blacklistedClassNames['SymfonyExcludeListSimplePhpunit'] = 1;
 }
 
 Symfony\Bridge\PhpUnit\TextUI\Command::main();
@@ -231,6 +283,16 @@ EOPHP
     file_put_contents(".$PHPUNIT_VERSION_DIR.md5", $configurationHash);
     chdir($oldPwd);
 }
+
+// Create a symlink with a predictable path pointing to the currently used version.
+// This is useful for static analytics tools such as PHPStan having to load PHPUnit's classes
+// and for other testing libraries such as Behat using PHPUnit's assertions.
+chdir($PHPUNIT_DIR);
+if (file_exists('phpunit')) {
+    @unlink('phpunit');
+}
+@symlink($PHPUNIT_VERSION_DIR, 'phpunit');
+chdir($oldPwd);
 
 if ($PHPUNIT_VERSION < 8.0) {
     $argv = array_filter($argv, function ($v) use (&$argc) {
@@ -332,8 +394,8 @@ if ($components) {
         }
     }
 } elseif (!isset($argv[1]) || 'install' !== $argv[1] || file_exists('install')) {
-    if (!class_exists('SymfonyBlacklistSimplePhpunit', false)) {
-        class SymfonyBlacklistSimplePhpunit
+    if (!class_exists('SymfonyExcludeListSimplePhpunit', false)) {
+        class SymfonyExcludeListSimplePhpunit
         {
         }
     }

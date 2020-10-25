@@ -15,6 +15,7 @@ use JMS\Serializer\Exception\ExcludedClassException;
 use JMS\Serializer\Exception\ExpressionLanguageRequiredException;
 use JMS\Serializer\Exception\NotAcceptableException;
 use JMS\Serializer\Exception\RuntimeException;
+use JMS\Serializer\Exception\SkipHandlerException;
 use JMS\Serializer\Exclusion\ExpressionLanguageExclusionStrategy;
 use JMS\Serializer\Expression\ExpressionEvaluatorInterface;
 use JMS\Serializer\Functions;
@@ -178,7 +179,7 @@ final class SerializationGraphNavigator extends GraphNavigator implements GraphN
                 // metadata for the actual type of the object, not the base class.
                 if (class_exists($type['name'], false) || interface_exists($type['name'], false)) {
                     if (is_subclass_of($data, $type['name'], false)) {
-                        $type = ['name' => \get_class($data), 'params' => []];
+                        $type = ['name' => \get_class($data), 'params' => $type['params'] ?? []];
                     }
                 }
 
@@ -195,13 +196,15 @@ final class SerializationGraphNavigator extends GraphNavigator implements GraphN
                 if (null !== $handler = $this->handlerRegistry->getHandler(GraphNavigatorInterface::DIRECTION_SERIALIZATION, $type['name'], $this->format)) {
                     try {
                         $rs = \call_user_func($handler, $this->visitor, $data, $type, $this->context);
+                        $this->context->stopVisiting($data);
+
+                        return $rs;
+                    } catch (SkipHandlerException $e) {
+                        // Skip handler, fallback to default behavior
                     } catch (NotAcceptableException $e) {
                         $this->context->stopVisiting($data);
                         throw $e;
                     }
-                    $this->context->stopVisiting($data);
-
-                    return $rs;
                 }
 
                 /** @var ClassMetadata $metadata */
@@ -212,6 +215,12 @@ final class SerializationGraphNavigator extends GraphNavigator implements GraphN
                 }
 
                 if (null !== $this->exclusionStrategy && $this->exclusionStrategy->shouldSkipClass($metadata, $this->context)) {
+                    $this->context->stopVisiting($data);
+
+                    throw new ExcludedClassException();
+                }
+
+                if (null !== $this->expressionExclusionStrategy && $this->expressionExclusionStrategy->shouldSkipClass($metadata, $this->context)) {
                     $this->context->stopVisiting($data);
 
                     throw new ExcludedClassException();

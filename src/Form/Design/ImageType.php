@@ -3,11 +3,15 @@
 namespace App\Form\Design;
 
 use App\Entity\Design\Image;
+use App\Entity\Design\Model;
+use App\Entity\Design\Tag;
+use App\Entity\Design\Template;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 
 class ImageType extends AbstractType
 {
@@ -15,34 +19,36 @@ class ImageType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('src', FileType::class, [
+            ->add('file', FileType::class, [
                 'attr' =>
-                    ['placeholder' => 'Sélectionner une image',]
+                    ['placeholder' => 'Select a picture',]
             ])
+            ->add('src', HiddenType::class)
             ->add('height')
             ->add('width')
             ->add('size')
             ->add('format')
-            ->add('tags', Select2EntityType::class, [
+            ->add('tags', EntityType::class, [
                 'multiple' => true,
-                'remote_route' => 'design_tag_list',
-                'remote_params' => [],
-                'class' => 'App\Entity\Design\Tag',
-                'primary_key' => 'id',
-                'text_property' => 'name',
-                'minimum_input_length' => 2,
-                'page_limit' => 10,
-                'allow_clear' => true,
-                'delay' => 250,
-                'cache' => true,
-                'cache_timeout' => 60000, // if 'cache' is true
-                'language' => 'en',
-                'placeholder' => 'Selectionner un tag',
-                // 'object_manager' => $objectManager, // inject a custom object / entity manager
+                'class' => Tag::class,
+                'choice_label' => 'name',
+                'placeholder' => 'Select one or several tags',
+                'required' => false
             ])
-            ->add('templates')
-            ->add('models')
-        ;
+            ->add('templates', EntityType::class, [
+                'multiple' => true,
+                'class' => Template::class,
+                'choice_label' => 'name',
+                'placeholder' => 'Select one or several templates',
+                'required' => false
+            ])
+            ->add('models', EntityType::class, [
+                'multiple' => true,
+                'class' => Model::class,
+                'choice_label' => 'name',
+                'placeholder' => 'Select one or several models',
+                'required' => false
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

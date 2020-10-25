@@ -52,6 +52,173 @@
       "css": [
         "/build/vendor.css"
       ]
+    },
+    "global_notifyjs": {
+      "js": [
+        "/build/runtime.js",
+        "/build/vendor.js",
+        "/build/global_notifyjs.js"
+      ],
+      "css": [
+        "/build/vendor.css"
+      ]
+    },
+    "global_bootstraptable": {
+      "js": [
+        "/build/runtime.js",
+        "/build/vendor.js",
+        "/build/global_bootstraptable.js"
+      ],
+      "css": [
+        "/build/vendor.css"
+      ]
+    },
+    "global_bootstraptable_editable": {
+      "js": [
+        "/build/runtime.js",
+        "/build/vendor.js",
+        "/build/global_bootstraptable_editable.js"
+      ],
+      "css": [
+        "/build/vendor.css"
+      ]
+    },
+    "global_bootstraptable_export": {
+      "js": [
+        "/build/runtime.js",
+        "/build/vendor.js",
+        "/build/global_bootstraptable_export.js"
+      ],
+      "css": [
+        "/build/vendor.css"
+      ]
+    },
+    "global_bootstraptable_filtercontrol": {
+      "js": [
+        "/build/runtime.js",
+        "/build/vendor.js",
+        "/build/global_bootstraptable_filtercontrol.js"
+      ],
+      "css": [
+        "/build/vendor.css"
+      ]
+    },
+    "design_base": {
+      "js": [
+        "/build/runtime.js",
+        "/build/design_base.js"
+      ],
+      "css": [
+        "/build/design_base.css"
+      ]
+    },
+    "design_design_index": {
+      "js": [
+        "/build/runtime.js",
+        "/build/vendor.js",
+        "/build/design_design_index.js"
+      ],
+      "css": [
+        "/build/vendor.css",
+        "/build/design_design_index.css"
+      ]
+    },
+    "design_design_new": {
+      "js": [
+        "/build/runtime.js",
+        "/build/vendor.js",
+        "/build/design_design_new.js"
+      ],
+      "css": [
+        "/build/vendor.css",
+        "/build/design_design_new.css"
+      ]
+    },
+    "design_text_new": {
+      "js": [
+        "/build/runtime.js",
+        "/build/vendor.js",
+        "/build/design_text_new.js"
+      ],
+      "css": [
+        "/build/vendor.css",
+        "/build/design_text_new.css"
+      ]
+    },
+    "design_image_new": {
+      "js": [
+        "/build/runtime.js",
+        "/build/vendor.js",
+        "/build/design_image_new.js"
+      ],
+      "css": [
+        "/build/vendor.css",
+        "/build/design_image_new.css"
+      ]
+    },
+    "design_image_edit": {
+      "js": [
+        "/build/runtime.js",
+        "/build/vendor.js",
+        "/build/design_image_edit.js"
+      ],
+      "css": [
+        "/build/vendor.css",
+        "/build/design_image_edit.css"
+      ]
+    },
+    "design_linestyle_new": {
+      "js": [
+        "/build/runtime.js",
+        "/build/vendor.js",
+        "/build/design_linestyle_new.js"
+      ],
+      "css": [
+        "/build/vendor.css",
+        "/build/design_linestyle_new.css"
+      ]
+    },
+    "design_template_new": {
+      "js": [
+        "/build/runtime.js",
+        "/build/vendor.js",
+        "/build/design_template_new.js"
+      ],
+      "css": [
+        "/build/vendor.css",
+        "/build/design_template_new.css"
+      ]
+    },
+    "design_template_index": {
+      "js": [
+        "/build/runtime.js",
+        "/build/design_template_index.js"
+      ],
+      "css": [
+        "/build/design_template_index.css"
+      ]
+    },
+    "design_model_new": {
+      "js": [
+        "/build/runtime.js",
+        "/build/vendor.js",
+        "/build/design_model_new.js"
+      ],
+      "css": [
+        "/build/vendor.css",
+        "/build/design_model_new.css"
+      ]
+    },
+    "design_model_edit": {
+      "js": [
+        "/build/runtime.js",
+        "/build/vendor.js",
+        "/build/design_model_edit.js"
+      ],
+      "css": [
+        "/build/vendor.css",
+        "/build/design_model_edit.css"
+      ]
     }
   }
 }

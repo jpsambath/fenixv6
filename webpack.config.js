@@ -1,4 +1,5 @@
 var Encore = require('@symfony/webpack-encore');
+const CopyPlugin = require('copy-webpack-plugin');
 
 // Manually configure the runtime environment if not already configured yet by the "encore" command.
 // It's useful when you use tools that rely on webpack.config.js file.
@@ -14,6 +15,12 @@ Encore
     // only needed for CDN's or sub-directory deploy
     //.setManifestKeyPrefix('build/')
 
+
+    .addPlugin(new CopyPlugin({
+    patterns: [
+        { from: './assets/fonts', to: 'fonts' },
+    ],
+}))
     /*
      * ENTRY CONFIG
      *
@@ -38,7 +45,21 @@ Encore
     .addEntry('global_bootstraptable_filtercontrol', './assets/js/global/bootstrap-table-master/dist/extensions/filter-control/bootstrap-table-filter-control.min.js')
 
     .addEntry('design_base', './assets/js/design/base.js')
-    .addEntry('design_index', './assets/js/design/index.js')
+    .addEntry('design_design_index', './assets/js/design/design/index.js')
+    .addEntry('design_design_new', './assets/js/design/design/new.js')
+
+    .addEntry('design_text_new', './assets/js/design/text/new.js')
+
+    .addEntry('design_image_new', './assets/js/design/image/new.js')
+    .addEntry('design_image_edit', './assets/js/design/image/edit.js')
+
+    .addEntry('design_linestyle_new', './assets/js/design/linestyle/new.js')
+
+    .addEntry('design_template_new', './assets/js/design/template/new.js')
+    .addEntry('design_template_index', './assets/js/design/template/index.js')
+
+    .addEntry('design_model_new', './assets/js/design/model/new.js')
+    .addEntry('design_model_edit', './assets/js/design/model/edit.js')
 
 
     .createSharedEntry('vendor', './assets/js/global/tableexport.js')
