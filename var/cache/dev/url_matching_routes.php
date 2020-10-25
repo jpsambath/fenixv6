@@ -93,67 +93,85 @@ return [
                         .')'
                         .'|delete/([^/]++)(*:302)'
                         .'|ajax(?'
-                            .'|addtag(*:323)'
-                            .'|unlinktag(?'
-                                .'|/([^/]++)/([^/]++)(*:361)'
-                                .'|fromselection/([^/]++)(*:391)'
+                            .'|add(?'
+                                .'|t(?'
+                                    .'|ag(*:329)'
+                                    .'|emplate(*:344)'
+                                .')'
+                                .'|model(*:358)'
+                            .')'
+                            .'|unlink(?'
+                                .'|t(?'
+                                    .'|ag(?'
+                                        .'|/([^/]++)/([^/]++)(*:403)'
+                                        .'|fromselection/([^/]++)(*:433)'
+                                    .')'
+                                    .'|emplate(?'
+                                        .'|/([^/]++)/([^/]++)(*:470)'
+                                        .'|fromselection/([^/]++)(*:500)'
+                                    .')'
+                                .')'
+                                .'|model(?'
+                                    .'|/([^/]++)/([^/]++)(*:536)'
+                                    .'|fromselection/([^/]++)(*:566)'
+                                .')'
                             .')'
                         .')'
                     .')'
                     .'|font/([^/]++)(?'
-                        .'|(*:418)'
-                        .'|/edit(*:431)'
-                        .'|(*:439)'
+                        .'|(*:594)'
+                        .'|/edit(*:607)'
+                        .'|(*:615)'
                     .')'
                     .'|image/(?'
                         .'|([^/]++)(?'
-                            .'|(*:468)'
-                            .'|/edit(*:481)'
+                            .'|(*:644)'
+                            .'|/edit(*:657)'
                         .')'
-                        .'|delete/([^/]++)(*:505)'
+                        .'|delete/([^/]++)(*:681)'
                     .')'
                     .'|line/style/([^/]++)(?'
-                        .'|(*:536)'
-                        .'|/edit(*:549)'
-                        .'|(*:557)'
+                        .'|(*:712)'
+                        .'|/edit(*:725)'
+                        .'|(*:733)'
                     .')'
                     .'|model/(?'
                         .'|category/([^/]++)(?'
-                            .'|(*:595)'
-                            .'|/edit(*:608)'
-                            .'|(*:616)'
+                            .'|(*:771)'
+                            .'|/edit(*:784)'
+                            .'|(*:792)'
                         .')'
                         .'|([^/]++)(?'
-                            .'|(*:636)'
-                            .'|/edit(*:649)'
-                            .'|(*:657)'
+                            .'|(*:812)'
+                            .'|/edit(*:825)'
+                            .'|(*:833)'
                         .')'
                     .')'
                     .'|t(?'
                         .'|ag/([^/]++)(?'
-                            .'|(*:685)'
-                            .'|/edit(*:698)'
-                            .'|(*:706)'
+                            .'|(*:861)'
+                            .'|/edit(*:874)'
+                            .'|(*:882)'
                         .')'
                         .'|e(?'
                             .'|mplate/(?'
                                 .'|category/([^/]++)(?'
-                                    .'|(*:749)'
-                                    .'|/edit(*:762)'
-                                    .'|(*:770)'
+                                    .'|(*:925)'
+                                    .'|/edit(*:938)'
+                                    .'|(*:946)'
                                 .')'
                                 .'|([^/]++)(?'
-                                    .'|(*:790)'
-                                    .'|/edit(*:803)'
+                                    .'|(*:966)'
+                                    .'|/edit(*:979)'
                                 .')'
-                                .'|delete/([^/]++)(*:827)'
+                                .'|delete/([^/]++)(*:1003)'
                             .')'
                             .'|xt/(?'
                                 .'|([^/]++)(?'
-                                    .'|(*:853)'
-                                    .'|/edit(*:866)'
+                                    .'|(*:1030)'
+                                    .'|/edit(*:1044)'
                                 .')'
-                                .'|delete/([^/]++)(*:890)'
+                                .'|delete/([^/]++)(*:1069)'
                             .')'
                         .')'
                     .')'
@@ -161,15 +179,15 @@ return [
                 .'|/p(?'
                     .'|od/printify/(?'
                         .'|product/(?'
-                            .'|synchronizeproductlist/([^/]++)(*:964)'
-                            .'|productlist/([^/]++)/([^/]++)(*:1001)'
-                            .'|createproduct/([^/]++)(*:1032)'
-                            .'|uploadimage/([^/]++)(*:1061)'
+                            .'|synchronizeproductlist/([^/]++)(*:1144)'
+                            .'|productlist/([^/]++)/([^/]++)(*:1182)'
+                            .'|createproduct/([^/]++)(*:1213)'
+                            .'|uploadimage/([^/]++)(*:1242)'
                         .')'
-                        .'|blueprintsselector/([^/]++)(*:1098)'
-                        .'|templateexporter/([^/]++)(*:1132)'
+                        .'|blueprintsselector/([^/]++)(*:1279)'
+                        .'|templateexporter/([^/]++)(*:1313)'
                     .')'
-                    .'|rintifyservice/blueprintforshop/([^/]++)/([^/]++)(*:1191)'
+                    .'|rintifyservice/blueprintforshop/([^/]++)/([^/]++)(*:1372)'
                 .')'
             .')/?$}sDu',
     ],
@@ -187,43 +205,49 @@ return [
         265 => [[['_route' => 'design_design_show', '_controller' => 'App\\Controller\\Design\\DesignController::show'], ['id'], ['GET' => 0], null, false, true, null]],
         278 => [[['_route' => 'design_design_edit', '_controller' => 'App\\Controller\\Design\\DesignController::edit'], ['id'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
         302 => [[['_route' => 'design_design_delete', '_controller' => 'App\\Controller\\Design\\DesignController::delete'], ['id'], null, null, false, true, null]],
-        323 => [[['_route' => 'design_design_ajaxaddtag', '_controller' => 'App\\Controller\\Design\\DesignController::ajax_add_tags'], [], null, null, false, false, null]],
-        361 => [[['_route' => 'design_design_ajaxunlinktag', '_controller' => 'App\\Controller\\Design\\DesignController::ajax_unlink_tag'], ['designid', 'tagid'], null, null, false, true, null]],
-        391 => [[['_route' => 'design_design_ajaxunlinktagfromselection', '_controller' => 'App\\Controller\\Design\\DesignController::ajax_unlink_tag_from_selection'], ['tagid'], null, null, false, true, null]],
-        418 => [[['_route' => 'design_font_show', '_controller' => 'App\\Controller\\Design\\FontController::show'], ['id'], ['GET' => 0], null, false, true, null]],
-        431 => [[['_route' => 'design_font_edit', '_controller' => 'App\\Controller\\Design\\FontController::edit'], ['id'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
-        439 => [[['_route' => 'design_font_delete', '_controller' => 'App\\Controller\\Design\\FontController::delete'], ['id'], ['DELETE' => 0], null, false, true, null]],
-        468 => [[['_route' => 'design_image_show', '_controller' => 'App\\Controller\\Design\\ImageController::show'], ['id'], ['GET' => 0], null, false, true, null]],
-        481 => [[['_route' => 'design_image_edit', '_controller' => 'App\\Controller\\Design\\ImageController::edit'], ['id'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
-        505 => [[['_route' => 'design_image_delete', '_controller' => 'App\\Controller\\Design\\ImageController::delete'], ['id'], null, null, false, true, null]],
-        536 => [[['_route' => 'design_line_style_show', '_controller' => 'App\\Controller\\Design\\LineStyleController::show'], ['id'], ['GET' => 0], null, false, true, null]],
-        549 => [[['_route' => 'design_line_style_edit', '_controller' => 'App\\Controller\\Design\\LineStyleController::edit'], ['id'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
-        557 => [[['_route' => 'design_line_style_delete', '_controller' => 'App\\Controller\\Design\\LineStyleController::delete'], ['id'], ['DELETE' => 0], null, false, true, null]],
-        595 => [[['_route' => 'design_model_category_show', '_controller' => 'App\\Controller\\Design\\ModelCategoryController::show'], ['id'], ['GET' => 0], null, false, true, null]],
-        608 => [[['_route' => 'design_model_category_edit', '_controller' => 'App\\Controller\\Design\\ModelCategoryController::edit'], ['id'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
-        616 => [[['_route' => 'design_model_category_delete', '_controller' => 'App\\Controller\\Design\\ModelCategoryController::delete'], ['id'], ['DELETE' => 0], null, false, true, null]],
-        636 => [[['_route' => 'design_model_show', '_controller' => 'App\\Controller\\Design\\ModelController::show'], ['id'], ['GET' => 0], null, false, true, null]],
-        649 => [[['_route' => 'design_model_edit', '_controller' => 'App\\Controller\\Design\\ModelController::edit'], ['id'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
-        657 => [[['_route' => 'design_model_delete', '_controller' => 'App\\Controller\\Design\\ModelController::delete'], ['id'], ['DELETE' => 0], null, false, true, null]],
-        685 => [[['_route' => 'design_tag_show', '_controller' => 'App\\Controller\\Design\\TagController::show'], ['id'], ['GET' => 0], null, false, true, null]],
-        698 => [[['_route' => 'design_tag_edit', '_controller' => 'App\\Controller\\Design\\TagController::edit'], ['id'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
-        706 => [[['_route' => 'design_tag_delete', '_controller' => 'App\\Controller\\Design\\TagController::delete'], ['id'], ['DELETE' => 0], null, false, true, null]],
-        749 => [[['_route' => 'design_template_category_show', '_controller' => 'App\\Controller\\Design\\TemplateCategoryController::show'], ['id'], ['GET' => 0], null, false, true, null]],
-        762 => [[['_route' => 'design_template_category_edit', '_controller' => 'App\\Controller\\Design\\TemplateCategoryController::edit'], ['id'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
-        770 => [[['_route' => 'design_template_category_delete', '_controller' => 'App\\Controller\\Design\\TemplateCategoryController::delete'], ['id'], ['DELETE' => 0], null, false, true, null]],
-        790 => [[['_route' => 'design_template_show', '_controller' => 'App\\Controller\\Design\\TemplateController::show'], ['id'], ['GET' => 0], null, false, true, null]],
-        803 => [[['_route' => 'design_template_edit', '_controller' => 'App\\Controller\\Design\\TemplateController::edit'], ['id'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
-        827 => [[['_route' => 'design_template_delete', '_controller' => 'App\\Controller\\Design\\TemplateController::delete'], ['id'], null, null, false, true, null]],
-        853 => [[['_route' => 'design_text_show', '_controller' => 'App\\Controller\\Design\\TextController::show'], ['id'], ['GET' => 0], null, false, true, null]],
-        866 => [[['_route' => 'design_text_edit', '_controller' => 'App\\Controller\\Design\\TextController::edit'], ['id'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
-        890 => [[['_route' => 'design_text_delete', '_controller' => 'App\\Controller\\Design\\TextController::delete'], ['id'], null, null, false, true, null]],
-        964 => [[['_route' => 'printify_synchronizeproductlist', '_controller' => 'App\\Controller\\PrintifyController::printify_synchronizeproductlist'], ['shopid'], null, null, false, true, null]],
-        1001 => [[['_route' => 'printify_productlist', '_controller' => 'App\\Controller\\PrintifyController::printify_productlist'], ['shopid', 'action'], null, null, false, true, null]],
-        1032 => [[['_route' => 'printify_createproduct', '_controller' => 'App\\Controller\\PrintifyController::printify_createproduct'], ['shopid'], null, null, false, true, null]],
-        1061 => [[['_route' => 'printify_uploadimage', '_controller' => 'App\\Controller\\PrintifyController::printify_uploadimage'], ['shopid'], null, null, false, true, null]],
-        1098 => [[['_route' => 'printify_blueprintsselector', '_controller' => 'App\\Controller\\PrintifyController::printify_blueprintsselector'], ['shopid'], null, null, false, true, null]],
-        1132 => [[['_route' => 'printify_templateexporter', '_controller' => 'App\\Controller\\PrintifyController::printify_templateexporter'], ['shopid'], null, null, false, true, null]],
-        1191 => [
+        329 => [[['_route' => 'design_design_ajaxaddtag', '_controller' => 'App\\Controller\\Design\\DesignController::ajax_add_tags'], [], null, null, false, false, null]],
+        344 => [[['_route' => 'design_design_ajaxaddtemplate', '_controller' => 'App\\Controller\\Design\\DesignController::ajax_add_templates'], [], null, null, false, false, null]],
+        358 => [[['_route' => 'design_design_ajaxaddmodel', '_controller' => 'App\\Controller\\Design\\DesignController::ajax_add_models'], [], null, null, false, false, null]],
+        403 => [[['_route' => 'design_design_ajaxunlinktag', '_controller' => 'App\\Controller\\Design\\DesignController::ajax_unlink_tag'], ['designid', 'tagid'], null, null, false, true, null]],
+        433 => [[['_route' => 'design_design_ajaxunlinktagfromselection', '_controller' => 'App\\Controller\\Design\\DesignController::ajax_unlink_tag_from_selection'], ['tagid'], null, null, false, true, null]],
+        470 => [[['_route' => 'design_design_ajaxunlinktemplate', '_controller' => 'App\\Controller\\Design\\DesignController::ajax_unlink_template'], ['designid', 'templateid'], null, null, false, true, null]],
+        500 => [[['_route' => 'design_design_ajaxunlinktemplatefromselection', '_controller' => 'App\\Controller\\Design\\DesignController::ajax_unlink_template_from_selection'], ['templateid'], null, null, false, true, null]],
+        536 => [[['_route' => 'design_design_ajaxunlinkmodel', '_controller' => 'App\\Controller\\Design\\DesignController::ajax_unlink_model'], ['designid', 'modelid'], null, null, false, true, null]],
+        566 => [[['_route' => 'design_design_ajaxunlinkmodelfromselection', '_controller' => 'App\\Controller\\Design\\DesignController::ajax_unlink_model_from_selection'], ['modelid'], null, null, false, true, null]],
+        594 => [[['_route' => 'design_font_show', '_controller' => 'App\\Controller\\Design\\FontController::show'], ['id'], ['GET' => 0], null, false, true, null]],
+        607 => [[['_route' => 'design_font_edit', '_controller' => 'App\\Controller\\Design\\FontController::edit'], ['id'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
+        615 => [[['_route' => 'design_font_delete', '_controller' => 'App\\Controller\\Design\\FontController::delete'], ['id'], ['DELETE' => 0], null, false, true, null]],
+        644 => [[['_route' => 'design_image_show', '_controller' => 'App\\Controller\\Design\\ImageController::show'], ['id'], ['GET' => 0], null, false, true, null]],
+        657 => [[['_route' => 'design_image_edit', '_controller' => 'App\\Controller\\Design\\ImageController::edit'], ['id'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
+        681 => [[['_route' => 'design_image_delete', '_controller' => 'App\\Controller\\Design\\ImageController::delete'], ['id'], null, null, false, true, null]],
+        712 => [[['_route' => 'design_line_style_show', '_controller' => 'App\\Controller\\Design\\LineStyleController::show'], ['id'], ['GET' => 0], null, false, true, null]],
+        725 => [[['_route' => 'design_line_style_edit', '_controller' => 'App\\Controller\\Design\\LineStyleController::edit'], ['id'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
+        733 => [[['_route' => 'design_line_style_delete', '_controller' => 'App\\Controller\\Design\\LineStyleController::delete'], ['id'], ['DELETE' => 0], null, false, true, null]],
+        771 => [[['_route' => 'design_model_category_show', '_controller' => 'App\\Controller\\Design\\ModelCategoryController::show'], ['id'], ['GET' => 0], null, false, true, null]],
+        784 => [[['_route' => 'design_model_category_edit', '_controller' => 'App\\Controller\\Design\\ModelCategoryController::edit'], ['id'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
+        792 => [[['_route' => 'design_model_category_delete', '_controller' => 'App\\Controller\\Design\\ModelCategoryController::delete'], ['id'], ['DELETE' => 0], null, false, true, null]],
+        812 => [[['_route' => 'design_model_show', '_controller' => 'App\\Controller\\Design\\ModelController::show'], ['id'], ['GET' => 0], null, false, true, null]],
+        825 => [[['_route' => 'design_model_edit', '_controller' => 'App\\Controller\\Design\\ModelController::edit'], ['id'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
+        833 => [[['_route' => 'design_model_delete', '_controller' => 'App\\Controller\\Design\\ModelController::delete'], ['id'], ['DELETE' => 0], null, false, true, null]],
+        861 => [[['_route' => 'design_tag_show', '_controller' => 'App\\Controller\\Design\\TagController::show'], ['id'], ['GET' => 0], null, false, true, null]],
+        874 => [[['_route' => 'design_tag_edit', '_controller' => 'App\\Controller\\Design\\TagController::edit'], ['id'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
+        882 => [[['_route' => 'design_tag_delete', '_controller' => 'App\\Controller\\Design\\TagController::delete'], ['id'], ['DELETE' => 0], null, false, true, null]],
+        925 => [[['_route' => 'design_template_category_show', '_controller' => 'App\\Controller\\Design\\TemplateCategoryController::show'], ['id'], ['GET' => 0], null, false, true, null]],
+        938 => [[['_route' => 'design_template_category_edit', '_controller' => 'App\\Controller\\Design\\TemplateCategoryController::edit'], ['id'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
+        946 => [[['_route' => 'design_template_category_delete', '_controller' => 'App\\Controller\\Design\\TemplateCategoryController::delete'], ['id'], ['DELETE' => 0], null, false, true, null]],
+        966 => [[['_route' => 'design_template_show', '_controller' => 'App\\Controller\\Design\\TemplateController::show'], ['id'], ['GET' => 0], null, false, true, null]],
+        979 => [[['_route' => 'design_template_edit', '_controller' => 'App\\Controller\\Design\\TemplateController::edit'], ['id'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
+        1003 => [[['_route' => 'design_template_delete', '_controller' => 'App\\Controller\\Design\\TemplateController::delete'], ['id'], null, null, false, true, null]],
+        1030 => [[['_route' => 'design_text_show', '_controller' => 'App\\Controller\\Design\\TextController::show'], ['id'], ['GET' => 0], null, false, true, null]],
+        1044 => [[['_route' => 'design_text_edit', '_controller' => 'App\\Controller\\Design\\TextController::edit'], ['id'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
+        1069 => [[['_route' => 'design_text_delete', '_controller' => 'App\\Controller\\Design\\TextController::delete'], ['id'], null, null, false, true, null]],
+        1144 => [[['_route' => 'printify_synchronizeproductlist', '_controller' => 'App\\Controller\\PrintifyController::printify_synchronizeproductlist'], ['shopid'], null, null, false, true, null]],
+        1182 => [[['_route' => 'printify_productlist', '_controller' => 'App\\Controller\\PrintifyController::printify_productlist'], ['shopid', 'action'], null, null, false, true, null]],
+        1213 => [[['_route' => 'printify_createproduct', '_controller' => 'App\\Controller\\PrintifyController::printify_createproduct'], ['shopid'], null, null, false, true, null]],
+        1242 => [[['_route' => 'printify_uploadimage', '_controller' => 'App\\Controller\\PrintifyController::printify_uploadimage'], ['shopid'], null, null, false, true, null]],
+        1279 => [[['_route' => 'printify_blueprintsselector', '_controller' => 'App\\Controller\\PrintifyController::printify_blueprintsselector'], ['shopid'], null, null, false, true, null]],
+        1313 => [[['_route' => 'printify_templateexporter', '_controller' => 'App\\Controller\\PrintifyController::printify_templateexporter'], ['shopid'], null, null, false, true, null]],
+        1372 => [
             [['_route' => 'printifyservice_blueprintforshop', '_controller' => 'App\\Service\\Printify::blueprintforshop'], ['shopid', 'blueprintid'], null, null, false, true, null],
             [null, null, null, null, false, false, 0],
         ],

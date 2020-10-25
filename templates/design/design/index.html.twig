@@ -38,10 +38,7 @@
                         </div>
 
                         <div id="activetags" class="form-group col-6 border border-dark rounded">
-
                         </div>
-
-
                     </div>
 
                     <div class="row">
@@ -67,11 +64,33 @@
                             <button id="applytemplate" class="btn btn-primary btn-block">Apply Templates</button>
                         </div>
 
-                        <div id="activetags" class="form-group col-6 border border-dark rounded">
+                        <div id="activetemplates" class="form-group col-6 border border-dark rounded"></div>
+                    </div>
 
+                    <div class="row">
+                        <div class="form-group col-4">
+                            <select multiple="multiple"
+                                    class="js-example-basic-single js-states form-control select-to-apply"
+                                    id="selectmodel" data-allow-clear="1">
+                                <optgroup label="Model Category">
+
+                                    {% for modelCategory in modelCategories %}
+                                        <option type="modelcategory"
+                                                value="{{ modelCategory.id }}">{{ modelCategory.name }}</option>
+                                    {% endfor %}
+                                </optgroup>
+                                <optgroup label="Model">
+                                    {% for model in models %}
+                                        <option type="model" value="{{ model.id }}">{{ model.name }}</option>
+                                    {% endfor %}
+                                </optgroup>
+                            </select>
+                        </div>
+                        <div class="form-group col-2">
+                            <button id="applymodel" class="btn btn-primary btn-block">Apply Models</button>
                         </div>
 
-
+                        <div id="activemodels" class="form-group col-6 border border-dark rounded"></div>
                     </div>
 
                     <table id="table"
@@ -98,8 +117,7 @@
                             <th data-field="name" data-filter-control="input" data-sortable="true">Name</th>
                             <th data-field="type" data-filter-control="input" data-sortable="true">Type</th>
                             <th data-field="tags" data-filter-control="input" data-sortable="true">Tags</th>
-                            <th data-field="models" data-filter-control="input" data-sortable="true"
-                                data-visible="false">Models
+                            <th data-field="models" data-filter-control="input" data-sortable="true">Models
                             </th>
                             <th data-field="templates" data-filter-control="input" data-sortable="true">Templates</th>
                             <th data-field="cuts" data-filter-control="input" data-sortable="true">Cuts</th>
@@ -157,7 +175,7 @@
                                 <td>{% for template in text.templates %}
                                         <span class='templatelabel'><span
                                                     href='/design/design/ajaxunlinktemplate/{{ text.id }}/{{ template.id }}'
-                                                    tagid='{{ template.id }}' tagname='{{ template.name }}'
+                                                    templateid='{{ template.id }}' templatename='{{ template.name }}'
                                                     class='closebtn unlinktemplatebtn'>×</span>{{ template.name }} <span
                                                     class="badge badge-secondary">{{ template.linestyles | length }} </span></span>
 

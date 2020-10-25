@@ -3,7 +3,9 @@
 namespace App\Controller\Design;
 
 use App\Entity\Design\Design;
+use App\Entity\Design\Model;
 use App\Entity\Design\Tag;
+use App\Entity\Design\Template;
 use App\Entity\Design\Text;
 use App\Entity\Design\Image;
 use App\Form\Design\DesignType;
@@ -279,6 +281,265 @@ class DesignController extends AbstractController
         }
     }
 
+    /**
+     * @Route("/ajaxaddtemplate", name="design_design_ajaxaddtemplate")
+     * @param Request $request
+     * @param TemplateRepository $templateRepository
+     * @param DesignRepository $designRepository
+     * @return JsonResponse
+     */
+    public function ajax_add_templates(Request $request, TemplateRepository $templateRepository, DesignRepository $designRepository)
+    {
+        if ($request->isXMLHttpRequest()) {
+            $data = $request->request->all();
 
+            $entityManager = $this->getDoctrine()->getManager();
+
+            $serializer = SerializerBuilder::create()->build();
+            $templateArgument = $serializer->deserialize($data['templates'], "array", "json");
+            $designArgument = $serializer->deserialize($data['designs'], "array", "json");
+
+            $designList = array();
+            $oneDesign = new Design();
+
+            $templateList = array();
+            $oneTemplate = new Template();
+
+            $htmlresponse = "";
+            $htmltag = "";
+            $i = 0;
+
+            foreach ($templateArgument as $template) {
+                if (is_numeric($template)) {
+                    $oneTemplate = new Template();
+                    $oneTemplate = $templateRepository->find($template);
+                    $templateList[] = $oneTemplate;
+                } else {
+                    $oneTemplate = new Template();
+                    $oneTemplate->setName($template);
+                    $entityManager->persist($oneTemplate);
+                    $entityManager->flush();
+                    $templateList[] = $oneTemplate;
+                }
+
+            }
+
+            foreach ($designArgument as $design) {
+                $htmltag = "";
+                $oneDesign = $designRepository->find($design['id']);
+
+                foreach ($templateList as $template) {
+                    $oneDesign->addTemplate($template);
+                }
+
+                $entityManager->persist($oneDesign);
+                $entityManager->flush();
+                $designList[] = $oneDesign;
+
+            }
+            $designListJson = $serializer->serialize($designList, "json");
+
+            return new JsonResponse($designListJson);
+        } else {
+            $this->redirectToRoute('design_design_index');
+        }
+    }
+
+
+    /**
+     * @Route("/ajaxunlinktemplate/{designid}/{templateid}", name="design_design_ajaxunlinktemplate")
+     * @param Request $request
+     * @param Design $design
+     * @param Template $template
+     * @return JsonResponse
+     * @ParamConverter("design", options={"mapping": {"designid" : "id"}})
+     * @ParamConverter("template", options={"mapping": {"templateid" : "id"}})
+     */
+    public function ajax_unlink_template(Request $request, Design $design, Template $template)
+    {
+        if ($request->isXMLHttpRequest()) {
+            $entityManager = $this->getDoctrine()->getManager();
+
+            $design->removeTemplate($template);
+            $entityManager->persist($design);
+            $entityManager->flush();
+
+            $serializer = SerializerBuilder::create()->build();
+
+            $designJson = $serializer->serialize($design, "json");
+
+            return new JsonResponse($designJson);
+        } else {
+            $this->redirectToRoute('design_design_index');
+        }
+    }
+
+    /**
+     * @Route("/ajaxunlinktemplatefromselection/{templateid}", name="design_design_ajaxunlinktemplatefromselection")
+     * @param Request $request
+     * @param Template $template
+     * @param DesignRepository $designRepository
+     * @return JsonResponse
+     * @ParamConverter("template", options={"mapping": {"templateid" : "id"}})
+     */
+    public function ajax_unlink_template_from_selection(Request $request, Template $template, DesignRepository $designRepository)
+    {
+        if ($request->isXMLHttpRequest()) {
+            $data = $request->request->all();
+
+            $entityManager = $this->getDoctrine()->getManager();
+
+            $serializer = SerializerBuilder::create()->build();
+            $designArgument = $serializer->deserialize($data['designs'], "array", "json");
+
+            $designList = array();
+
+            foreach ($designArgument as $design) {
+
+                $oneDesign = $designRepository->find($design['id']);
+                $oneDesign->removeTemplate($template);
+
+                $entityManager->persist($oneDesign);
+                $entityManager->flush();
+                $designList[] = $oneDesign;
+            }
+            $designListJson = $serializer->serialize($designList, "json");
+
+            return new JsonResponse($designListJson);
+        } else {
+            $this->redirectToRoute('design_design_index');
+        }
+    }
+
+
+    /**
+     * @Route("/ajaxaddmodel", name="design_design_ajaxaddmodel")
+     * @param Request $request
+     * @param ModelRepository $modelRepository
+     * @param DesignRepository $designRepository
+     * @return JsonResponse
+     */
+    public function ajax_add_models(Request $request, ModelRepository $modelRepository, DesignRepository $designRepository)
+    {
+        if ($request->isXMLHttpRequest()) {
+            $data = $request->request->all();
+
+            $entityManager = $this->getDoctrine()->getManager();
+
+            $serializer = SerializerBuilder::create()->build();
+            $modelArgument = $serializer->deserialize($data['models'], "array", "json");
+            $designArgument = $serializer->deserialize($data['designs'], "array", "json");
+
+            $designList = array();
+            $oneDesign = new Design();
+
+            $modelList = array();
+            $oneModel = new Model();
+
+            $htmlresponse = "";
+            $htmltag = "";
+            $i = 0;
+
+            foreach ($modelArgument as $model) {
+                if (is_numeric($model)) {
+                    $oneModel = new Model();
+                    $oneModel = $modelRepository->find($model);
+                    $modelList[] = $oneModel;
+                } else {
+                    $oneModel = new Model();
+                    $oneModel->setName($model);
+                    $entityManager->persist($oneModel);
+                    $entityManager->flush();
+                    $modelList[] = $oneModel;
+                }
+
+            }
+
+            foreach ($designArgument as $design) {
+                $htmltag = "";
+                $oneDesign = $designRepository->find($design['id']);
+
+                foreach ($modelList as $model) {
+                    $oneDesign->addModel($model);
+                }
+
+                $entityManager->persist($oneDesign);
+                $entityManager->flush();
+                $designList[] = $oneDesign;
+
+            }
+            $designListJson = $serializer->serialize($designList, "json");
+
+            return new JsonResponse($designListJson);
+        } else {
+            $this->redirectToRoute('design_design_index');
+        }
+    }
+
+
+    /**
+     * @Route("/ajaxunlinkmodel/{designid}/{modelid}", name="design_design_ajaxunlinkmodel")
+     * @param Request $request
+     * @param Design $design
+     * @param Model $model
+     * @return JsonResponse
+     * @ParamConverter("design", options={"mapping": {"designid" : "id"}})
+     * @ParamConverter("model", options={"mapping": {"modelid" : "id"}})
+     */
+    public function ajax_unlink_model(Request $request, Design $design, Model $model)
+    {
+        if ($request->isXMLHttpRequest()) {
+            $entityManager = $this->getDoctrine()->getManager();
+
+            $design->removeModel($model);
+            $entityManager->persist($design);
+            $entityManager->flush();
+
+            $serializer = SerializerBuilder::create()->build();
+
+            $designJson = $serializer->serialize($design, "json");
+
+            return new JsonResponse($designJson);
+        } else {
+            $this->redirectToRoute('design_design_index');
+        }
+    }
+
+    /**
+     * @Route("/ajaxunlinkmodelfromselection/{modelid}", name="design_design_ajaxunlinkmodelfromselection")
+     * @param Request $request
+     * @param Model $model
+     * @param DesignRepository $designRepository
+     * @return JsonResponse
+     * @ParamConverter("model", options={"mapping": {"modelid" : "id"}})
+     */
+    public function ajax_unlink_model_from_selection(Request $request, Model $model, DesignRepository $designRepository)
+    {
+        if ($request->isXMLHttpRequest()) {
+            $data = $request->request->all();
+
+            $entityManager = $this->getDoctrine()->getManager();
+
+            $serializer = SerializerBuilder::create()->build();
+            $designArgument = $serializer->deserialize($data['designs'], "array", "json");
+
+            $designList = array();
+
+            foreach ($designArgument as $design) {
+
+                $oneDesign = $designRepository->find($design['id']);
+                $oneDesign->removeModel($model);
+
+                $entityManager->persist($oneDesign);
+                $entityManager->flush();
+                $designList[] = $oneDesign;
+            }
+            $designListJson = $serializer->serialize($designList, "json");
+
+            return new JsonResponse($designListJson);
+        } else {
+            $this->redirectToRoute('design_design_index');
+        }
+    }
 
 }

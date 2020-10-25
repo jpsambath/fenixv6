@@ -6596,6 +6596,48 @@
         <argument key="tag" type="service" id=".errored..service_locator.pVLodQY.App\Entity\Design\Tag"/>
       </argument>
     </service>
+    <service id=".service_locator.JaPGBo2" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="designRepository" type="service" id="App\Repository\Design\DesignRepository"/>
+        <argument key="templateRepository" type="service" id="App\Repository\Design\TemplateRepository"/>
+      </argument>
+    </service>
+    <service id=".service_locator.AaK01RY" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="design" type="service" id=".errored..service_locator.AaK01RY.App\Entity\Design\Design"/>
+        <argument key="template" type="service" id=".errored..service_locator.AaK01RY.App\Entity\Design\Template"/>
+      </argument>
+    </service>
+    <service id=".service_locator.EggTqwH" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="designRepository" type="service" id="App\Repository\Design\DesignRepository"/>
+        <argument key="template" type="service" id=".errored..service_locator.EggTqwH.App\Entity\Design\Template"/>
+      </argument>
+    </service>
+    <service id=".service_locator.rh4BDI_" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="designRepository" type="service" id="App\Repository\Design\DesignRepository"/>
+        <argument key="modelRepository" type="service" id="App\Repository\Design\ModelRepository"/>
+      </argument>
+    </service>
+    <service id=".service_locator.OrE45AC" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="design" type="service" id=".errored..service_locator.OrE45AC.App\Entity\Design\Design"/>
+        <argument key="model" type="service" id=".errored..service_locator.OrE45AC.App\Entity\Design\Model"/>
+      </argument>
+    </service>
+    <service id=".service_locator.Oqa88IS" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="designRepository" type="service" id="App\Repository\Design\DesignRepository"/>
+        <argument key="model" type="service" id=".errored..service_locator.Oqa88IS.App\Entity\Design\Model"/>
+      </argument>
+    </service>
     <service id=".service_locator.z0Nw0WZ" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
       <argument type="collection">
@@ -6744,16 +6786,22 @@
         <argument key="authenticationUtils" type="service" id="security.authentication_utils"/>
       </argument>
     </service>
-    <service id=".service_locator.tFCLbfB" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+    <service id=".service_locator.NedZxup" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="App\Controller\Design\CutController::delete" type="service" id=".service_locator.3PHEvsR"/>
         <argument key="App\Controller\Design\CutController::edit" type="service" id=".service_locator.3PHEvsR"/>
         <argument key="App\Controller\Design\CutController::index" type="service" id=".service_locator.kKW1Hom"/>
         <argument key="App\Controller\Design\CutController::show" type="service" id=".service_locator.3PHEvsR"/>
+        <argument key="App\Controller\Design\DesignController::ajax_add_models" type="service" id=".service_locator.rh4BDI_"/>
         <argument key="App\Controller\Design\DesignController::ajax_add_tags" type="service" id=".service_locator.n85oimv"/>
+        <argument key="App\Controller\Design\DesignController::ajax_add_templates" type="service" id=".service_locator.JaPGBo2"/>
+        <argument key="App\Controller\Design\DesignController::ajax_unlink_model" type="service" id=".service_locator.OrE45AC"/>
+        <argument key="App\Controller\Design\DesignController::ajax_unlink_model_from_selection" type="service" id=".service_locator.Oqa88IS"/>
         <argument key="App\Controller\Design\DesignController::ajax_unlink_tag" type="service" id=".service_locator.9X7zW68"/>
         <argument key="App\Controller\Design\DesignController::ajax_unlink_tag_from_selection" type="service" id=".service_locator.pVLodQY"/>
+        <argument key="App\Controller\Design\DesignController::ajax_unlink_template" type="service" id=".service_locator.AaK01RY"/>
+        <argument key="App\Controller\Design\DesignController::ajax_unlink_template_from_selection" type="service" id=".service_locator.EggTqwH"/>
         <argument key="App\Controller\Design\DesignController::delete" type="service" id=".service_locator.HV.o7VJ"/>
         <argument key="App\Controller\Design\DesignController::edit" type="service" id=".service_locator.HV.o7VJ"/>
         <argument key="App\Controller\Design\DesignController::index" type="service" id=".service_locator.JtjNnoS"/>
@@ -6810,9 +6858,15 @@
         <argument key="App\Controller\Design\CutController:edit" type="service" id=".service_locator.3PHEvsR"/>
         <argument key="App\Controller\Design\CutController:index" type="service" id=".service_locator.kKW1Hom"/>
         <argument key="App\Controller\Design\CutController:show" type="service" id=".service_locator.3PHEvsR"/>
+        <argument key="App\Controller\Design\DesignController:ajax_add_models" type="service" id=".service_locator.rh4BDI_"/>
         <argument key="App\Controller\Design\DesignController:ajax_add_tags" type="service" id=".service_locator.n85oimv"/>
+        <argument key="App\Controller\Design\DesignController:ajax_add_templates" type="service" id=".service_locator.JaPGBo2"/>
+        <argument key="App\Controller\Design\DesignController:ajax_unlink_model" type="service" id=".service_locator.OrE45AC"/>
+        <argument key="App\Controller\Design\DesignController:ajax_unlink_model_from_selection" type="service" id=".service_locator.Oqa88IS"/>
         <argument key="App\Controller\Design\DesignController:ajax_unlink_tag" type="service" id=".service_locator.9X7zW68"/>
         <argument key="App\Controller\Design\DesignController:ajax_unlink_tag_from_selection" type="service" id=".service_locator.pVLodQY"/>
+        <argument key="App\Controller\Design\DesignController:ajax_unlink_template" type="service" id=".service_locator.AaK01RY"/>
+        <argument key="App\Controller\Design\DesignController:ajax_unlink_template_from_selection" type="service" id=".service_locator.EggTqwH"/>
         <argument key="App\Controller\Design\DesignController:delete" type="service" id=".service_locator.HV.o7VJ"/>
         <argument key="App\Controller\Design\DesignController:edit" type="service" id=".service_locator.HV.o7VJ"/>
         <argument key="App\Controller\Design\DesignController:index" type="service" id=".service_locator.JtjNnoS"/>
@@ -7438,12 +7492,12 @@
       <argument type="service" id="security.token_storage"/>
     </service>
     <service id="debug.argument_resolver.service.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver" public="false">
-      <argument type="service" id=".service_locator.tFCLbfB"/>
+      <argument type="service" id=".service_locator.NedZxup"/>
     </service>
     <service id="debug.argument_resolver.default.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver" public="false"/>
     <service id="debug.argument_resolver.variadic.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\VariadicValueResolver" public="false"/>
     <service id="debug.argument_resolver.not_tagged_controller.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\NotTaggedControllerValueResolver" public="false">
-      <argument type="service" id=".service_locator.tFCLbfB"/>
+      <argument type="service" id=".service_locator.NedZxup"/>
     </service>
     <service id=".debug.http_client.inner" class="Symfony\Contracts\HttpClient\HttpClientInterface" public="false">
       <argument type="collection"/>
@@ -7458,6 +7512,12 @@
     <service id=".errored..service_locator.9X7zW68.App\Entity\Design\Design" class="App\Entity\Design\Design"/>
     <service id=".errored..service_locator.9X7zW68.App\Entity\Design\Tag" class="App\Entity\Design\Tag"/>
     <service id=".errored..service_locator.pVLodQY.App\Entity\Design\Tag" class="App\Entity\Design\Tag"/>
+    <service id=".errored..service_locator.AaK01RY.App\Entity\Design\Design" class="App\Entity\Design\Design"/>
+    <service id=".errored..service_locator.AaK01RY.App\Entity\Design\Template" class="App\Entity\Design\Template"/>
+    <service id=".errored..service_locator.EggTqwH.App\Entity\Design\Template" class="App\Entity\Design\Template"/>
+    <service id=".errored..service_locator.OrE45AC.App\Entity\Design\Design" class="App\Entity\Design\Design"/>
+    <service id=".errored..service_locator.OrE45AC.App\Entity\Design\Model" class="App\Entity\Design\Model"/>
+    <service id=".errored..service_locator.Oqa88IS.App\Entity\Design\Model" class="App\Entity\Design\Model"/>
     <service id=".errored..service_locator.Q6iFIIn.App\Entity\Design\Font" class="App\Entity\Design\Font"/>
     <service id=".errored..service_locator.oPTvZb5.App\Entity\Design\Image" class="App\Entity\Design\Image"/>
     <service id=".errored..service_locator.QRaG.q5.App\Entity\Design\Image" class="App\Entity\Design\Image"/>
@@ -7905,7 +7965,7 @@
     <service id="JMS\Serializer\ContextFactory\DeserializationContextFactoryInterface" alias="jms_serializer.configured_deserialization_context_factory" public="false"/>
     <service id="container.env_var_processors_locator" alias=".service_locator.CmORmuK" public="true"/>
     <service id="twig.loader.filesystem" alias="twig.loader.native_filesystem" public="false"/>
-    <service id="argument_resolver.controller_locator" alias=".service_locator.tFCLbfB"/>
+    <service id="argument_resolver.controller_locator" alias=".service_locator.NedZxup"/>
     <service id="twig.loader" alias="twig.loader.native_filesystem"/>
     <service id="Psr\Log\LoggerInterface $requestLogger" alias="monolog.logger.request"/>
     <service id="Psr\Log\LoggerInterface $consoleLogger" alias="monolog.logger.console"/>
