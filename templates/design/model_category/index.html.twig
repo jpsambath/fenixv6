@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ModelCategory index{% endblock %}
+
+{% block body %}
+    <h1>ModelCategory index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for model_category in model_categories %}
+            <tr>
+                <td>{{ model_category.id }}</td>
+                <td>{{ model_category.name }}</td>
+                <td>
+                    <a href="{{ path('design_model_category_show', {'id': model_category.id}) }}">show</a>
+                    <a href="{{ path('design_model_category_edit', {'id': model_category.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('design_model_category_new') }}">Create new</a>
+{% endblock %}

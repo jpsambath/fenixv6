@@ -1,0 +1,120 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Design index{% endblock %}
+
+{% block body %}
+
+<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+    <h1 class="display-4">Text index</h1>
+    <p class="lead"></p>
+</div>
+
+<div class="container-fluid">
+    <div class="card-deck mb-3 text-center">
+
+        <div class="card mb-8 box-shadow">
+            <div class="card-header">
+                <h4 class="my-0 font-weight-normal">Text List</h4>
+            </div>
+            <div class="card-body">
+
+    <table id="table"
+           data-toggle="table"
+           data-search="true"
+           data-filter-control="true"
+           data-show-export="true"
+           data-click-to-select="true"
+           data-toolbar="#toolbar"
+           data-show-columns="true"
+           data-id-field="id"
+           data-select-item-name="id"
+           class="table-sm table-borderless table-bordered table-hover">
+        <thead class="thead-light">
+        <tr>
+            <th data-field="state" data-checkbox="true">
+                {#                    <label>#}
+                {#                        <input type="checkbox" value="all" name="checkedall" id="checkedall"/>#}
+                {#                    </label>#}
+            </th>
+
+            <th data-field="id">Id</th>
+            <th data-field="name" data-filter-control="input" data-sortable="true">Name</th>
+            <th data-field="cuts" data-filter-control="input" data-sortable="true">Cuts</th>
+            <th data-field="length" data-filter-control="input" data-sortable="true">Length</th>
+            <th data-field="word_count" data-filter-control="input" data-sortable="true">Word_count</th>
+            <th data-field="genre" data-filter-control="input" data-sortable="true">Genre</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for text in texts %}
+            <tr>
+                <td></td>
+                <td>{{ text.id }}</td>
+                <td>{{ text.name }}</td>
+                <td>{{ text.cuts | length }}</td>
+                <td>{{ text.length }}</td>
+                <td>{{ text.wordCount }}</td>
+                <td>{{ text.genre }}</td>
+                <td>
+
+                    <a href="{{ path('design_text_show', {'id': text.id}) }}"><span class="faicon"><i class="fas fa-eye"></i></span></a>
+                    <a href="{{ path('design_text_edit', {'id': text.id}) }}"><span class="faicon"><i class="fas fa-edit"></i></span></a>
+                    <a href="{{ path('design_text_delete', {'id': text.id}) }}"><span class="faicon"><i class="fas fa-trash-alt"></i></span></a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('design_text_new') }}" class="btn btn-secondary">Create new Text</a>
+            </div>
+        </div>
+    </div>
+
+    <footer class="pt-4 my-md-5 pt-md-5 border-top">
+        <div class="row">
+            <div class="col-12 col-md">
+                <img class="mb-2" src="https://getbootstrap.com/docs/4.0/assets/brand/bootstrap-solid.svg" alt=""
+                     width="24" height="24">
+                <small class="d-block mb-3 text-muted">© 2017-2018</small>
+            </div>
+            <div class="col-6 col-md">
+                <h5>Features</h5>
+                <ul class="list-unstyled text-small">
+                    <li><a class="text-muted" href="#">Cool stuff</a></li>
+                    <li><a class="text-muted" href="#">Random feature</a></li>
+                    <li><a class="text-muted" href="#">Team feature</a></li>
+                    <li><a class="text-muted" href="#">Stuff for developers</a></li>
+                    <li><a class="text-muted" href="#">Another one</a></li>
+                    <li><a class="text-muted" href="#">Last time</a></li>
+                </ul>
+            </div>
+            <div class="col-6 col-md">
+                <h5>Resources</h5>
+                <ul class="list-unstyled text-small">
+                    <li><a class="text-muted" href="#">Resource</a></li>
+                    <li><a class="text-muted" href="#">Resource name</a></li>
+                    <li><a class="text-muted" href="#">Another resource</a></li>
+                    <li><a class="text-muted" href="#">Final resource</a></li>
+                </ul>
+            </div>
+            <div class="col-6 col-md">
+                <h5>About</h5>
+                <ul class="list-unstyled text-small">
+                    <li><a class="text-muted" href="#">Team</a></li>
+                    <li><a class="text-muted" href="#">Locations</a></li>
+                    <li><a class="text-muted" href="#">Privacy</a></li>
+                    <li><a class="text-muted" href="#">Terms</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+</div>
+
+{% endblock %}
+

@@ -1,0 +1,58 @@
+<?php //%255BApp%255CEntity%255CPrintify%255CBlueprint%2524providers%255D%255B1%255D
+
+return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Doctrine\\ORM\\Mapping\\ManyToMany'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\ManyToMany')),
+        clone ($p['Doctrine\\ORM\\Mapping\\JoinTable'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\JoinTable')),
+        clone ($p['Doctrine\\ORM\\Mapping\\JoinColumn'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\JoinColumn')),
+        clone $p['Doctrine\\ORM\\Mapping\\JoinColumn'],
+        clone ($p['Symfony\\Component\\Serializer\\Annotation\\MaxDepth'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Symfony\\Component\\Serializer\\Annotation\\MaxDepth')),
+        clone ($p['JMS\\Serializer\\Annotation\\Groups'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('JMS\\Serializer\\Annotation\\Groups')),
+        clone ($p['JMS\\Serializer\\Annotation\\Type'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('JMS\\Serializer\\Annotation\\Type')),
+    ],
+    null,
+    [
+        'stdClass' => [
+            'targetEntity' => [
+                'App\\Entity\\Printify\\Provider',
+            ],
+            'mappedBy' => [
+                'blueprints',
+            ],
+            'name' => [
+                1 => 'printify_providersblueprints',
+                'provider_id',
+                'blueprint_id',
+                6 => 'ArrayCollection<App\\Entity\\Printify\\Provider>',
+            ],
+            'joinColumns' => [
+                1 => [
+                    $o[2],
+                ],
+            ],
+            'inverseJoinColumns' => [
+                1 => [
+                    $o[3],
+                ],
+            ],
+            'groups' => [
+                5 => [
+                    'blueprintexporter',
+                ],
+            ],
+        ],
+        'Symfony\\Component\\Serializer\\Annotation\\MaxDepth' => [
+            'maxDepth' => [
+                4 => 1,
+            ],
+        ],
+    ],
+    [
+        $o[0],
+        $o[1],
+        $o[4],
+        $o[5],
+        $o[6],
+    ],
+    []
+); }];

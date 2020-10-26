@@ -9,7 +9,7 @@ use JMS\Serializer\Annotation as Serializer;
 use Symfony\Component\Serializer\Annotation\MaxDepth;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\ImageRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\Printify\ImageRepository")
  * @ORM\Table(name="printify_image")
 
  */

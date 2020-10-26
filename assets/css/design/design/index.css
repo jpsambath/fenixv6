@@ -1,0 +1,35 @@
+.closebtn{
+    color: #888;
+    cursor: pointer;
+    display: inline-block;
+    font-weight: bold;
+    margin-right: 2px;
+    text-decoration: none;
+}
+
+.closebtn:hover{
+    color: #1d1f21;
+    text-decoration: none;
+}
+
+.taglabel{
+    background-color: #e4e4e4;
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    cursor: default;
+    float: left;
+    margin-right: 5px;
+    margin-top: 5px;
+    padding: 0 5px;
+}
+
+.templatelabel{
+    background-color: #7efca4;
+    border: 1px solid #69d08d;
+    border-radius: 4px;
+    cursor: default;
+    float: left;
+    margin-right: 5px;
+    margin-top: 5px;
+    padding: 0 5px;
+}

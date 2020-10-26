@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}LineStyle index{% endblock %}
+
+{% block body %}
+    <h1>LineStyle index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Font</th>
+                <th>FontColor</th>
+                <th>Majuscule</th>
+                <th>FontSize</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for line_style in line_styles %}
+            <tr>
+                <td>{{ line_style.id }}</td>
+                <td>{{ line_style.font.name }}</td>
+                <td style="background-color:{{ line_style.fontColor }};">{{ line_style.fontColor }}</td>
+                <td>{{ line_style.uppercase ? 'Yes' : 'No' }}</td>
+                <td>{{ line_style.fontSize }}</td>
+                <td>
+                    <a href="{{ path('design_line_style_show', {'id': line_style.id}) }}"><span
+                                class="faicon"><i class="fas fa-eye"></i></span></a>
+                    <a href="{{ path('design_line_style_edit', {'id': line_style.id}) }}"><span
+                                class="faicon"><i class="fas fa-edit"></i></span></a>
+                    <a href="{{ path('design_line_style_delete', {'id': line_style.id}) }}"><span
+                                class="faicon"><i class="fas fa-trash-alt"></i></span></a>
+                </td>
+
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('design_line_style_new') }}">Create new</a>
+{% endblock %}

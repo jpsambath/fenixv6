@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\UploadRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\Printify\UploadRepository")
  * @ORM\Table(name="printify_upload")
  */
 class Upload

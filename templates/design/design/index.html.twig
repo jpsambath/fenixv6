@@ -1,0 +1,339 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('design_design_index') }}
+{% endblock %}
+
+{% block title %}Design index{% endblock %}
+
+{% block body %}
+
+    <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+        <h1 class="display-4">Design index</h1>
+        <p class="lead"></p>
+    </div>
+
+    <div class="container-fluid">
+        <div class="card-deck mb-3 text-center">
+
+            <div class="card mb-8 box-shadow">
+                <div class="card-header">
+                    <h4 class="my-0 font-weight-normal">Design List</h4>
+                </div>
+                <div class="card-body">
+
+                    <div class="row">
+                        <div class="form-group col-4">
+                            <select multiple class="js-example-basic-single js-states form-control select-to-apply"
+                                    id="selecttag" data-allow-clear="1">
+
+                                {% for tag in tags %}
+                                    <option value="{{ tag.id }}">{{ tag.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group col-2">
+                            <button id="applytag" class="btn btn-primary btn-block">Apply Tags</button>
+                        </div>
+
+                        <div id="activetags" class="form-group col-6 border border-dark rounded">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-4">
+                            <select multiple="multiple"
+                                    class="js-example-basic-single js-states form-control select-to-apply"
+                                    id="selecttemplate" data-allow-clear="1">
+                                <optgroup label="Template Category">
+
+                                    {% for templateCategory in templateCategories %}
+                                        <option type="templatecategory"
+                                                value="{{ templateCategory.id }}">{{ templateCategory.name }}</option>
+                                    {% endfor %}
+                                </optgroup>
+                                <optgroup label="Template">
+                                    {% for template in templates %}
+                                        <option type="template" value="{{ template.id }}">{{ template.name }}</option>
+                                    {% endfor %}
+                                </optgroup>
+                            </select>
+                        </div>
+                        <div class="form-group col-2">
+                            <button id="applytemplate" class="btn btn-primary btn-block">Apply Templates</button>
+                        </div>
+
+                        <div id="activetemplates" class="form-group col-6 border border-dark rounded"></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-4">
+                            <select multiple="multiple"
+                                    class="js-example-basic-single js-states form-control select-to-apply"
+                                    id="selectmodel" data-allow-clear="1">
+                                <optgroup label="Model Category">
+
+                                    {% for modelCategory in modelCategories %}
+                                        <option type="modelcategory"
+                                                value="{{ modelCategory.id }}">{{ modelCategory.name }}</option>
+                                    {% endfor %}
+                                </optgroup>
+                                <optgroup label="Model">
+                                    {% for model in models %}
+                                        <option type="model" value="{{ model.id }}">{{ model.name }}</option>
+                                    {% endfor %}
+                                </optgroup>
+                            </select>
+                        </div>
+                        <div class="form-group col-2">
+                            <button id="applymodel" class="btn btn-primary btn-block">Apply Models</button>
+                        </div>
+
+                        <div id="activemodels" class="form-group col-6 border border-dark rounded"></div>
+                    </div>
+
+                    <table id="table"
+                           data-toggle="table"
+                           data-search="true"
+                           data-filter-control="true"
+                           data-show-export="true"
+                           data-click-to-select="true"
+                           data-unique-id="id"
+                           data-toolbar="#toolbar"
+                           data-show-columns="true"
+                           data-id-field="id"
+                           data-select-item-name="id"
+                           data-loading-template=" "
+                           class="table table-sm table-bordered table-striped table-hover">
+                        <thead class="thead-light">
+                        <tr>
+                            <th data-field="state" data-checkbox="true">
+                                {# <label> #}
+                                {# <input type="checkbox" value="all" name="checkedall" id="checkedall"/> #}
+                                {# </label> #}
+                            </th>
+                            <th data-field="id">Id</th>
+                            <th data-field="name" data-filter-control="input" data-sortable="true">Name</th>
+                            <th data-field="type" data-filter-control="input" data-sortable="true">Type</th>
+                            <th data-field="tags" data-filter-control="input" data-sortable="true">Tags</th>
+                            <th data-field="models" data-filter-control="input" data-sortable="true">Models
+                            </th>
+                            <th data-field="templates" data-filter-control="input" data-sortable="true">Templates</th>
+                            <th data-field="cuts" data-filter-control="input" data-sortable="true">Cuts</th>
+
+                            <th data-field="genre" data-filter-control="input" data-sortable="true"
+                                data-visible="false">Genre
+                            </th>
+                            <th data-field="wordcount" data-filter-control="input" data-sortable="true"
+                                data-visible="false">Nb mots
+                            </th>
+                            <th data-field="length" data-filter-control="input" data-sortable="true"
+                                data-visible="false">Nb Car
+                            </th>
+                            <th data-field="src" data-filter-control="input" data-sortable="true" data-visible="false">
+                                Src
+                            </th>
+                            <th data-field="height" data-filter-control="input" data-sortable="true"
+                                data-visible="false">Height
+                            </th>
+                            <th data-field="width" data-filter-control="input" data-sortable="true"
+                                data-visible="false">Width
+                            </th>
+                            <th data-field="size" data-filter-control="input" data-sortable="true" data-visible="false">
+                                Size
+                            </th>
+                            <th data-field="format" data-filter-control="input" data-sortable="true"
+                                data-visible="false">Format
+                            </th>
+
+                            <th data-field="actions">Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody id="designlist">
+                        {% for text in texts %}
+                            <tr>
+                                <td>
+                                    {# <label> #}
+                                    {# <input type="checkbox" id="{{ design.id }}" value="{{ design.id }}" name="checkeddesign"/> #}
+                                    {# </label> #}
+                                </td>
+                                <td>{{ text.id }}</td>
+                                <td>{{ text.name }}</td>
+                                <td>Txt</td>
+
+
+                                <td>{% for tag in text.tags %}
+                                        <span class='taglabel'><span
+                                                    href='/design/design/ajaxunlinktag/{{ text.id }}/{{ tag.id }}'
+                                                    tagid='{{ tag.id }}' tagname='{{ tag.name }}'
+                                                    class='closebtn unlinktagbtn'>×</span>{{ tag.name }}</span>
+                                    {% endfor %}</td>
+                                <td>{% for model in text.models %}
+                                        {{ text.name }}
+                                    {% endfor %}</td>
+                                <td>{% for template in text.templates %}
+                                        <span class='templatelabel'><span
+                                                    href='/design/design/ajaxunlinktemplate/{{ text.id }}/{{ template.id }}'
+                                                    templateid='{{ template.id }}' templatename='{{ template.name }}'
+                                                    class='closebtn unlinktemplatebtn'>×</span>{{ template.name }} <span
+                                                    class="badge badge-secondary">{{ template.linestyles | length }} </span></span>
+
+                                    {% endfor %}</td>
+                                <td>
+                                    {% for cut in text.cuts %}
+                                        {% set sameline = false %}
+                                        {% for template in text.templates %}
+                                            {% if template.linestyles | length == cut.linecount %}
+                                                {% set sameline = true %}
+                                            {% endif %}
+                                        {% endfor %}
+
+                                        {% if sameline == true %}
+                                            <span class="badge badge-success">{{ cut.linecount }}</span>
+                                        {% else %}
+                                            <span class="badge badge-danger">{{ cut.linecount }}</span>
+                                        {% endif %}
+                                    {% endfor %}
+                                </td>
+
+                                <td>{{ text.genre }}</td>
+                                <td>{{ text.wordCount }}</td>
+                                <td>{{ text.length }}</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+
+
+                                <td>
+                                    <a href="{{ path('design_text_show', {'id': text.id}) }}"><span
+                                                class="faicon"><i class="fas fa-eye"></i></span></a>
+                                    <a href="{{ path('design_text_edit', {'id': text.id}) }}"><span
+                                                class="faicon"><i class="fas fa-edit"></i></span></a>
+                                    <a href="{{ path('design_text_delete', {'id': text.id}) }}"><span
+                                                class="faicon"><i class="fas fa-trash-alt"></i></span></a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+
+                        {% for image in images %}
+                            <tr>
+                                <td>
+                                    {# <label> #}
+                                    {# <input type="checkbox" id="{{ design.id }}" value="{{ design.id }}" name="checkeddesign"/> #}
+                                    {# </label> #}
+                                </td>
+                                <td>{{ image.id }}</td>
+                                <td>{{ image.name }}</td>
+                                <td>Img</td>
+
+
+                                <td>{% for tag in image.tags %}
+                                        <span class='taglabel'><span
+                                                    href='/design/design/ajaxunlinktag/{{ image.id }}/{{ tag.id }}'
+                                                    tagid='{{ tag.id }}' tagname='{{ tag.name }}'
+                                                    class='closebtn unlinktagbtn'>×</span>{{ tag.name }}</span>
+                                    {% endfor %}</td>
+                                <td>{% for model in image.models %}
+                                        {{ image.name }}
+                                    {% endfor %}</td>
+                                <td>{% for template in image.templates %}
+                                        <span class='templatelabel'><span
+                                                    href='/design/design/ajaxunlinktemplate/{{ image.id }}/{{ template.id }}'
+                                                    tagid='{{ template.id }}' tagname='{{ template.name }}'
+                                                    class='closebtn unlinktemplatebtn'>×</span>{{ template.name }} <span
+                                                    class="badge badge-secondary">{{ template.linestyles | length }} </span></span>
+                                    {% endfor %}</td>
+                                <td></td>
+
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>{{ image.src }}</td>
+                                <td>{{ image.height }}</td>
+                                <td>{{ image.width }}</td>
+                                <td>{{ image.size }}</td>
+                                <td>{{ image.format }}</td>
+
+
+                                <td>
+                                    <a href="{{ path('design_image_show', {'id': image.id}) }}"><span
+                                                class="faicon"><i class="fas fa-eye"></i></span></a>
+                                    <a href="{{ path('design_image_edit', {'id': image.id}) }}"><span
+                                                class="faicon"><i class="fas fa-edit"></i></span></a>
+                                    <a href="{{ path('design_image_delete', {'id': image.id}) }}"><span
+                                                class="faicon"><i class="fas fa-trash-alt"></i></span></a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+
+                        </tbody>
+                    </table>
+
+                    <a href="{{ path('design_design_new') }}" class="btn btn-primary">Create new</a>
+                    <a href="{{ path('design_text_new') }}" class="btn btn-secondary">Create new Text</a>
+                    <a href="{{ path('design_image_new') }}" class="btn btn-dark">Create new Img</a>
+
+                </div>
+            </div>
+        </div>
+
+        <footer class="pt-4 my-md-5 pt-md-5 border-top">
+            <div class="row">
+                <div class="col-12 col-md">
+                    <img class="mb-2" src="https://getbootstrap.com/docs/4.0/assets/brand/bootstrap-solid.svg" alt=""
+                         width="24" height="24">
+                    <small class="d-block mb-3 text-muted">© 2017-2018</small>
+                </div>
+                <div class="col-6 col-md">
+                    <h5>Features</h5>
+                    <ul class="list-unstyled text-small">
+                        <li><a class="text-muted" href="#">Cool stuff</a></li>
+                        <li><a class="text-muted" href="#">Random feature</a></li>
+                        <li><a class="text-muted" href="#">Team feature</a></li>
+                        <li><a class="text-muted" href="#">Stuff for developers</a></li>
+                        <li><a class="text-muted" href="#">Another one</a></li>
+                        <li><a class="text-muted" href="#">Last time</a></li>
+                    </ul>
+                </div>
+                <div class="col-6 col-md">
+                    <h5>Resources</h5>
+                    <ul class="list-unstyled text-small">
+                        <li><a class="text-muted" href="#">Resource</a></li>
+                        <li><a class="text-muted" href="#">Resource name</a></li>
+                        <li><a class="text-muted" href="#">Another resource</a></li>
+                        <li><a class="text-muted" href="#">Final resource</a></li>
+                    </ul>
+                </div>
+                <div class="col-6 col-md">
+                    <h5>About</h5>
+                    <ul class="list-unstyled text-small">
+                        <li><a class="text-muted" href="#">Team</a></li>
+                        <li><a class="text-muted" href="#">Locations</a></li>
+                        <li><a class="text-muted" href="#">Privacy</a></li>
+                        <li><a class="text-muted" href="#">Terms</a></li>
+                    </ul>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        $('.select-to-apply').each(function (index, item) {
+            $(item).select2({
+                theme: "classic",
+                tags: true
+            });
+        });
+    </script>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('design_design_index') }}
+
+{% endblock %}
+

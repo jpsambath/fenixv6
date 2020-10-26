@@ -1,0 +1,110 @@
+{% import _self as newtextmacros %}
+
+{% macro printPart(part, index) %}
+    <div class="col-sm part-item">
+        {{ form_widget(part, {'attr': {'placeholder': 'Text'}}) }}
+    </div>
+{% endmacro %}
+
+{% macro printCut(cut, index) %}
+    <div class="form-group row cut-item">
+        <div class="col-sm-2"><label>{{ form_label(cut) }}</label></div>
+        <div class="col-sm-2"><label>{{ form_label(cut.parts) }}</label>
+            <button class="btn btn-primary btn-sm ml-1 rounded rounded-pill addnewpart" cutnumber={{ index }}><i class="fas fa-plus-circle"></i></button>
+            <button class="btn btn-primary btn-sm ml-1 rounded rounded-pill removepart" cutnumber={{ index }}><i class="fas fa-minus-circle"></i></button>
+        </div>
+        <div class="col-sm-8"></div>
+
+        <div class="col-sm-2">
+            {{ form_widget(cut.linecount, {'attr': {'class': 'form-control', 'placeholder': 'Nb parts', 'value': 1, 'cutnumber': index }}) }}
+        </div>
+
+        <div id="parts_wrapper" class="col-sm-10 row" data-prototype="{{ newtextmacros.printPart(cut.parts.vars.prototype, 0)|e('html_attr') }}" partnumber="{{ cut.parts|length }}" cutnumber={{ index }}>
+
+            {% for key, part in cut.parts %}
+                <div class="col-sm">
+                    {{ form_widget(part, {'attr': {'placeholder': 'Text'}}) }}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endmacro %}
+
+
+
+
+{{ form_start(form) }}
+
+
+<div class="row">
+    <div class="col-6">
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">{{ form_label(form.name) }}</label>
+            <div class="col-sm-10">
+                {{ form_widget(form.name, {'attr': {'class': 'form-control', 'placeholder': 'Design name'}}) }}
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">{{ form_label(form.genre) }}</label>
+            <div class="col-sm-10">
+                {{ form_widget(form.genre, {'attr': {'class': 'form-control', 'placeholder': 'Genre'}}) }}
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">{{ form_label(form.tags) }}</label>
+            <div class="col-sm-10">
+                {{ form_widget(form.tags, {'attr': {'class': 'form-control', 'placeholder': 'Tags'}}) }}
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">{{ form_label(form.templates) }}</label>
+            <div class="col-sm-10">
+                {{ form_widget(form.templates, {'attr': {'class': 'form-control', 'placeholder': 'Templates'}}) }}
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">{{ form_label(form.models) }}</label>
+            <div class="col-sm-10">
+                {{ form_widget(form.models, {'attr': {'class': 'form-control', 'placeholder': 'Templates'}}) }}
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">{{ form_label(form.images) }}</label>
+            <div class="col-sm-10">
+                {{ form_widget(form.images, {'attr': {'class': 'form-control', 'placeholder': 'Templates'}}) }}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-6">
+
+
+        <div class="form-group row">
+            <div class="col-sm-12"><label>{{ form_label(form.cuts) }}</label>
+                <button class="btn btn-primary btn-sm ml-1 rounded rounded-pill addnewcut"><i class="fas fa-plus-circle"></i></button>
+                <button class="btn btn-primary btn-sm ml-1 rounded rounded-pill removecut"><i class="fas fa-minus-circle"></i></button>
+            </div>
+
+        </div>
+
+        <div id="cuts_wrapper" class="cuts_wrapper"
+             data-prototype="{{ newtextmacros.printCut(form.cuts.vars.prototype, 0)|e('html_attr') }}"
+             cutnumber="{{ form.cuts|length }}">
+
+
+            {% for key, cut in form.cuts %}
+                {{ newtextmacros.printCut(cut, key) }}
+            {% endfor %}
+
+        </div>
+
+    </div>
+</div>
+{{ form_row(form._token) }}
+<button class="btn btn-primary">{{ button_label|default('Save') }}</button>
+{{ form_end(form, {'render_rest': false}) }}

@@ -15,6 +15,7 @@ use App\Service\Printify;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerBuilder;
 use Knp\Component\Pager\PaginatorInterface;
+use phpDocumentor\Reflection\Types\Integer;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -49,29 +50,92 @@ class PrintifyController extends AbstractController
         $printify = new Printify($security, $em);
         $shoplist = $printify->retrieveshoplist();
 
-        return $this->render('printify/shopList.html.twig', [
+        return $this->render('printify/viewProductList.html.twig', [
             'printify_shoplist' => $shoplist
         ]);
     }
 
     /**
-     * @Route("/product/productlist/{shopid}", name="productlist")
+     * @Route("/product/synchronizeproductlist/{shopid}", name="synchronizeproductlist")
      * @ParamConverter("shop", options={"mapping": {"shopid" : "id"}})
      * @param Request $request
      * @param Shop $shop
      * @return Response
      */
-    public function printify_productlist(Request $request, Shop $shop)
+    public function printify_synchronizeproductlist(Request $request, Shop $shop)
     {
         $em = $this->getDoctrine()->getManager();
         $security = new Security($this->container);
 
         $printify = new Printify($security, $em);
-        $productList = $printify->retrieveproductlist($shop->getId(), null);
 
-        return $this->render('printify/productList.html.twig', [
+        $productList = $em->getRepository(Product::class)->findBy(['shop_id' => $shop->getId()]);
+
+        foreach ($productList as $product) {
+            $em->remove($product);
+        }
+
+        $result = $printify->synchronizeproductlist($shop->getId());
+
+
+        $productList = $result[2];
+        $last_page = $result[1];
+        $total_product = $result[0];
+
+        return $this->render('printify/synchronizeProductList.html.twig', [
             'productlist' => $productList,
-            'shop' => $shop
+            'last_page' => $last_page,
+            'total_product' => $total_product,
+            'printifyshop' => $shop
+        ]);
+
+    }
+
+
+    /**
+     * @Route("/product/productlist/{shopid}/{action}", name="productlist")
+     * @ParamConverter("shop", options={"mapping": {"shopid" : "id"}})
+     * @param Request $request
+     * @param Shop $shop
+     * @param string $action
+     * @return Response
+     */
+    public function printify_productlist(Request $request, Shop $shop, string $action)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $security = new Security($this->container);
+        $printify = new Printify($security, $em);
+        $productList = array();
+
+        if ($action == "form") {
+            $data = $request->request->all();
+
+            if ($data["request"] == "delete") {
+                foreach ($data["checked_printifyproduct"] as $productid) {
+                    $printify->deleteproduct($shop->getId(), $productid);
+                }
+            } elseif ($data["request"] == "publish") {
+                foreach ($data["checked_printifyproduct"] as $productid) {
+                    $printify->publishproduct($shop->getId(), $productid);
+                }
+            } elseif ($data["request"] == "edit") {
+                foreach ($data["checked_printifyproduct"] as $productid) {
+                    echo $productid . " - à modifier <br>";
+                }
+            } elseif ($data["request"] == "unpublish") {
+                foreach ($data["checked_printifyproduct"] as $productid) {
+                    $printify->unpublishproduct($shop->getId(), $productid);
+                }
+            }
+        }
+
+
+        $productList = $em->getRepository(Product::class)->findBy(['shop_id' => $shop->getId()], ['created_at' => 'DESC']);
+
+
+        return $this->render('printify/viewProductList.html.twig', [
+            'productlist' => $productList,
+            'printifyshop' => $shop
         ]);
 
     }
@@ -79,9 +143,9 @@ class PrintifyController extends AbstractController
     /**
      * @Route("/product/createproduct/{shopid}", name="createproduct")
      * @param Request $request
-     * @ParamConverter("shop", options={"mapping": {"shopid" : "id"}})
      * @param Shop $shop
      * @return Response
+     * @ParamConverter("shop", options={"mapping": {"shopid" : "id"}})
      */
     public function printify_createproduct(Request $request, Shop $shop)
     {
@@ -105,7 +169,7 @@ class PrintifyController extends AbstractController
             $importedcsv = [];
 
             if (($h = fopen("{$originalFilename}", "r")) !== FALSE) {
-                while (($data = fgetcsv($h, 10000, ";")) !== FALSE) {
+                while (($data = fgetcsv($h, 100000, ";")) !== FALSE) {
                     $importedcsv[] = $data;
                 }
                 fclose($h);
@@ -120,7 +184,7 @@ class PrintifyController extends AbstractController
             //$this->addFlash('success', 'Produit créé! Knowledge is power!');
 
 
-            return $this->render('printify/createProduct.html.twig', [
+            return $this->render('printify/createBulkProduct.html.twig', [
                 'shop' => $shop,
                 'form' => $form->createView(),
                 'filename' => $filename,
@@ -129,7 +193,7 @@ class PrintifyController extends AbstractController
             ]);
         }
 
-        return $this->render('printify/createProduct.html.twig', [
+        return $this->render('printify/createBulkProduct.html.twig', [
             'shop' => $shop,
             'form' => $form->createView()
         ]);
@@ -173,7 +237,7 @@ class PrintifyController extends AbstractController
      */
     public function printify_blueprintsselector(Shop $selectedShop, Request $request, PaginatorInterface $paginator)
     {
-        if ($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY') AND $this->get('security.authorization_checker')->isGranted('ROLE_PRINTIFY')) {
+        if ($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY') and $this->get('security.authorization_checker')->isGranted('ROLE_PRINTIFY')) {
             $user = $this->getUser();
 
             $shoplist = $this->getDoctrine()->getRepository(Shop::class)->findBy(['user' => $user]);
@@ -187,7 +251,7 @@ class PrintifyController extends AbstractController
             );
         }
 
-        return $this->render('printify/blueprintsSelector.html.twig', [
+        return $this->render('printify/saveBlueprintToShop.twig', [
             'printify_shoplist' => $shoplist,
             'selectedShop' => $selectedShop,
             'blueprintslist' => $blueprintslist
@@ -204,7 +268,7 @@ class PrintifyController extends AbstractController
      */
     public function printify_templateexporter(Shop $selectedShop, Request $request)
     {
-        if ($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY') AND $this->get('security.authorization_checker')->isGranted('ROLE_PRINTIFY')) {
+        if ($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY') and $this->get('security.authorization_checker')->isGranted('ROLE_PRINTIFY')) {
             $user = $this->getUser();
 
             $shoplist = $this->getDoctrine()->getRepository(Shop::class)->findBy(['user' => $user]);
@@ -214,7 +278,7 @@ class PrintifyController extends AbstractController
 
         }
 
-        return $this->render('printify/templateExporter.html.twig', [
+        return $this->render('printify/exportProductTemplate.html.twig', [
             'printify_shoplist' => $shoplist,
             'selectedShop' => $selectedShop,
             'selectedShopArray' => $selectedShopArray

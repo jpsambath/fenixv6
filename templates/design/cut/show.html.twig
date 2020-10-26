@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Cut{% endblock %}
+
+{% block body %}
+    <h1>Cut</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ cut.id }}</td>
+            </tr>
+            <tr>
+                <th>Linecount</th>
+                <td>{{ cut.linecount }}</td>
+            </tr>
+            <tr>
+                <th>Parts</th>
+                <td>{{ cut.parts ? cut.parts|join(', ') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('design_cut_index') }}">back to list</a>
+
+    <a href="{{ path('design_cut_edit', {'id': cut.id}) }}">edit</a>
+
+    {{ include('design_cut/_delete_form.html.twig') }}
+{% endblock %}

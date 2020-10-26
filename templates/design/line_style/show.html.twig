@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}LineStyle{% endblock %}
+
+{% block body %}
+    <h1>LineStyle</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ line_style.id }}</td>
+            </tr>
+            <tr>
+                <th>PoliceName</th>
+                <td>{{ line_style.policeName }}</td>
+            </tr>
+            <tr>
+                <th>PostPostScriptName</th>
+                <td>{{ line_style.postPostScriptName }}</td>
+            </tr>
+            <tr>
+                <th>FontColor</th>
+                <td>{{ line_style.fontColor }}</td>
+            </tr>
+            <tr>
+                <th>Majuscule</th>
+                <td>{{ line_style.majuscule ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>FontSize</th>
+                <td>{{ line_style.fontSize }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('design_line_style_index') }}">back to list</a>
+
+    <a href="{{ path('design_line_style_edit', {'id': line_style.id}) }}">edit</a>
+
+    {{ include('design/line_style/_delete_form.html.twig') }}
+{% endblock %}

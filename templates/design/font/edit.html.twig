@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Font{% endblock %}
+
+{% block body %}
+    <h1>Edit Font</h1>
+
+    {{ include('design_font/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('design_font_index') }}">back to list</a>
+
+    {{ include('design_font/_delete_form.html.twig') }}
+{% endblock %}

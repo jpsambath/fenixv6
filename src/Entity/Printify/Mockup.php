@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping\JoinTable;
 use JMS\Serializer\Annotation as Serializer;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\MockupRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\Printify\MockupRepository")
  * @ORM\Table(name="printify_mockup")
  */
 class Mockup
@@ -22,7 +22,6 @@ class Mockup
      * @Serializer\Type("integer")
      */
     private $id;
-
     /**
      * @var string
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -56,7 +55,7 @@ class Mockup
      * @ORM\ManyToOne(targetEntity="App\Entity\Printify\Product", inversedBy="mockups")
      * @JoinTable(name="printify_productmockups",
      *     joinColumns={@JoinColumn(name="mockup_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@JoinColumn(name="product_id", referencedColumnName="id")}
+     *      inverseJoinColumns={@JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")}
      *     )
      * @Serializer\Type("App\Entity\Printify\Product")
      */
