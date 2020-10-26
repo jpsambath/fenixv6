@@ -103,21 +103,13 @@ $(document).ready(function () {
                 designs: JSON.stringify($("#table").bootstrapTable('getSelections'))
             },
             dataType: 'json',
+            async: true,
 
             success: function (data, status) {
                 $("#menu_area").notify("Tags Successfully Added :  \n" + $("#selecttag option:selected").toArray().map(item => item.text).join('\n'), {
                     position: "bottom right",
                     className: "success"
                 });
-
-                //Suppression des lignes précédemment cochées
-                // let ids = $.map($('#table').bootstrapTable('getSelections'), function (row) {
-                //     return row.id
-                // })
-                // $('#table').bootstrapTable('remove', {
-                //     field: 'id',
-                //     values: ids
-                // });
 
                 $.each(JSON.parse(data), function (key, design) {
 
@@ -136,9 +128,6 @@ $(document).ready(function () {
 
                     majactivetags();
                 });
-                // $('#table tbody').find('.selected').remove();
-                // $('#table tbody').prepend(data);
-                // $('#table').bootstrapTable('refresh');
 
             },
             error:
@@ -157,15 +146,16 @@ $(document).ready(function () {
     $('#table').on('check.bs.table uncheck.bs.table uncheck-all.bs.table check-all.bs.table', majactivetags);
 
 
+
     //ici ajax template
     $("#applytemplate").on('click', function () {
-        console.log('tags:'+JSON.stringify($("#selecttemplate").val()));
+        console.log('templates:'+JSON.stringify($("#selecttemplate").val()));
         console.log('designs:'+JSON.stringify($("#table").bootstrapTable('getSelections')))
         $.ajax({
             url: "/design/design/ajaxaddtemplate",
             type: 'POST',
             data: {
-                tags: JSON.stringify($("#selecttemplate").val()),
+                templates: JSON.stringify($("#selecttemplate").val()),
                 designs: JSON.stringify($("#table").bootstrapTable('getSelections'))
             },
             dataType: 'json',
@@ -176,21 +166,12 @@ $(document).ready(function () {
                     className: "success"
                 });
 
-                //Suppression des lignes précédemment cochées
-                // let ids = $.map($('#table').bootstrapTable('getSelections'), function (row) {
-                //     return row.id
-                // })
-                // $('#table').bootstrapTable('remove', {
-                //     field: 'id',
-                //     values: ids
-                // });
-
                 $.each(JSON.parse(data), function (key, design) {
 
                     let templatelist = "";
 
-                    $.each(design.templates, function (t, tag) {
-                        templatelist += "<span class='templatelabel'><span href='/design/design/ajaxunlinktemplate/" + design.id + "/" + template.id + "' templateid='" + template.id + "' templatename='" + template.name + "' class='closebtn unlinktemplatebtn'>×</span>" + tag.name + "</span>";
+                    $.each(design.templates, function (t, template) {
+                        templatelist += "<span class='templatelabel'><span href='/design/design/ajaxunlinktemplate/" + design.id + "/" + template.id + "' templateid='" + template.id + "' templatename='" + template.name + "' class='closebtn unlinktemplatebtn'>×</span>" + template.name + "</span>";
                     })
 
 
@@ -464,6 +445,7 @@ $(document).ready(function () {
     });
 
     $('#table').on('check.bs.table uncheck.bs.table uncheck-all.bs.table check-all.bs.table', majactivemodels);
+
 
 });
 

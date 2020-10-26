@@ -170,7 +170,11 @@
                                                     class='closebtn unlinktagbtn'>×</span>{{ tag.name }}</span>
                                     {% endfor %}</td>
                                 <td>{% for model in text.models %}
-                                        {{ text.name }}
+                                        <span class='modellabel'><span
+                                                    href='/design/design/ajaxunlinkmodel/{{ text.id }}/{{ model.id }}'
+                                                    modelid='{{ model.id }}' modelname='{{ model.name }}'
+                                                    class='closebtn unlinktemplatebtn'>×</span>{{ model.name }} </span>
+
                                     {% endfor %}</td>
                                 <td>{% for template in text.templates %}
                                         <span class='templatelabel'><span
@@ -237,12 +241,15 @@
                                                     class='closebtn unlinktagbtn'>×</span>{{ tag.name }}</span>
                                     {% endfor %}</td>
                                 <td>{% for model in image.models %}
-                                        {{ image.name }}
+                                        <span class='modellabel'><span
+                                                    href='/design/design/ajaxunlinkmodel/{{ image.id }}/{{ model.id }}'
+                                                    modelid='{{ model.id }}' modelname='{{ model.name }}'
+                                                    class='closebtn unlinktemplatebtn'>×</span>{{ model.name }} </span>
                                     {% endfor %}</td>
                                 <td>{% for template in image.templates %}
                                         <span class='templatelabel'><span
                                                     href='/design/design/ajaxunlinktemplate/{{ image.id }}/{{ template.id }}'
-                                                    tagid='{{ template.id }}' tagname='{{ template.name }}'
+                                                    templateid='{{ template.id }}' templatename='{{ template.name }}'
                                                     class='closebtn unlinktemplatebtn'>×</span>{{ template.name }} <span
                                                     class="badge badge-secondary">{{ template.linestyles | length }} </span></span>
                                     {% endfor %}</td>

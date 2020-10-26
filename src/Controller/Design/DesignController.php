@@ -42,11 +42,6 @@ class DesignController extends AbstractController
      */
     public function index(DesignRepository $designRepository, TagRepository $tagRepository, ModelRepository $modelRepository, TemplateRepository $templateRepository, ModelCategoryRepository $modelCategoryRepository, TemplateCategoryRepository $templateCategoryRepository): Response
     {
-
-        $texts = $this->getDoctrine()
-            ->getRepository(Text::class)
-            ->findAll();
-
         return $this->render('design/design/index.html.twig', [
             'designs' => $designRepository->findAll(),
             'texts' => $this->getDoctrine()->getRepository(Text::class)->findAll(),
@@ -145,11 +140,12 @@ class DesignController extends AbstractController
      * @param Request $request
      * @param TagRepository $tagRepository
      * @param DesignRepository $designRepository
-     * @return JsonResponse
+     * @return JsonResponse|Response
      */
     public function ajax_add_tags(Request $request, TagRepository $tagRepository, DesignRepository $designRepository)
     {
         if ($request->isXMLHttpRequest()) {
+            echo "test";
             $data = $request->request->all();
 
             $entityManager = $this->getDoctrine()->getManager();
@@ -170,11 +166,11 @@ class DesignController extends AbstractController
 
             foreach ($tagArgument as $tag) {
                 if (is_numeric($tag)) {
-                    $oneTag = new Tag();
+//                    $oneTag = new Tag();
                     $oneTag = $tagRepository->find($tag);
                     $tagList[] = $oneTag;
                 } else {
-                    $oneTag = new Tag();
+//                    $oneTag = new Tag();
                     $oneTag->setName($tag);
                     $entityManager->persist($oneTag);
                     $entityManager->flush();
@@ -191,30 +187,19 @@ class DesignController extends AbstractController
                     $oneDesign->addTag($tag);
                 }
 
-                $entityManager->persist($oneDesign);
+//              $entityManager->persist($oneDesign);
                 $entityManager->flush();
                 $designList[] = $oneDesign;
 
-//                foreach($oneDesign->getTags() as $tag){
-//                    $htmltag .= $tag->getName()." ";
-//                }
-//
-//                $htmlresponse .= "<tr data-index=\"".$i."\" class=\"selected\"><td class=\"bs-checkbox \" style=\"width: 36px; \"><label>
-//            <input data-index=\"".$i."\" name=\"id\" type=\"checkbox\" value=\"".$oneDesign->getId()."\">
-//            <span></span>
-//            </label></td><td>".$oneDesign->getId()."</td><td>".$oneDesign->getName()."</td><td>".$htmltag."</td><td></td><td></td><td><a href=\"/design/design/".$oneDesign->getId()."\"><span class=\"faicon\"><i class=\"fas fa-eye\"></i></span></a>
-//                                    <a href=\"/design/design/".$oneDesign->getId()."/edit\"><span class=\"faicon\"><i class=\"fas fa-edit\"></i></span></a>
-//                                    <a href=\"/design/design/delete/".$oneDesign->getId()."\"><span class=\"faicon\"><i class=\"fas fa-trash-alt\"></i></span></a></td></tr>";
-//
-//                $i++;
-
             }
             $designListJson = $serializer->serialize($designList, "json");
+
 
             return new JsonResponse($designListJson);
         } else {
             $this->redirectToRoute('design_design_index');
         }
+        return new Response('This is not ajax!', 400);
     }
 
     /**
