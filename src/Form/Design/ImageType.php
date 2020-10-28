@@ -11,6 +11,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ImageType extends AbstractType
@@ -21,7 +22,7 @@ class ImageType extends AbstractType
             ->add('name')
             ->add('file', FileType::class, [
                 'attr' =>
-                    ['placeholder' => 'Select a picture',]
+                    ['placeholder' => 'Select a picture']
             ])
             ->add('src', HiddenType::class)
             ->add('height')

@@ -113,7 +113,6 @@ class TemplateController extends AbstractController
      */
     public function delete(Request $request, Template $template): Response
     {
-
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($template);
             $entityManager->flush();

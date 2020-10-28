@@ -33,6 +33,7 @@
   "build/global_bootstraptable_editable.js": "/build/global_bootstraptable_editable.js",
   "build/global_bootstraptable_export.js": "/build/global_bootstraptable_export.js",
   "build/global_bootstraptable_filtercontrol.js": "/build/global_bootstraptable_filtercontrol.js",
+  "build/global_density.js": "/build/global_density.js",
   "build/global_notifyjs.js": "/build/global_notifyjs.js",
   "build/loadingbar.js": "/build/loadingbar.js",
   "build/runtime.js": "/build/runtime.js",

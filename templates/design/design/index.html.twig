@@ -93,6 +93,11 @@
                         <div id="activemodels" class="form-group col-6 border border-dark rounded"></div>
                     </div>
 
+                    <div class="row">
+                        <div class="form-group col-2"><button id="suggesttags" class="btn btn-primary btn-block">Suggest Tags</button></div>
+                        <div id="suggestedtags" class="form-group col-10 border border-dark rounded"></div>
+                    </div>
+
                     <table id="table"
                            data-toggle="table"
                            data-search="true"
@@ -173,15 +178,14 @@
                                         <span class='modellabel'><span
                                                     href='/design/design/ajaxunlinkmodel/{{ text.id }}/{{ model.id }}'
                                                     modelid='{{ model.id }}' modelname='{{ model.name }}'
-                                                    class='closebtn unlinktemplatebtn'>×</span>{{ model.name }} </span>
+                                                    class='closebtn unlinkmodelbtn'>×</span>{{ model.name }} </span>
 
                                     {% endfor %}</td>
                                 <td>{% for template in text.templates %}
                                         <span class='templatelabel'><span
                                                     href='/design/design/ajaxunlinktemplate/{{ text.id }}/{{ template.id }}'
-                                                    templateid='{{ template.id }}' templatename='{{ template.name }}'
-                                                    class='closebtn unlinktemplatebtn'>×</span>{{ template.name }} <span
-                                                    class="badge badge-secondary">{{ template.linestyles | length }} </span></span>
+                                                    templateid='{{ template.id }}' templatename='{{ template.name }}' linestyles='{{ template.linestyles | length }}'
+                                                    class='closebtn unlinktemplatebtn'>×</span>{{ template.name }}<span class="badge badge-secondary">{{ template.linestyles | length }} </span></span>
 
                                     {% endfor %}</td>
                                 <td>
@@ -244,13 +248,13 @@
                                         <span class='modellabel'><span
                                                     href='/design/design/ajaxunlinkmodel/{{ image.id }}/{{ model.id }}'
                                                     modelid='{{ model.id }}' modelname='{{ model.name }}'
-                                                    class='closebtn unlinktemplatebtn'>×</span>{{ model.name }} </span>
+                                                    class='closebtn unlinkmodelbtn'>×</span>{{ model.name }} </span>
                                     {% endfor %}</td>
                                 <td>{% for template in image.templates %}
                                         <span class='templatelabel'><span
                                                     href='/design/design/ajaxunlinktemplate/{{ image.id }}/{{ template.id }}'
-                                                    templateid='{{ template.id }}' templatename='{{ template.name }}'
-                                                    class='closebtn unlinktemplatebtn'>×</span>{{ template.name }} <span
+                                                    templateid='{{ template.id }}' templatename='{{ template.name }}' linestyles='{{ template.linestyles | length }}'
+                                                    class='closebtn unlinktemplatebtn'>×</span>{{ template.name }}<span
                                                     class="badge badge-secondary">{{ template.linestyles | length }} </span></span>
                                     {% endfor %}</td>
                                 <td></td>
@@ -328,19 +332,28 @@
     </div>
 
     <script>
-        $('.select-to-apply').each(function (index, item) {
-            $(item).select2({
+
+            $('#selecttag').select2({
                 theme: "classic",
-                tags: true
+                tags : true
             });
-        });
+            $('#selecttemplate').select2({
+                theme: "classic",
+            });
+            $('#selectmodel').select2({
+                theme: "classic",
+            });
+
     </script>
 
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
+    {{ encore_entry_script_tags('global_density') }}
     {{ encore_entry_script_tags('design_design_index') }}
+
+
 
 {% endblock %}
 

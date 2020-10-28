@@ -39,8 +39,8 @@ class Design
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Design\Tag", inversedBy="designs")
      * @JoinTable(name="design_design_tag",
-     * joinColumns={@JoinColumn(name="tag_id", referencedColumnName="id")},
-     * inverseJoinColumns={@JoinColumn(name="design_id", referencedColumnName="id")}
+     * joinColumns={@JoinColumn(name="design_id", referencedColumnName="id")},
+     * inverseJoinColumns={@JoinColumn(name="tag_id", referencedColumnName="id")}
      * )
      */
     private $tags;
@@ -56,7 +56,7 @@ class Design
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Design\Model", inversedBy="designs")
-     *      * @ORM\JoinTable(name="design_design_model",
+     * @ORM\JoinTable(name="design_design_model",
      * joinColumns={@ORM\JoinColumn(name="design_model_id", referencedColumnName="id")},
      * inverseJoinColumns={@ORM\JoinColumn(name="design_design_id", referencedColumnName="id")}
      * )

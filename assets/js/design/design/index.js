@@ -1,4 +1,5 @@
 import '../../../css/design/design/index.css';
+import density from '../../global/density.js';
 
 $(document).ready(function () {
 
@@ -93,9 +94,10 @@ $(document).ready(function () {
     });
 
     $("#applytag").on('click', function () {
-        console.log('tags:'+JSON.stringify($("#selecttag").val()));
-        console.log('designs:'+JSON.stringify($("#table").bootstrapTable('getSelections')))
+        console.log('tags:' + JSON.stringify($("#selecttag").val()));
+        console.log('designs:' + JSON.stringify($("#table").bootstrapTable('getSelections')))
         $.ajax({
+            headers: {'X-Requested-With': 'XMLHttpRequest'},
             url: "/design/design/ajaxaddtag",
             type: 'POST',
             data: {
@@ -103,7 +105,6 @@ $(document).ready(function () {
                 designs: JSON.stringify($("#table").bootstrapTable('getSelections'))
             },
             dataType: 'json',
-            async: true,
 
             success: function (data, status) {
                 $("#menu_area").notify("Tags Successfully Added :  \n" + $("#selecttag option:selected").toArray().map(item => item.text).join('\n'), {
@@ -130,14 +131,12 @@ $(document).ready(function () {
                 });
 
             },
-            error:
-
-                function (data, status, message) {
-                    $("#menu_area").notify("Adding Tags Failed :  \n" + $("#selecttag option:selected").toArray().map(item => item.text).join('\n'), {
-                        position: "bottom right",
-                        className: "error"
-                    });
-                }
+            error: function (data, status, message) {
+                $("#menu_area").notify("Adding Tags Failed :  \n" + $("#selecttag option:selected").toArray().map(item => item.text).join('\n'), {
+                    position: "bottom right",
+                    className: "error"
+                });
+            }
         });
 
 
@@ -146,11 +145,10 @@ $(document).ready(function () {
     $('#table').on('check.bs.table uncheck.bs.table uncheck-all.bs.table check-all.bs.table', majactivetags);
 
 
-
     //ici ajax template
     $("#applytemplate").on('click', function () {
-        console.log('templates:'+JSON.stringify($("#selecttemplate").val()));
-        console.log('designs:'+JSON.stringify($("#table").bootstrapTable('getSelections')))
+        console.log('templates:' + JSON.stringify($("#selecttemplate").val()));
+        console.log('designs:' + JSON.stringify($("#table").bootstrapTable('getSelections')))
         $.ajax({
             url: "/design/design/ajaxaddtemplate",
             type: 'POST',
@@ -171,7 +169,8 @@ $(document).ready(function () {
                     let templatelist = "";
 
                     $.each(design.templates, function (t, template) {
-                        templatelist += "<span class='templatelabel'><span href='/design/design/ajaxunlinktemplate/" + design.id + "/" + template.id + "' templateid='" + template.id + "' templatename='" + template.name + "' class='closebtn unlinktemplatebtn'>×</span>" + template.name + "</span>";
+                        templatelist += "<span class='templatelabel'><span href='/design/design/ajaxunlinktemplate/" + design.id + "/" + template.id + "' templateid='" + template.id + "' templatename='" + template.name + "' linestyles='" + template.line_styles.length + "' class='closebtn unlinktemplatebtn'>×</span>" + template.name + "<span class='badge badge-secondary'>" + template.line_styles.length + "</span></span>";
+
                     })
 
 
@@ -221,7 +220,7 @@ $(document).ready(function () {
                     let templatelist = "";
 
                     $.each(design.templates, function (t, template) {
-                        templatelist += "<span class='templatelabel'><span href='/design/design/ajaxunlinktemplate/" + design.id + "/" + template.id + "' templateid='" + template.id + "' templatename='" + template.name + "' class='closebtn unlinktemplatebtn'>×</span>" + template.name + "</span>";
+                        templatelist += "<span class='templatelabel'><span href='/design/design/ajaxunlinktemplate/" + design.id + "/" + template.id + "' templateid='" + template.id + "' templatename='" + template.name + "' linestyles='" + template.line_styles.length + "' class='closebtn unlinktemplatebtn'>×</span>" + template.name + "<span class='badge badge-secondary'>" + template.line_styles.length + "</span></span>";
                     })
 
 
@@ -266,7 +265,7 @@ $(document).ready(function () {
                 let templatelist = "";
 
                 $.each(design.templates, function (t, template) {
-                    templatelist += "<span class='templatelabel'><span href='/design/design/ajaxunlinktemplate/" + design.id + "/" + template.id + "' templateid='" + template.id + "' templatename='" + template.name + "' class='closebtn unlinktemplatebtn'>×</span>" + template.name + "</span>";
+                    templatelist += "<span class='templatelabel'><span href='/design/design/ajaxunlinktemplate/" + design.id + "/" + template.id + "' templateid='" + template.id + "' templatename='" + template.name + "' linestyles='" + template.line_styles.length + "' class='closebtn unlinktemplatebtn'>×</span>" + template.name + "<span class='badge badge-secondary'>" + template.line_styles.length + "</span></span>";
                 })
 
 
@@ -292,10 +291,11 @@ $(document).ready(function () {
 
     $('#table').on('check.bs.table uncheck.bs.table uncheck-all.bs.table check-all.bs.table', majactivetemplates);
 
+
     //ici ajax model
     $("#applymodel").on('click', function () {
-        console.log('models:'+JSON.stringify($("#selectmodel").val()));
-        console.log('designs:'+JSON.stringify($("#table").bootstrapTable('getSelections')))
+        console.log('models:' + JSON.stringify($("#selectmodel").val()));
+        console.log('designs:' + JSON.stringify($("#table").bootstrapTable('getSelections')))
         $.ajax({
             url: "/design/design/ajaxaddmodel",
             type: 'POST',
@@ -408,7 +408,7 @@ $(document).ready(function () {
             url: $(this).attr('href'),
             type: 'POST',
             success: function (data, status) {
-                $("#menu_area").notify("model Successfully Deleted", {
+                $("#menu_area").notify("Model Successfully Deleted", {
                     position: "bottom right",
                     className: "success"
                 });
@@ -446,6 +446,22 @@ $(document).ready(function () {
 
     $('#table').on('check.bs.table uncheck.bs.table uncheck-all.bs.table check-all.bs.table', majactivemodels);
 
+    $(document).on('click', '#suggesttags', function (event) {
+        let suggestedtaglist = "";
+
+        jQuery.each(calculatedensity().slice(0,100), function(index, suggestedtag) {
+            // faire quelque chose avec `value` (ou `this` qui est `value` )
+            suggestedtaglist += "<span class='suggestedtaglabel'><span href='/design/design/ajaxlinksuggestedtag/' tagname='" + suggestedtag.word + "'>" + suggestedtag.word + "<span class='badge badge-secondary'>" + suggestedtag.count + "</span><span class='btn btn-link btn-sm ml-1 filterbtn' filtername='" + suggestedtag.word +"'><i class=\"fas fa-filter\"></i></span></span></span>";
+        });
+
+        $('#suggestedtags').html(suggestedtaglist);
+
+    });
+
+    $(document).on('click', '.filterbtn', function (event) {
+        $( "th[data-field='name']" ).find('input').val($(this).attr('filtername'));
+    });
+
 
 });
 
@@ -469,6 +485,52 @@ function unique(array) {
     });
 }
 
+function calculatedensity() {
+    let data;
+    if ($('#table').bootstrapTable('getSelections').length !== 0) {
+        data = $('#table').bootstrapTable('getSelections');
+    } else {
+        data = $('#table').bootstrapTable('getData');
+    }
+    let allnames;
+    let stopwords = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "le", "la", "les", "je", "tu", "il", "ils", "elle", "nous", "vous", "une", "un", "en", "des", "dès", "de", "cette", "cet", "ces", "ce", "ses", "se", "est", "ai", "eu", "eut", "était", "êtes", "serait", "cas", "aussi", "après", "avant", "ans", "an", "puis", "où", "ou", "dans", "sur", "afin", "qu", "or", "mais", "nos", "vos", "ton", "tes", "te", "même", "me", "ta", "ma", "mon", "mes", "donc", "et", "du", "au", "aux", "ne", "pas", "qui", "que", "dont", "pour", "avec", "lui", "votre", "sont", "notre", "à", "tout", "toutes", "tous", "by", "us", "the", "your", "of", "on", "inc", "an", "is", "to", "or", "for", "ca", "ça", "in", "and", "it", "its", "but", "hi", "you", "with", "but", "all", "yet", "déjà", "has", "as", "more", "my", "that", "not", "are", "this", "ni", "par", "fr", "com"];
+    let results, results1, results2, results3;
+    let finalresult = [];
+
+    $.each(data, function (r, row) {
+        if (row.name !== undefined) {
+            results1 = density.getSorted(row.name, {
+                stopwords: stopwords,
+                words: 1
+            });
+            results2 = density.getSorted(row.name, {
+                stopwords: stopwords,
+                words: 2
+            });
+            results3 = density.getSorted(row.name, {
+                stopwords: stopwords,
+                words: 3
+            });
+
+            results = unique($.merge($.merge(results1, results2), results3));
+            results = sortByKeyDesc(distinctArrayBy(results, 'word'), "count");
+
+            $.each(results, function (index, suggestedtag){
+                if(finalresult.find(x => x.word === suggestedtag.word) === undefined){
+                    finalresult.push(suggestedtag);
+                }else{
+                    finalresult.find(x => x.word === suggestedtag.word).count += suggestedtag.count
+                }
+            });
+
+        }
+    })
+
+    finalresult = sortByKeyDesc(distinctArrayBy(finalresult, 'word'), "count");
+
+    return finalresult;
+
+}
 
 function majactivetags() {
     let rowlist = $('#table').bootstrapTable('getSelections');
@@ -478,14 +540,14 @@ function majactivetags() {
     $.each(rowlist, function (r, row) {
 //        $.merge(tags, cleantags(row.tags));
 
-        $.each($(row.tags).find('.unlinktagbtn'), function(s,span){
-            if(jQuery.inArray($(span).attr('tagname'),tags) === -1){
+        $.each($(row.tags).find('.unlinktagbtn'), function (s, span) {
+            if (jQuery.inArray($(span).attr('tagname'), tags) === -1) {
 
                 tags.push($(span).attr('tagname'));
                 taglist += "<span class='taglabel'><span href='/design/design/ajaxunlinktagfromselection/" + $(span).attr('tagid') + "' tagid='" + $(span).attr('tagid') + "' tagname='" + $(span).attr('tagname') + "' class='closebtn unlinktagfromselectionbtn'>×</span>" + $(span).attr('tagname') + "</span>";
             }
 
-           //console.log(span.attr('tagid'));
+            //console.log(span.attr('tagid'));
             // console.log($(span).attr('tagid') + ' ' + $(span).attr('tagname'));
         });
 
@@ -510,11 +572,11 @@ function majactivetemplates() {
     $.each(rowlist, function (r, row) {
 //        $.merge(tags, cleantags(row.tags));
 
-        $.each($(row.templates).find('.unlinktemplatebtn'), function(s,span){
-            if(jQuery.inArray($(span).attr('templatename'), templates) === -1){
+        $.each($(row.templates).find('.unlinktemplatebtn'), function (s, span) {
+            if (jQuery.inArray($(span).attr('templatename'), templates) === -1) {
 
                 templates.push($(span).attr('templatename'));
-                templatelist += "<span class='templatelabel'><span href='/design/design/ajaxunlinktemplatefromselection/" + $(span).attr('templateid') + "' templateid='" + $(span).attr('templateid') + "' templatename='" + $(span).attr('templatename') + "' class='closebtn unlinktemplatefromselectionbtn'>×</span>" + $(span).attr('templatename') + "</span>";
+                templatelist += "<span class='templatelabel'><span href='/design/design/ajaxunlinktemplatefromselection/" + $(span).attr('templateid') + "' templateid='" + $(span).attr('templateid') + "' templatename='" + $(span).attr('templatename') + "' linestyles='" + $(span).attr('linestyles') + "' class='closebtn unlinktemplatefromselectionbtn'>×</span>" + $(span).attr('templatename') + "</span>";
             }
 
             //console.log(span.attr('tagid'));
@@ -542,8 +604,8 @@ function majactivemodels() {
     $.each(rowlist, function (r, row) {
 //        $.merge(tags, cleantags(row.tags));
 
-        $.each($(row.models).find('.unlinkmodelbtn'), function(s,span){
-            if(jQuery.inArray($(span).attr('modelname'), models) === -1){
+        $.each($(row.models).find('.unlinkmodelbtn'), function (s, span) {
+            if (jQuery.inArray($(span).attr('modelname'), models) === -1) {
 
                 models.push($(span).attr('modelname'));
                 modellist += "<span class='modellabel'><span href='/design/design/ajaxunlinkmodelfromselection/" + $(span).attr('modelid') + "' modelid='" + $(span).attr('modelid') + "' modelname='" + $(span).attr('modelname') + "' class='closebtn unlinkmodelfromselectionbtn'>×</span>" + $(span).attr('modelname') + "</span>";
@@ -570,4 +632,33 @@ function htmlToElements(html) {
     let template = document.createElement('template');
     template.innerHTML = html;
     return template.content.childNodes;
+}
+
+function sortByKeyDesc(array, key) {
+    return array.sort(function (a, b) {
+        var x = a[key];
+        var y = b[key];
+        return ((x > y) ? -1 : ((x < y) ? 1 : 0));
+    });
+}
+
+function sortByKeyAsc(array, key) {
+    return array.sort(function (a, b) {
+        var x = a[key];
+        var y = b[key];
+        return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+    });
+}
+
+function distinctArrayBy(arr, propName) {
+    let result = arr.reduce(function (arr1, e1) {
+        let matches = arr1.filter(function (e2) {
+            return e1[propName] == e2[propName];
+        })
+        if (matches.length == 0)
+            arr1.push(e1)
+        return arr1;
+    }, []);
+
+    return result;
 }

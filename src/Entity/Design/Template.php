@@ -32,7 +32,7 @@ class Template
     private $linecount;
 
     /**
-     * @var array
+     * @var ArrayCollection
      * @ORM\ManyToMany(targetEntity="App\Entity\Design\LineStyle", inversedBy="templates", cascade={"persist"})
      * @ORM\JoinTable(name="design_template_linestyle",
      * joinColumns={@ORM\JoinColumn(name="linestyle_id", referencedColumnName="id")},
@@ -48,10 +48,6 @@ class Template
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Design\TemplateCategory", mappedBy="templates")
-     * @ORM\JoinTable(name="design_template_templatecategory",
-     * joinColumns={@ORM\JoinColumn(name="design_templatecategory_id", referencedColumnName="id")},
-     * inverseJoinColumns={@ORM\JoinColumn(name="design_template_id", referencedColumnName="id")}
-     * )
      */
     private $templateCategories;
 

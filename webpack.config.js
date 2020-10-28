@@ -43,6 +43,7 @@ Encore
     .addEntry('global_bootstraptable_editable', './assets/js/global/bootstrap-table-master/dist/extensions/editable/bootstrap-table-editable.min.js')
     .addEntry('global_bootstraptable_export', './assets/js/global/bootstrap-table-master/dist/extensions/export/bootstrap-table-export.min.js')
     .addEntry('global_bootstraptable_filtercontrol', './assets/js/global/bootstrap-table-master/dist/extensions/filter-control/bootstrap-table-filter-control.min.js')
+    .addEntry('global_density', './assets/js/global/density.js')
 
     .addEntry('design_base', './assets/js/design/base.js')
     .addEntry('design_design_index', './assets/js/design/design/index.js')

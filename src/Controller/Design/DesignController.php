@@ -3,11 +3,11 @@
 namespace App\Controller\Design;
 
 use App\Entity\Design\Design;
+use App\Entity\Design\Image;
 use App\Entity\Design\Model;
 use App\Entity\Design\Tag;
 use App\Entity\Design\Template;
 use App\Entity\Design\Text;
-use App\Entity\Design\Image;
 use App\Form\Design\DesignType;
 use App\Repository\Design\DesignRepository;
 use App\Repository\Design\ModelCategoryRepository;
@@ -15,6 +15,7 @@ use App\Repository\Design\ModelRepository;
 use App\Repository\Design\TagRepository;
 use App\Repository\Design\TemplateCategoryRepository;
 use App\Repository\Design\TemplateRepository;
+use App\Repository\Design\TextRepository;
 use JMS\Serializer\SerializerBuilder;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -40,11 +41,11 @@ class DesignController extends AbstractController
      * @param TemplateCategoryRepository $templateCategoryRepository
      * @return Response
      */
-    public function index(DesignRepository $designRepository, TagRepository $tagRepository, ModelRepository $modelRepository, TemplateRepository $templateRepository, ModelCategoryRepository $modelCategoryRepository, TemplateCategoryRepository $templateCategoryRepository): Response
+    public function index(DesignRepository $designRepository, TagRepository $tagRepository, ModelRepository $modelRepository, TemplateRepository $templateRepository, ModelCategoryRepository $modelCategoryRepository, TemplateCategoryRepository $templateCategoryRepository, TextRepository $textRepository): Response
     {
         return $this->render('design/design/index.html.twig', [
-            'designs' => $designRepository->findAll(),
-            'texts' => $this->getDoctrine()->getRepository(Text::class)->findAll(),
+//            'designs' => $designRepository->findAll(),
+            'texts' => $textRepository->fullFindAll(),
             'images' => $this->getDoctrine()->getRepository(Image::class)->findAll(),
             'tags' => $tagRepository->findAll(),
             'models' => $modelRepository->findAll(),
@@ -145,7 +146,6 @@ class DesignController extends AbstractController
     public function ajax_add_tags(Request $request, TagRepository $tagRepository, DesignRepository $designRepository)
     {
         if ($request->isXMLHttpRequest()) {
-            echo "test";
             $data = $request->request->all();
 
             $entityManager = $this->getDoctrine()->getManager();
@@ -166,15 +166,20 @@ class DesignController extends AbstractController
 
             foreach ($tagArgument as $tag) {
                 if (is_numeric($tag)) {
-//                    $oneTag = new Tag();
+                    $oneTag = new Tag();
                     $oneTag = $tagRepository->find($tag);
                     $tagList[] = $oneTag;
                 } else {
-//                    $oneTag = new Tag();
-                    $oneTag->setName($tag);
-                    $entityManager->persist($oneTag);
-                    $entityManager->flush();
+
+                    $oneTag = $tagRepository->findOneBy(['name' => $tag]);
+                    if ($oneTag == null) {
+                        $oneTag = new Tag();
+                        $oneTag->setName($tag);
+                        $entityManager->persist($oneTag);
+                        $entityManager->flush();
+                    }
                     $tagList[] = $oneTag;
+
                 }
 
             }
@@ -187,7 +192,7 @@ class DesignController extends AbstractController
                     $oneDesign->addTag($tag);
                 }
 
-//              $entityManager->persist($oneDesign);
+                $entityManager->persist($oneDesign);
                 $entityManager->flush();
                 $designList[] = $oneDesign;
 
@@ -220,6 +225,7 @@ class DesignController extends AbstractController
             $entityManager->persist($design);
             $entityManager->flush();
 
+
             $serializer = SerializerBuilder::create()->build();
 
             $designJson = $serializer->serialize($design, "json");
@@ -234,6 +240,7 @@ class DesignController extends AbstractController
      * @Route("/ajaxunlinktagfromselection/{tagid}", name="design_design_ajaxunlinktagfromselection")
      * @param Request $request
      * @param Tag $tag
+     * @param DesignRepository $designRepository
      * @return JsonResponse
      * @ParamConverter("tag", options={"mapping": {"tagid" : "id"}})
      */
@@ -265,6 +272,7 @@ class DesignController extends AbstractController
             $this->redirectToRoute('design_design_index');
         }
     }
+
 
     /**
      * @Route("/ajaxaddtemplate", name="design_design_ajaxaddtemplate")
@@ -318,10 +326,11 @@ class DesignController extends AbstractController
                 }
 
                 $entityManager->persist($oneDesign);
-                $entityManager->flush();
+
                 $designList[] = $oneDesign;
 
             }
+            $entityManager->flush();
             $designListJson = $serializer->serialize($designList, "json");
 
             return new JsonResponse($designListJson);

@@ -21,17 +21,19 @@ class Cut
     private $id;
 
     /**
+     * @var integer
      * @ORM\Column(type="integer")
      */
     private $linecount;
 
     /**
+     * @var array
      * @ORM\Column(type="array")
      */
     private $parts;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Text::class, inversedBy="cuts")
+     * @ORM\ManyToOne(targetEntity=Text::class, inversedBy="cuts", cascade={"remove"})
      * @ORM\JoinTable(name="design_cut_text",
      * joinColumns={@ORM\JoinColumn(name="design_text_id", referencedColumnName="id")},
      * inverseJoinColumns={@ORM\JoinColumn(name="design_cut_id", referencedColumnName="id")}
@@ -64,9 +66,9 @@ class Cut
     }
 
     /**
-     * @return array|ArrayCollection|null
+     * @return ArrayCollection|array|null
      */
-    public function getParts(): ?ArrayCollection
+    public function getParts()
     {
         return $this->parts;
     }

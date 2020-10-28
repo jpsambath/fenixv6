@@ -9,6 +9,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
+ * @ORM\Entity(repositoryClass="App\Repository\Design\TextRepository")
  * @ORM\Entity
  */
 class Text extends Design
@@ -42,7 +43,7 @@ class Text extends Design
     private $images;
 
     /**
-     * @ORM\OneToMany(targetEntity=Cut::class, mappedBy="text", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity=Cut::class, mappedBy="text", cascade={"persist", "remove"}, fetch="EAGER")
      */
     private $cuts;
 
@@ -96,9 +97,9 @@ class Text extends Design
     }
 
     /**
-     * @param string $genre
+     * @param string|null $genre
      */
-    public function setGenre(string $genre): void
+    public function setGenre(?string $genre): void
     {
         $this->genre = $genre;
     }

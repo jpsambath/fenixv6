@@ -113,6 +113,16 @@ return [[
                 '/build/vendor.css',
             ],
         ],
+        'global_density' => [
+            'js' => [
+                '/build/runtime.js',
+                '/build/vendor.js',
+                '/build/global_density.js',
+            ],
+            'css' => [
+                '/build/vendor.css',
+            ],
+        ],
         'design_base' => [
             'js' => [
                 '/build/runtime.js',

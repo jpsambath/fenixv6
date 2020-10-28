@@ -29,6 +29,10 @@ class TemplateCategory
     /**
      * @var array
      * @ORM\ManyToMany(targetEntity="App\Entity\Design\Template", inversedBy="templateCategories")
+     * @ORM\JoinTable(name="design_template_templatecategory",
+     * joinColumns={@ORM\JoinColumn(name="design_template_id", referencedColumnName="id")},
+     * inverseJoinColumns={@ORM\JoinColumn(name="design_templatecategory_id", referencedColumnName="id")}
+     * )
      */
     private $templates;
 

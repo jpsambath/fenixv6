@@ -24,6 +24,7 @@ class Image extends Design
 
     /**
      * Unmapped property to handle file uploads
+     *
      * @var UploadedFile
      */
     private $file;
