@@ -37,7 +37,7 @@
                             <button id="applytag" class="btn btn-primary btn-block">Apply Tags</button>
                         </div>
 
-                        <div id="activetags" class="form-group col-6 border border-dark rounded">
+                        <div id="activetags" class="form-group col-6 activecontainer">
                         </div>
                     </div>
 
@@ -64,7 +64,7 @@
                             <button id="applytemplate" class="btn btn-primary btn-block">Apply Templates</button>
                         </div>
 
-                        <div id="activetemplates" class="form-group col-6 border border-dark rounded"></div>
+                        <div id="activetemplates" class="form-group col-6 activecontainer"></div>
                     </div>
 
                     <div class="row">
@@ -90,12 +90,12 @@
                             <button id="applymodel" class="btn btn-primary btn-block">Apply Models</button>
                         </div>
 
-                        <div id="activemodels" class="form-group col-6 border border-dark rounded"></div>
+                        <div id="activemodels" class="form-group col-6 activecontainer"></div>
                     </div>
 
                     <div class="row">
                         <div class="form-group col-2"><button id="suggesttags" class="btn btn-primary btn-block">Suggest Tags</button></div>
-                        <div id="suggestedtags" class="form-group col-10 border border-dark rounded"></div>
+                        <div id="suggestedtags" class="form-group col-10 activecontainer"></div>
                     </div>
 
                     <table id="table"
@@ -110,6 +110,8 @@
                            data-id-field="id"
                            data-select-item-name="id"
                            data-loading-template=" "
+                           data-pagination="true"
+                           data-page-size="100"
                            class="table table-sm table-bordered table-striped table-hover">
                         <thead class="thead-light">
                         <tr>
@@ -119,13 +121,13 @@
                                 {# </label> #}
                             </th>
                             <th data-field="id">Id</th>
-                            <th data-field="name" data-filter-control="input" data-sortable="true">Name</th>
-                            <th data-field="type" data-filter-control="input" data-sortable="true">Type</th>
-                            <th data-field="tags" data-filter-control="input" data-sortable="true">Tags</th>
-                            <th data-field="models" data-filter-control="input" data-sortable="true">Models
+                            <th data-field="name" data-filter-control="input" data-sortable="true" data-width="300">Name</th>
+                            <th data-field="type" data-filter-control="input" data-sortable="true" data-width="50">Type</th>
+                            <th data-field="tags" data-filter-control="input" data-sortable="true" data-width="400">Tags</th>
+                            <th data-field="models" data-filter-control="input" data-sortable="true" data-width="200">Models
                             </th>
-                            <th data-field="templates" data-filter-control="input" data-sortable="true">Templates</th>
-                            <th data-field="cuts" data-filter-control="input" data-sortable="true">Cuts</th>
+                            <th data-field="templates" data-filter-control="input" data-sortable="true" data-width="300">Templates</th>
+                            <th data-field="cuts" data-filter-control="input" data-sortable="true" data-width="100">Cuts</th>
 
                             <th data-field="genre" data-filter-control="input" data-sortable="true"
                                 data-visible="false">Genre
@@ -152,7 +154,7 @@
                                 data-visible="false">Format
                             </th>
 
-                            <th data-field="actions">Actions</th>
+                            <th data-field="actions" data-width="150">Actions</th>
                         </tr>
                         </thead>
                         <tbody id="designlist">
