@@ -37,6 +37,13 @@ class Design
     private $name;
 
     /**
+     * @var string
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $description;
+
+
+    /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Design\Tag", inversedBy="designs")
      * @JoinTable(name="design_design_tag",
      * joinColumns={@JoinColumn(name="design_id", referencedColumnName="id")},
@@ -63,6 +70,16 @@ class Design
      */
     private $models;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Support::class, inversedBy="designs")
+     */
+    private $supports;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Shop::class, mappedBy="designs")
+     */
+    private $shops;
+
 
 
     public function __construct()
@@ -70,6 +87,8 @@ class Design
         $this->tags = new ArrayCollection();
         $this->templates = new ArrayCollection();
         $this->models = new ArrayCollection();
+        $this->supports = new ArrayCollection();
+        $this->shops = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -189,6 +208,57 @@ class Design
     public function setTags(Collection $tags): void
     {
         $this->tags = $tags;
+    }
+
+    /**
+     * @return Collection|Support[]
+     */
+    public function getSupports(): Collection
+    {
+        return $this->supports;
+    }
+
+    public function addSupport(Support $support): self
+    {
+        if (!$this->supports->contains($support)) {
+            $this->supports[] = $support;
+        }
+
+        return $this;
+    }
+
+    public function removeSupport(Support $support): self
+    {
+        $this->supports->removeElement($support);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Shop[]
+     */
+    public function getShops(): Collection
+    {
+        return $this->shops;
+    }
+
+    public function addShop(Shop $shop): self
+    {
+        if (!$this->shops->contains($shop)) {
+            $this->shops[] = $shop;
+            $shop->addDesign($this);
+        }
+
+        return $this;
+    }
+
+    public function removeShop(Shop $shop): self
+    {
+        if ($this->shops->removeElement($shop)) {
+            $shop->removeDesign($this);
+        }
+
+        return $this;
     }
 
 

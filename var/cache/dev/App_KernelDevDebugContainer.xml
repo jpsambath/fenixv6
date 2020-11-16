@@ -566,6 +566,14 @@
       <tag name="doctrine.repository_service"/>
       <argument type="service" id="doctrine"/>
     </service>
+    <service id="App\Repository\Design\ShopRepository" class="App\Repository\Design\ShopRepository" autowire="true" autoconfigure="true">
+      <tag name="doctrine.repository_service"/>
+      <argument type="service" id="doctrine"/>
+    </service>
+    <service id="App\Repository\Design\SupportRepository" class="App\Repository\Design\SupportRepository" autowire="true" autoconfigure="true">
+      <tag name="doctrine.repository_service"/>
+      <argument type="service" id="doctrine"/>
+    </service>
     <service id="App\Repository\Design\TagRepository" class="App\Repository\Design\TagRepository" autowire="true" autoconfigure="true">
       <tag name="doctrine.repository_service"/>
       <argument type="service" id="doctrine"/>
@@ -4184,7 +4192,7 @@
       <factory class="Doctrine\ORM\EntityManager" method="create"/>
     </service>
     <service id="doctrine.orm.container_repository_factory" class="Doctrine\Bundle\DoctrineBundle\Repository\ContainerRepositoryFactory" public="false">
-      <argument type="service" id=".service_locator.dpofarx"/>
+      <argument type="service" id=".service_locator.m0pz7ty"/>
     </service>
     <service id="doctrine.orm.manager_configurator.abstract" class="Doctrine\Bundle\DoctrineBundle\ManagerConfigurator" abstract="true">
       <argument type="collection"/>
@@ -6287,6 +6295,10 @@
     <service id=".abstract.instanceof.App\Repository\Design\ModelCategoryRepository" class="App\Repository\Design\ModelCategoryRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\Design\ModelRepository" class="App\Repository\Design\ModelRepository" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Repository\Design\ModelRepository" class="App\Repository\Design\ModelRepository" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\Design\ShopRepository" class="App\Repository\Design\ShopRepository" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Repository\Design\ShopRepository" class="App\Repository\Design\ShopRepository" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\Design\SupportRepository" class="App\Repository\Design\SupportRepository" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Repository\Design\SupportRepository" class="App\Repository\Design\SupportRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\Design\TagRepository" class="App\Repository\Design\TagRepository" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Repository\Design\TagRepository" class="App\Repository\Design\TagRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\Design\TemplateCategoryRepository" class="App\Repository\Design\TemplateCategoryRepository" autowire="true" abstract="true"/>
@@ -7173,7 +7185,7 @@
         <argument key="doctrine.orm.default_listeners.attach_entity_listeners" type="service" id="doctrine.orm.default_listeners.attach_entity_listeners"/>
       </argument>
     </service>
-    <service id=".service_locator.dpofarx" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+    <service id=".service_locator.m0pz7ty" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="App\Repository\Design\CutRepository" type="service" id="App\Repository\Design\CutRepository"/>
@@ -7182,6 +7194,8 @@
         <argument key="App\Repository\Design\LineStyleRepository" type="service" id="App\Repository\Design\LineStyleRepository"/>
         <argument key="App\Repository\Design\ModelCategoryRepository" type="service" id="App\Repository\Design\ModelCategoryRepository"/>
         <argument key="App\Repository\Design\ModelRepository" type="service" id="App\Repository\Design\ModelRepository"/>
+        <argument key="App\Repository\Design\ShopRepository" type="service" id="App\Repository\Design\ShopRepository"/>
+        <argument key="App\Repository\Design\SupportRepository" type="service" id="App\Repository\Design\SupportRepository"/>
         <argument key="App\Repository\Design\TagRepository" type="service" id="App\Repository\Design\TagRepository"/>
         <argument key="App\Repository\Design\TemplateCategoryRepository" type="service" id="App\Repository\Design\TemplateCategoryRepository"/>
         <argument key="App\Repository\Design\TemplateRepository" type="service" id="App\Repository\Design\TemplateRepository"/>

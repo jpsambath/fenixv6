@@ -48,6 +48,13 @@ class Tag
 
     /**
      * @var array
+     * @ORM\ManyToMany(targetEntity="App\Entity\Design\Tag")
+     * @JoinTable(name="design_tagsiblings")
+     */
+    private $siblings;
+
+    /**
+     * @var array
      * @ORM\ManyToMany(targetEntity="App\Entity\Design\Design", mappedBy="tags")
      */
     private $designs;
