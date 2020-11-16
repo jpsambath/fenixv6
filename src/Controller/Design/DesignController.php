@@ -3,13 +3,12 @@
 namespace App\Controller\Design;
 
 use App\Entity\Design\Design;
-use App\Entity\Design\Image;
 use App\Entity\Design\Model;
 use App\Entity\Design\Tag;
 use App\Entity\Design\Template;
-use App\Entity\Design\Text;
 use App\Form\Design\DesignType;
 use App\Repository\Design\DesignRepository;
+use App\Repository\Design\ImageRepository;
 use App\Repository\Design\ModelCategoryRepository;
 use App\Repository\Design\ModelRepository;
 use App\Repository\Design\TagRepository;
@@ -39,15 +38,17 @@ class DesignController extends AbstractController
      * @param TemplateRepository $templateRepository
      * @param ModelCategoryRepository $modelCategoryRepository
      * @param TemplateCategoryRepository $templateCategoryRepository
+     * @param TextRepository $textRepository
+     * @param ImageRepository $imageRepository
      * @return Response
      */
-    public function index(DesignRepository $designRepository, TagRepository $tagRepository, ModelRepository $modelRepository, TemplateRepository $templateRepository, ModelCategoryRepository $modelCategoryRepository, TemplateCategoryRepository $templateCategoryRepository, TextRepository $textRepository): Response
+    public function index(DesignRepository $designRepository, TagRepository $tagRepository, ModelRepository $modelRepository, TemplateRepository $templateRepository, ModelCategoryRepository $modelCategoryRepository, TemplateCategoryRepository $templateCategoryRepository, TextRepository $textRepository, ImageRepository $imageRepository ): Response
     {
         return $this->render('design/design/index.html.twig', [
 //            'designs' => $designRepository->findAll(),
             'texts' => $textRepository->fullFindAll(),
-            'images' => $this->getDoctrine()->getRepository(Image::class)->findAll(),
-            'tags' => $tagRepository->findAll(),
+            'images' => $imageRepository->findAll(),
+            'tags' => $tagRepository->fullFindAll(),
             'models' => $modelRepository->findAll(),
             'modelCategories' => $modelCategoryRepository->findAll(),
             'templates' => $templateRepository->findAll(),
@@ -167,7 +168,7 @@ class DesignController extends AbstractController
             foreach ($tagArgument as $tag) {
                 if (is_numeric($tag)) {
                     $oneTag = new Tag();
-                    $oneTag = $tagRepository->find($tag);
+                    $oneTag = $tagRepository->findOneById($tag);
                     $tagList[] = $oneTag;
                 } else {
 
@@ -186,7 +187,7 @@ class DesignController extends AbstractController
 
             foreach ($designArgument as $design) {
                 $htmltag = "";
-                $oneDesign = $designRepository->find($design['id']);
+                $oneDesign = $designRepository->findOneById($design['id']);
 
                 foreach ($tagList as $tag) {
                     $oneDesign->addTag($tag);

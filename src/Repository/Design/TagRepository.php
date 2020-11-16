@@ -19,6 +19,26 @@ class TagRepository extends ServiceEntityRepository
         parent::__construct($registry, Tag::class);
     }
 
+    public function fullFindAll(): ?array
+    {
+        return $this->createQueryBuilder('t')->addSelect(['parents', 'children'])
+            ->leftJoin('t.parents', 'parents')
+            ->leftJoin('t.children', 'children')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findOneById($value): ?Tag
+    {
+        return $this->createQueryBuilder('t')
+            ->andWhere('t.id = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
+    }
+
+
     // /**
     //  * @return Tag[] Returns an array of Tag objects
     //  */
