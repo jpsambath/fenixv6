@@ -27,10 +27,19 @@
                         <div class="form-group col-4">
                             <select multiple class="js-example-basic-single js-states form-control select-to-apply"
                                     id="selecttag" data-allow-clear="1">
-
                                 {% for tag in tags %}
-                                    <option value="{{ tag.id }}">{{ tag.name }}</option>
+                                    {% if tag.children|length > 0 %}
+
+                                        <optgroup label="{{ tag.name }}">
+                                            {% for child in tag.children %}
+                                                <option value="{{ child.id }}"> {{ child.name }}</option>
+                                            {% endfor %}
+                                        </optgroup>
+                                    {% elseif tag.parents|length == 0 %}
+                                        <option value="{{ tag.id }}">{{ tag.name }}</option>
+                                    {% endif %}
                                 {% endfor %}
+
                             </select>
                         </div>
                         <div class="form-group col-2">
@@ -94,7 +103,9 @@
                     </div>
 
                     <div class="row">
-                        <div class="form-group col-2"><button id="suggesttags" class="btn btn-primary btn-block">Suggest Tags</button></div>
+                        <div class="form-group col-2">
+                            <button id="suggesttags" class="btn btn-primary btn-block">Suggest Tags</button>
+                        </div>
                         <div id="suggestedtags" class="form-group col-10 activecontainer"></div>
                     </div>
 
@@ -121,13 +132,24 @@
                                 {# </label> #}
                             </th>
                             <th data-field="id">Id</th>
-                            <th data-field="name" data-filter-control="input" data-sortable="true" data-width="300">Name</th>
-                            <th data-field="type" data-filter-control="input" data-sortable="true" data-width="50">Type</th>
-                            <th data-field="tags" data-filter-control="input" data-sortable="true" data-width="400">Tags</th>
-                            <th data-field="models" data-filter-control="input" data-sortable="true" data-width="200">Models
+                            <th data-field="name" data-filter-control="input" data-sortable="true" data-width="300">
+                                Name
                             </th>
-                            <th data-field="templates" data-filter-control="input" data-sortable="true" data-width="300">Templates</th>
-                            <th data-field="cuts" data-filter-control="input" data-sortable="true" data-width="100">Cuts</th>
+                            <th data-field="type" data-filter-control="input" data-sortable="true" data-width="50">
+                                Type
+                            </th>
+                            <th data-field="tags" data-filter-control="input" data-sortable="true" data-width="400">
+                                Tags
+                            </th>
+                            <th data-field="models" data-filter-control="input" data-sortable="true" data-width="200">
+                                Models
+                            </th>
+                            <th data-field="templates" data-filter-control="input" data-sortable="true"
+                                data-width="300">Templates
+                            </th>
+                            <th data-field="cuts" data-filter-control="input" data-sortable="true" data-width="100">
+                                Cuts
+                            </th>
 
                             <th data-field="genre" data-filter-control="input" data-sortable="true"
                                 data-visible="false">Genre
@@ -186,8 +208,10 @@
                                 <td>{% for template in text.templates %}
                                         <span class='templatelabel'><span
                                                     href='/design/design/ajaxunlinktemplate/{{ text.id }}/{{ template.id }}'
-                                                    templateid='{{ template.id }}' templatename='{{ template.name }}' linestyles='{{ template.linestyles | length }}'
-                                                    class='closebtn unlinktemplatebtn'>×</span>{{ template.name }}<span class="badge badge-secondary">{{ template.linestyles | length }} </span></span>
+                                                    templateid='{{ template.id }}' templatename='{{ template.name }}'
+                                                    linestyles='{{ template.linestyles | length }}'
+                                                    class='closebtn unlinktemplatebtn'>×</span>{{ template.name }}<span
+                                                    class="badge badge-secondary">{{ template.linestyles | length }} </span></span>
 
                                     {% endfor %}</td>
                                 <td>
@@ -255,7 +279,8 @@
                                 <td>{% for template in image.templates %}
                                         <span class='templatelabel'><span
                                                     href='/design/design/ajaxunlinktemplate/{{ image.id }}/{{ template.id }}'
-                                                    templateid='{{ template.id }}' templatename='{{ template.name }}' linestyles='{{ template.linestyles | length }}'
+                                                    templateid='{{ template.id }}' templatename='{{ template.name }}'
+                                                    linestyles='{{ template.linestyles | length }}'
                                                     class='closebtn unlinktemplatebtn'>×</span>{{ template.name }}<span
                                                     class="badge badge-secondary">{{ template.linestyles | length }} </span></span>
                                     {% endfor %}</td>
@@ -335,16 +360,16 @@
 
     <script>
 
-            $('#selecttag').select2({
-                theme: "classic",
-                tags : true
-            });
-            $('#selecttemplate').select2({
-                theme: "classic",
-            });
-            $('#selectmodel').select2({
-                theme: "classic",
-            });
+        $('#selecttag').select2({
+            theme: "classic",
+            tags: true
+        });
+        $('#selecttemplate').select2({
+            theme: "classic",
+        });
+        $('#selectmodel').select2({
+            theme: "classic",
+        });
 
     </script>
 

@@ -34,8 +34,8 @@ class Tag
      * @var array
      * @ORM\ManyToMany(targetEntity="App\Entity\Design\Tag", inversedBy="children")
      * @JoinTable(name="design_tagparents_tagchildren",
-     * joinColumns={@JoinColumn(name="tag_parents_id", referencedColumnName="id")},
-     * inverseJoinColumns={@JoinColumn(name="tag_children_id", referencedColumnName="id")}
+     * joinColumns={@JoinColumn(name="tag_children_id", referencedColumnName="id")},
+     * inverseJoinColumns={@JoinColumn(name="tag_parent_id", referencedColumnName="id")}
      * )
      */
     private $parents;
