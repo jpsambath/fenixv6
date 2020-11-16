@@ -19,6 +19,16 @@ class DesignRepository extends ServiceEntityRepository
         parent::__construct($registry, Design::class);
     }
 
+    public function findOneById($value): ?Design
+    {
+        return $this->createQueryBuilder('d')
+            ->andWhere('d.id = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
+    }
+
     // /**
     //  * @return Design[] Returns an array of Design objects
     //  */

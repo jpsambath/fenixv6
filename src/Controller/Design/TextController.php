@@ -115,7 +115,7 @@ class TextController extends AbstractController
             $entityManager->flush();
 
 
-        return $this->redirectToRoute('design_text_index');
+        return $this->redirectToRoute('design_design_index');
     }
 
 

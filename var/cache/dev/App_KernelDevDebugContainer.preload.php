@@ -10,7 +10,7 @@ if (in_array(PHP_SAPI, ['cli', 'phpdbg'], true)) {
 }
 
 require dirname(__DIR__, 3).'\\vendor/autoload.php';
-require __DIR__.'/ContainerJNTAIf2/App_KernelDevDebugContainer.php';
+require __DIR__.'/ContainerOrg3gEG/App_KernelDevDebugContainer.php';
 
 $classes = [];
 $classes[] = 'Symfony\Bundle\FrameworkBundle\FrameworkBundle';
@@ -67,6 +67,7 @@ $classes[] = 'App\Form\UserRegister';
 $classes[] = 'App\Repository\Design\CutRepository';
 $classes[] = 'App\Repository\Design\DesignRepository';
 $classes[] = 'App\Repository\Design\FontRepository';
+$classes[] = 'App\Repository\Design\ImageRepository';
 $classes[] = 'App\Repository\Design\LineStyleRepository';
 $classes[] = 'App\Repository\Design\ModelCategoryRepository';
 $classes[] = 'App\Repository\Design\ModelRepository';
