@@ -66,3 +66,13 @@
 .filterbtn:hover{
     color: #d2b122;
 }
+
+.activecontainer{
+    background-color: white;
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    cursor: text;
+    outline: 0;
+    padding-bottom: 5px;
+    padding-right: 5px;
+}

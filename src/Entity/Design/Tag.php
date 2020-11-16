@@ -33,16 +33,16 @@ class Tag
     /**
      * @var array
      * @ORM\ManyToMany(targetEntity="App\Entity\Design\Tag", inversedBy="children")
-     * @JoinTable(name="design_tagparent_tagchildren",
-     * joinColumns={@JoinColumn(name="tag_parent_id", referencedColumnName="id")},
-     * inverseJoinColumns={@JoinColumn(name="tag_children_id", referencedColumnName="id")}
+     * @JoinTable(name="design_tagparents_tagchildren",
+     * joinColumns={@JoinColumn(name="tag_children_id", referencedColumnName="id")},
+     * inverseJoinColumns={@JoinColumn(name="tag_parent_id", referencedColumnName="id")}
      * )
      */
-    private $parent;
+    private $parents;
 
     /**
      * @var array
-     * @ORM\ManyToMany(targetEntity="App\Entity\Design\Tag", mappedBy="parent")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Design\Tag", mappedBy="parents")
      */
     private $children;
 
@@ -54,7 +54,7 @@ class Tag
 
     public function __construct()
     {
-        $this->parent = new ArrayCollection();
+        $this->parents = new ArrayCollection();
         $this->children = new ArrayCollection();
         $this->designs = new ArrayCollection();
     }
@@ -79,15 +79,16 @@ class Tag
     /**
      * @return Collection|self[]
      */
-    public function getParent(): Collection
+    public function getParents(): Collection
     {
-        return $this->parent;
+        return $this->parents;
     }
 
     public function addParent(self $parent): self
     {
-        if (!$this->parent->contains($parent)) {
-            $this->parent[] = $parent;
+        if (!$this->parents->contains($parent)) {
+            $this->parents[] = $parent;
+            $parent->addChild($this);
         }
 
         return $this;
@@ -95,8 +96,9 @@ class Tag
 
     public function removeParent(self $parent): self
     {
-        if ($this->parent->contains($parent)) {
-            $this->parent->removeElement($parent);
+        if ($this->parents->contains($parent)) {
+            $this->parents->removeElement($parent);
+            $parent->removeChild($this);
         }
 
         return $this;
@@ -157,4 +159,21 @@ class Tag
 
         return $this;
     }
+
+    /**
+     * @param array $parents
+     */
+    public function setParents(array $parents): void
+    {
+        $this->parents = $parents;
+    }
+
+    /**
+     * @param array $children
+     */
+    public function setChildren(array $children): void
+    {
+        $this->children = $children;
+    }
+
 }

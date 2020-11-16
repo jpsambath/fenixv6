@@ -58,6 +58,7 @@ class TagController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($tag);
+
             $entityManager->flush();
 
             return $this->redirectToRoute('design_tag_index');
@@ -71,6 +72,8 @@ class TagController extends AbstractController
 
     /**
      * @Route("/{id}", name="design_tag_show", methods={"GET"})
+     * @param Tag $tag
+     * @return Response
      */
     public function show(Tag $tag): Response
     {
@@ -81,6 +84,9 @@ class TagController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="design_tag_edit", methods={"GET","POST"})
+     * @param Request $request
+     * @param Tag $tag
+     * @return Response
      */
     public function edit(Request $request, Tag $tag): Response
     {

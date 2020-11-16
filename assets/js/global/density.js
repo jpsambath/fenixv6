@@ -118,7 +118,8 @@ export default class density {
     this.content = this.content.toLowerCase();
   }
   static toAlpha() {
-    this.content = this.content.replace(/[^a-zA-Z0-9À-ž\s]/g, "");
+    this.content = this.content.replace("", "");
+    // /[^a-zA-Z0-9À-ž\s]/g
   }
   static stripWhitespace() {
     this.content = this.content.replace(/\s+/g, " ").trim();

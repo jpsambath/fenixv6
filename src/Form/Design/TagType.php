@@ -3,6 +3,7 @@
 namespace App\Form\Design;
 
 use App\Entity\Design\Tag;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -14,39 +15,19 @@ class TagType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('parent', Select2EntityType::class, [
+            ->add('parents', EntityType::class, [
                 'multiple' => true,
-                'remote_route' => 'design_tag_list',
-                'remote_params' => [],
-                'class' => 'App\Entity\Design\Tag',
-                'primary_key' => 'id',
-                'text_property' => 'name',
-                'minimum_input_length' => 2,
-                'page_limit' => 10,
-                'allow_clear' => true,
-                'delay' => 250,
-                'cache' => true,
-                'cache_timeout' => 60000, // if 'cache' is true
-                'language' => 'en',
-                'placeholder' => 'Selectionner un tag',
-                // 'object_manager' => $objectManager, // inject a custom object / entity manager
+                'class' =>  Tag::class,
+                'choice_label' => 'name',
+                'required' => false,
+                'placeholder' => 'Select one or several tags'
             ])
-            ->add('children', Select2EntityType::class, [
+            ->add('children', EntityType::class, [
                 'multiple' => true,
-                'remote_route' => 'design_tag_list',
-                'remote_params' => [],
-                'class' => 'App\Entity\Design\Tag',
-                'primary_key' => 'id',
-                'text_property' => 'name',
-                'minimum_input_length' => 2,
-                'page_limit' => 10,
-                'allow_clear' => true,
-                'delay' => 250,
-                'cache' => true,
-                'cache_timeout' => 60000, // if 'cache' is true
-                'language' => 'en',
-                'placeholder' => 'Selectionner un tag',
-                // 'object_manager' => $objectManager, // inject a custom object / entity manager
+                'class' =>  Tag::class,
+                'choice_label' => 'name',
+                'required' => false,
+                'placeholder' => 'Select one or several tags'
             ])
         ;
     }

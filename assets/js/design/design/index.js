@@ -460,6 +460,7 @@ $(document).ready(function () {
 
     $(document).on('click', '.filterbtn', function (event) {
         $( "th[data-field='name']" ).find('input').val($(this).attr('filtername'));
+        $('#table').bootstrapTable('triggerSearch');
     });
 
 
@@ -514,6 +515,8 @@ function calculatedensity() {
 
             results = unique($.merge($.merge(results1, results2), results3));
             results = sortByKeyDesc(distinctArrayBy(results, 'word'), "count");
+
+            console.log(results);
 
             $.each(results, function (index, suggestedtag){
                 if(finalresult.find(x => x.word === suggestedtag.word) === undefined){
