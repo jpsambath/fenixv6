@@ -32,7 +32,7 @@
 
                                         <optgroup label="{{ tag.name }}">
                                             {% for child in tag.children %}
-                                                <option value="{{ child.id }}"> {{ child.name }}</option>
+                                                <option value="{{ child.id }}">{{ child.name }}</option>
                                             {% endfor %}
                                         </optgroup>
                                     {% elseif tag.parents|length == 0 %}
@@ -114,7 +114,7 @@
 {#                           data-search="true"#}
                            data-filter-control="true"
 {#                           data-show-export="true"#}
-                           data-click-to-select="true"
+{#                           data-click-to-select="true"#}
                            data-unique-id="id"
                            data-toolbar="#toolbar"
                            data-show-columns="true"
@@ -126,6 +126,7 @@
                            class="table table-sm table-bordered table-striped table-hover">
                         <thead class="thead-light">
                         <tr>
+                            <th data-field="change">Change</th>
                             <th data-field="state" data-checkbox="true">
                                 {# <label> #}
                                 {# <input type="checkbox" value="all" name="checkedall" id="checkedall"/> #}
@@ -182,6 +183,7 @@
                         <tbody id="designlist">
                         {% for text in texts %}
                             <tr>
+                                <td></td>
                                 <td>
                                     {# <label> #}
                                     {# <input type="checkbox" id="{{ design.id }}" value="{{ design.id }}" name="checkeddesign"/> #}
@@ -193,10 +195,7 @@
 
 
                                 <td>{% for tag in text.tags %}
-                                        <span class='taglabel'><span
-                                                    href='/design/design/ajaxunlinktag/{{ text.id }}/{{ tag.id }}'
-                                                    tagid='{{ tag.id }}' tagname='{{ tag.name }}'
-                                                    class='closebtn unlinktagbtn'>×</span>{{ tag.name }}</span>
+                                        <span class='taglabel' tagid='{{ tag.id }}' tagname='{{ tag.name }}'><span class='closebtn unlinktagbtn'>×</span>{{ tag.name }}</span>
                                     {% endfor %}</td>
                                 <td>{% for model in text.models %}
                                         <span class='modellabel'><span
@@ -265,10 +264,7 @@
 
 
                                 <td>{% for tag in image.tags %}
-                                        <span class='taglabel'><span
-                                                    href='/design/design/ajaxunlinktag/{{ image.id }}/{{ tag.id }}'
-                                                    tagid='{{ tag.id }}' tagname='{{ tag.name }}'
-                                                    class='closebtn unlinktagbtn'>×</span>{{ tag.name }}</span>
+                                        <span class='taglabel' tagid='{{ tag.id }}' tagname='{{ tag.name }}'><span class='closebtn unlinktagbtn'>×</span>{{ tag.name }}</span>
                                     {% endfor %}</td>
                                 <td>{% for model in image.models %}
                                         <span class='modellabel'><span
@@ -370,6 +366,8 @@
         $('#selectmodel').select2({
             theme: "classic",
         });
+
+
 
     </script>
 

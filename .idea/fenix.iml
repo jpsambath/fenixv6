@@ -149,5 +149,7 @@
     <orderEntry type="library" name="jquery-ui" level="application" />
     <orderEntry type="library" name="jquery-3.5.1" level="application" />
     <orderEntry type="library" name="select2" level="application" />
+    <orderEntry type="library" name="bootstrap-editable" level="application" />
+    <orderEntry type="library" name="x-editable" level="application" />
   </component>
 </module>
