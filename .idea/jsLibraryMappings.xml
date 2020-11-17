@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="JavaScriptLibraryMappings">
-    <file url="file://$PROJECT_DIR$" libraries="{@popperjs, all, bootstrap, bootstrap.bundle, jquery-3.4.1, jquery-3.5.1, jquery-ui, jquery.tablesorter, material-components-web, select2, tableexport.jquery.plugin}" />
+    <file url="file://$PROJECT_DIR$" libraries="{@popperjs, all, bootstrap, bootstrap-editable, bootstrap.bundle, jquery-3.4.1, jquery-3.5.1, jquery-ui, jquery.tablesorter, material-components-web, select2, tableexport.jquery.plugin, x-editable}" />
   </component>
 </project>

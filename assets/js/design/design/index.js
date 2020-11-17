@@ -53,92 +53,59 @@ $(document).ready(function () {
     });
 
     $(document).on('click', '.unlinktagbtn', function (event) {
-        $.ajax({
-            url: $(this).attr('href'),
-            type: 'POST',
-            success: function (data, status) {
-                $("#menu_area").notify("Tag Successfully Deleted", {
-                    position: "bottom right",
-                    className: "success"
-                });
 
-                let design = JSON.parse(data);
+        let target = this;
+        let designid = $(target).parents('tr').attr('data-uniqueid');
 
-                //$('#table').bootstrapTable('removeByUniqueId', design.id);
-
-                let taglist = "";
-
-                $.each(design.tags, function (t, tag) {
-                    taglist += "<span class='taglabel'><span href='/design/design/ajaxunlinktag/" + design.id + "/" + tag.id + "' tagid='" + tag.id + "' tagname='" + tag.name + "' class='closebtn unlinktagbtn'>×</span>" + tag.name + "</span>";
-                })
-
-
-                $('#table').bootstrapTable('updateCellByUniqueId', {
-                    id: design.id,
-                    field: 'tags',
-                    value: taglist
-                });
-
-                majactivetags();
-
-            },
-            error:
-                function (data, status, message) {
-                    $("#menu_area").notify("Tag Deletion Failed", {
-                        position: "bottom right",
-                        className: "error"
-                    });
-                }
-        });
+        $(this).parent().parent().siblings().eq(0).text(1);
+        $(this).parent().remove();
 
     });
 
     $("#applytag").on('click', function () {
-        console.log('tags:' + JSON.stringify($("#selecttag").val()));
-        console.log('designs:' + JSON.stringify($("#table").bootstrapTable('getSelections')))
-        $.ajax({
-            headers: {'X-Requested-With': 'XMLHttpRequest'},
-            url: "/design/design/ajaxaddtag",
-            type: 'POST',
-            data: {
-                tags: JSON.stringify($("#selecttag").val()),
-                designs: JSON.stringify($("#table").bootstrapTable('getSelections'))
-            },
-            dataType: 'json',
+        // console.log($("#selecttag option:selected"));
+        // console.log($("#table").bootstrapTable('getSelections'));
 
-            success: function (data, status) {
-                $("#menu_area").notify("Tags Successfully Added :  \n" + $("#selecttag option:selected").toArray().map(item => item.text).join('\n'), {
-                    position: "bottom right",
-                    className: "success"
-                });
+        let tags = $("#selecttag option:selected");
+        let designs = $("#table").bootstrapTable('getSelections');
+        $.each(designs, function (key, design) {
+            let taglist = design.tags;
+            let designtagname = [];
 
-                $.each(JSON.parse(data), function (key, design) {
+            $.each(htmlToElements(design.tags), function (dt, designtag) {
+                if ($(designtag).attr('tagname') !== undefined) {
+                    designtagname.push($(designtag).attr('tagname'));
+                }
+            });
 
-                    let taglist = "";
+            $.each(tags, function (t, tag) {
+                if ($.inArray(tag.text, designtagname) === -1) {
+                    taglist += "<span class='taglabel'><span tagid='" + tag.value + "' tagname='" + tag.text + "' class='closebtn unlinktagbtn'>×</span>" + tag.text + "</span>";
+                }
 
-                    $.each(design.tags, function (t, tag) {
-                        taglist += "<span class='taglabel'><span href='/design/design/ajaxunlinktag/" + design.id + "/" + tag.id + "' tagid='" + tag.id + "' tagname='" + tag.name + "' class='closebtn unlinktagbtn'>×</span>" + tag.name + "</span>";
-                    })
+            })
+            //console.log(taglist);
 
 
-                    $('#table').bootstrapTable('updateCellByUniqueId', {
-                        id: design.id,
-                        field: 'tags',
-                        value: taglist
-                    });
+            $('#table').bootstrapTable('updateCellByUniqueId', {
+                id: design.id,
+                field: 'tags',
+                value: taglist
+            });
 
-                    majactivetags();
-                });
+            $('#table').bootstrapTable('updateCellByUniqueId', {
+                id: design.id,
+                field: 'change',
+                value: 1
+            });
 
-            },
-            error: function (data, status, message) {
-                $("#menu_area").notify("Adding Tags Failed :  \n" + $("#selecttag option:selected").toArray().map(item => item.text).join('\n'), {
-                    position: "bottom right",
-                    className: "error"
-                });
-            }
+            majactivetags();
+
+            $("#menu_area").notify("Tags Successfully Added :  \n" + $("#selecttag option:selected").toArray().map(item => item.text).join('\n'), {
+                position: "bottom right",
+                className: "success"
+            });
         });
-
 
     });
 
@@ -449,9 +416,9 @@ $(document).ready(function () {
     $(document).on('click', '#suggesttags', function (event) {
         let suggestedtaglist = "";
 
-        jQuery.each(calculatedensity().slice(0,100), function(index, suggestedtag) {
+        jQuery.each(calculatedensity().slice(0, 100), function (index, suggestedtag) {
             // faire quelque chose avec `value` (ou `this` qui est `value` )
-            suggestedtaglist += "<span class='suggestedtaglabel'><span href='/design/design/ajaxlinksuggestedtag/' tagname='" + suggestedtag.word + "'>" + suggestedtag.word + "<span class='badge badge-secondary'>" + suggestedtag.count + "</span><span class='btn btn-link btn-sm ml-1 filterbtn' filtername='" + suggestedtag.word +"'><i class=\"fas fa-filter\"></i></span></span></span>";
+            suggestedtaglist += "<span class='suggestedtaglabel'><span href='/design/design/ajaxlinksuggestedtag/' tagname='" + suggestedtag.word + "'>" + suggestedtag.word + "<span class='badge badge-secondary'>" + suggestedtag.count + "</span><span class='btn btn-link btn-sm ml-1 filterbtn' filtername='" + suggestedtag.word + "'><i class=\"fas fa-filter\"></i></span></span></span>";
         });
 
         $('#suggestedtags').html(suggestedtaglist);
@@ -459,7 +426,7 @@ $(document).ready(function () {
     });
 
     $(document).on('click', '.filterbtn', function (event) {
-        $( "th[data-field='name']" ).find('input').val($(this).attr('filtername'));
+        $("th[data-field='name']").find('input').val($(this).attr('filtername'));
         $('#table').bootstrapTable('triggerSearch');
     });
 
@@ -518,10 +485,10 @@ function calculatedensity() {
 
             console.log(results);
 
-            $.each(results, function (index, suggestedtag){
-                if(finalresult.find(x => x.word === suggestedtag.word) === undefined){
+            $.each(results, function (index, suggestedtag) {
+                if (finalresult.find(x => x.word === suggestedtag.word) === undefined) {
                     finalresult.push(suggestedtag);
-                }else{
+                } else {
                     finalresult.find(x => x.word === suggestedtag.word).count += suggestedtag.count
                 }
             });
@@ -536,33 +503,25 @@ function calculatedensity() {
 }
 
 function majactivetags() {
-    let rowlist = $('#table').bootstrapTable('getSelections');
+    let designs = $('#table').bootstrapTable('getSelections');
     let taglist = '';
     let tags = [];
 
-    $.each(rowlist, function (r, row) {
+    $.each(designs, function (key, design) {
 //        $.merge(tags, cleantags(row.tags));
 
-        $.each($(row.tags).find('.unlinktagbtn'), function (s, span) {
-            if (jQuery.inArray($(span).attr('tagname'), tags) === -1) {
+        $.each(htmlToElements(design.tags), function (dt, designtag) {
+            if ($(designtag).attr('tagname') !== undefined) {
+                if (jQuery.inArray($(designtag).attr('tagname'), tags) === -1) {
 
-                tags.push($(span).attr('tagname'));
-                taglist += "<span class='taglabel'><span href='/design/design/ajaxunlinktagfromselection/" + $(span).attr('tagid') + "' tagid='" + $(span).attr('tagid') + "' tagname='" + $(span).attr('tagname') + "' class='closebtn unlinktagfromselectionbtn'>×</span>" + $(span).attr('tagname') + "</span>";
+                    tags.push($(designtag).attr('tagname'));
+                    taglist += "<span class='taglabel' tagid='" + $(designtag).attr('tagid') + "' tagname='" + $(designtag).attr('tagname') + "'><span class='closebtn unlinktagfromselectionbtn'>×</span>" + $(designtag).attr('tagname') + "</span>";
+                }
+
             }
-
-            //console.log(span.attr('tagid'));
-            // console.log($(span).attr('tagid') + ' ' + $(span).attr('tagname'));
         });
 
     });
-
-    //console.log(taglist);
-    // tags = unique(tags);
-    // console.log(tags)
-    //
-    // $.each(tags, function (t, tag) {
-    //     taglist += "<span class='taglabel'><span href='/design/design/ajaxunlinktagfromselection/" + tag.id + "' tagid='" + tag.id + "' tagname='" + tag.name + "' class='closebtn unlinktagfromselectionbtn'>×</span>" + tag + "</span>";
-    // })
 
     $('#activetags').html(taglist);
 }
