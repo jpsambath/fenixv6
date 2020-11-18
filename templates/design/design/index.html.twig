@@ -115,12 +115,13 @@
                            data-filter-control="true"
 {#                           data-show-export="true"#}
 {#                           data-click-to-select="true"#}
+                            data-url="{{ path('design_design_') }}"
                            data-unique-id="id"
                            data-toolbar="#toolbar"
                            data-show-columns="true"
                            data-id-field="id"
                            data-select-item-name="id"
-                           data-loading-template=" "
+{#                           data-loading-template=" "#}
                            data-pagination="true"
                            data-page-size="100"
                            class="table table-sm table-bordered table-striped table-hover">
@@ -183,130 +184,7 @@
                             <th data-field="actions" data-width="150">Actions</th>
                         </tr>
                         </thead>
-                        <tbody id="designlist">
-                        {% for text in texts %}
-                            <tr>
-                                <td></td>
-                                <td>
-                                    {# <label> #}
-                                    {# <input type="checkbox" id="{{ design.id }}" value="{{ design.id }}" name="checkeddesign"/> #}
-                                    {# </label> #}
-                                </td>
-                                <td>{{ text.id }}</td>
-                                <td>{{ text.name }}</td>
-                                <td>Txt</td>
 
-
-                                <td>{% for tag in text.tags %}
-                                        <span class='taglabel' tagid='{{ tag.id }}' tagname='{{ tag.name }}'><span class='closebtn unlinktagbtn'>×</span>{{ tag.name }}</span>
-                                    {% endfor %}</td>
-                                <td>{% for model in text.models %}
-                                        <span class='modellabel'><span
-                                                    href='/design/design/ajaxunlinkmodel/{{ text.id }}/{{ model.id }}'
-                                                    modelid='{{ model.id }}' modelname='{{ model.name }}'
-                                                    class='closebtn unlinkmodelbtn'>×</span>{{ model.name }} </span>
-
-                                    {% endfor %}</td>
-                                <td>{% for template in text.templates %}
-                                        <span class='templatelabel'><span
-                                                    href='/design/design/ajaxunlinktemplate/{{ text.id }}/{{ template.id }}'
-                                                    templateid='{{ template.id }}' templatename='{{ template.name }}'
-                                                    linestyles='{{ template.linestyles | length }}'
-                                                    class='closebtn unlinktemplatebtn'>×</span>{{ template.name }}<span
-                                                    class="badge badge-secondary">{{ template.linestyles | length }} </span></span>
-
-                                    {% endfor %}</td>
-                                <td>
-                                    {% for cut in text.cuts %}
-                                        {% set sameline = false %}
-                                        {% for template in text.templates %}
-                                            {% if template.linestyles | length == cut.linecount %}
-                                                {% set sameline = true %}
-                                            {% endif %}
-                                        {% endfor %}
-
-                                        {% if sameline == true %}
-                                            <span class="badge badge-success">{{ cut.linecount }}</span>
-                                        {% else %}
-                                            <span class="badge badge-danger">{{ cut.linecount }}</span>
-                                        {% endif %}
-                                    {% endfor %}
-                                </td>
-
-                                <td>{{ text.genre }}</td>
-                                <td>{{ text.wordCount }}</td>
-                                <td>{{ text.length }}</td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-
-
-                                <td>
-                                    <a href="{{ path('design_text_show', {'id': text.id}) }}"><span
-                                                class="faicon"><i class="fas fa-eye"></i></span></a>
-                                    <a href="{{ path('design_text_edit', {'id': text.id}) }}"><span
-                                                class="faicon"><i class="fas fa-edit"></i></span></a>
-                                    <a href="{{ path('design_text_delete', {'id': text.id}) }}"><span
-                                                class="faicon"><i class="fas fa-trash-alt"></i></span></a>
-                                </td>
-                            </tr>
-                        {% endfor %}
-
-                        {% for image in images %}
-                            <tr>
-                                <td>
-                                    {# <label> #}
-                                    {# <input type="checkbox" id="{{ design.id }}" value="{{ design.id }}" name="checkeddesign"/> #}
-                                    {# </label> #}
-                                </td>
-                                <td>{{ image.id }}</td>
-                                <td>{{ image.name }}</td>
-                                <td>Img</td>
-
-
-                                <td>{% for tag in image.tags %}
-                                        <span class='taglabel' tagid='{{ tag.id }}' tagname='{{ tag.name }}'><span class='closebtn unlinktagbtn'>×</span>{{ tag.name }}</span>
-                                    {% endfor %}</td>
-                                <td>{% for model in image.models %}
-                                        <span class='modellabel'><span
-                                                    href='/design/design/ajaxunlinkmodel/{{ image.id }}/{{ model.id }}'
-                                                    modelid='{{ model.id }}' modelname='{{ model.name }}'
-                                                    class='closebtn unlinkmodelbtn'>×</span>{{ model.name }} </span>
-                                    {% endfor %}</td>
-                                <td>{% for template in image.templates %}
-                                        <span class='templatelabel'><span
-                                                    href='/design/design/ajaxunlinktemplate/{{ image.id }}/{{ template.id }}'
-                                                    templateid='{{ template.id }}' templatename='{{ template.name }}'
-                                                    linestyles='{{ template.linestyles | length }}'
-                                                    class='closebtn unlinktemplatebtn'>×</span>{{ template.name }}<span
-                                                    class="badge badge-secondary">{{ template.linestyles | length }} </span></span>
-                                    {% endfor %}</td>
-                                <td></td>
-
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td>{{ image.src }}</td>
-                                <td>{{ image.height }}</td>
-                                <td>{{ image.width }}</td>
-                                <td>{{ image.size }}</td>
-                                <td>{{ image.format }}</td>
-
-
-                                <td>
-                                    <a href="{{ path('design_image_show', {'id': image.id}) }}"><span
-                                                class="faicon"><i class="fas fa-eye"></i></span></a>
-                                    <a href="{{ path('design_image_edit', {'id': image.id}) }}"><span
-                                                class="faicon"><i class="fas fa-edit"></i></span></a>
-                                    <a href="{{ path('design_image_delete', {'id': image.id}) }}"><span
-                                                class="faicon"><i class="fas fa-trash-alt"></i></span></a>
-                                </td>
-                            </tr>
-                        {% endfor %}
-
-                        </tbody>
                     </table>
 
                     <a href="{{ path('design_design_new') }}" class="btn btn-primary">Create new</a>
