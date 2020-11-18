@@ -23,6 +23,7 @@ return [
     'design_cut_edit' => [['id'], ['_controller' => 'App\\Controller\\Design\\CutController::edit'], [], [['text', '/edit'], ['variable', '/', '[^/]++', 'id', true], ['text', '/design/cut']], [], []],
     'design_cut_delete' => [['id'], ['_controller' => 'App\\Controller\\Design\\CutController::delete'], [], [['variable', '/', '[^/]++', 'id', true], ['text', '/design/cut/delete']], [], []],
     'design_design_index' => [[], ['_controller' => 'App\\Controller\\Design\\DesignController::index'], [], [['text', '/design/design/']], [], []],
+    'design_design_gettextandimage' => [[], ['_controller' => 'App\\Controller\\Design\\DesignController::getTextAndImage'], [], [['text', '/design/design/gettextandimage']], [], []],
     'design_design_new' => [[], ['_controller' => 'App\\Controller\\Design\\DesignController::new'], [], [['text', '/design/design/new']], [], []],
     'design_design_show' => [['id'], ['_controller' => 'App\\Controller\\Design\\DesignController::show'], [], [['variable', '/', '[^/]++', 'id', true], ['text', '/design/design']], [], []],
     'design_design_edit' => [['id'], ['_controller' => 'App\\Controller\\Design\\DesignController::edit'], [], [['text', '/edit'], ['variable', '/', '[^/]++', 'id', true], ['text', '/design/design']], [], []],
