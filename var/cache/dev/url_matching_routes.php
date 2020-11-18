@@ -18,6 +18,7 @@ return [
         '/design/cut' => [[['_route' => 'design_cut_index', '_controller' => 'App\\Controller\\Design\\CutController::index'], null, ['GET' => 0], null, true, false, null]],
         '/design/cut/new' => [[['_route' => 'design_cut_new', '_controller' => 'App\\Controller\\Design\\CutController::new'], null, ['GET' => 0, 'POST' => 1], null, false, false, null]],
         '/design/design' => [[['_route' => 'design_design_index', '_controller' => 'App\\Controller\\Design\\DesignController::index'], null, ['GET' => 0], null, true, false, null]],
+        '/design/design/gettextandimage' => [[['_route' => 'design_design_gettextandimage', '_controller' => 'App\\Controller\\Design\\DesignController::getTextAndImage'], null, ['GET' => 0], null, false, false, null]],
         '/design/design/new' => [[['_route' => 'design_design_new', '_controller' => 'App\\Controller\\Design\\DesignController::new'], null, ['GET' => 0, 'POST' => 1], null, false, false, null]],
         '/design/font/fontlist' => [[['_route' => 'design_font_list', '_controller' => 'App\\Controller\\Design\\FontController::fontlist'], null, ['GET' => 0], null, false, false, null]],
         '/design/font' => [[['_route' => 'design_font_index', '_controller' => 'App\\Controller\\Design\\FontController::index'], null, ['GET' => 0], null, true, false, null]],

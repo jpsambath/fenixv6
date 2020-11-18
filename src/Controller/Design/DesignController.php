@@ -3,6 +3,7 @@
 namespace App\Controller\Design;
 
 use App\Entity\Design\Design;
+use App\Entity\Design\Image;
 use App\Entity\Design\Model;
 use App\Entity\Design\Tag;
 use App\Entity\Design\Template;
@@ -54,6 +55,21 @@ class DesignController extends AbstractController
             'templates' => $templateRepository->findAll(),
             'templateCategories' => $templateCategoryRepository->findAll()
         ]);
+    }
+
+    /**
+     * @Route("/gettextandimage", name="design_design_gettextandimage", methods={"GET"})
+     * @param TextRepository $textRepository
+     * @param ImageRepository $imageRepository
+     * @return JsonResponse
+     */
+    public function getTextAndImage(TextRepository $textRepository, ImageRepository $imageRepository): JsonResponse
+    {
+        $response = new JsonResponse();
+
+        $response->setData(['texts' => $textRepository->fullFindAll(), 'images' => $imageRepository->findAll() ]);
+
+        return $response;
     }
 
     /**
