@@ -27,7 +27,7 @@ class TagController extends AbstractController
 //        var_dump( $this->json($tagRepository->findAll()));
 //        return $this->json($tagRepository->findAll());
 
-    return $this->json($tagRepository->findAll(), 200,[],[AbstractNormalizer::ATTRIBUTES => ['id', 'name']]);
+    return $this->json($tagRepository->fullFindAll(), 200,[],[AbstractNormalizer::ATTRIBUTES => ['id', 'name']]);
 
     }
 
@@ -40,7 +40,7 @@ class TagController extends AbstractController
     public function index(TagRepository $tagRepository): Response
     {
         return $this->render('design/tag/index.html.twig', [
-            'tags' => $tagRepository->findAll(),
+            'tags' => $tagRepository->fullFindAll(),
         ]);
     }
 

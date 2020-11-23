@@ -17,6 +17,13 @@ class Text extends Design
 {
 
     /**
+     * @var string
+     * @Serializer\Groups({"design_export"})
+     * @Serializer\Type("string")
+     */
+    private $type = 'Txt';
+
+    /**
      * @var integer
      * @ORM\Column(type="integer", nullable=true)
      * @Serializer\Groups({"design_export"})
@@ -186,5 +193,21 @@ class Text extends Design
     public function setImages(Collection $images): void
     {
         $this->images = $images;
+    }
+
+    /**
+     * @return string
+     */
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param string $type
+     */
+    public function setType(string $type): void
+    {
+        $this->type = $type;
     }
 }
