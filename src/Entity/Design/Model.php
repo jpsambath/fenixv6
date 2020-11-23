@@ -5,6 +5,7 @@ namespace App\Entity\Design;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -19,18 +20,24 @@ class Model
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Serializer\Groups({"design_export"})
+     * @Serializer\Type("integer")
      */
     private $id;
 
     /**
      * @var string
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Serializer\Groups({"design_export"})
+     * @Serializer\Type("string")
      */
     private $name;
 
     /**
      * @var string
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Serializer\Groups({"design_export"})
+     * @Serializer\Type("string")
      */
     private $src;
 
@@ -43,6 +50,8 @@ class Model
     /**
      * @var string
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Serializer\Groups({"design_export"})
+     * @Serializer\Type("string")
      */
     private $pattern;
 
@@ -52,11 +61,13 @@ class Model
      * joinColumns={@ORM\JoinColumn(name="design_modelcategory_id", referencedColumnName="id")},
      * inverseJoinColumns={@ORM\JoinColumn(name="design_model_id", referencedColumnName="id")}
      * )
+     * @Serializer\Type("ArrayCollection<App\Entity\Design\ModelCategory>")
      */
     private $modelCategories;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Design\Design", mappedBy="models")
+     * @Serializer\Type("ArrayCollection<App\Entity\Design\Design>")
      */
     private $designs;
 

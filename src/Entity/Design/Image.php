@@ -7,6 +7,7 @@ namespace App\Entity\Design;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -19,12 +20,12 @@ class Image extends Design
     /**
      * @var string
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Serializer\Type("string")
      */
     private $src;
 
     /**
      * Unmapped property to handle file uploads
-     *
      * @var UploadedFile
      */
     private $file;
@@ -32,27 +33,32 @@ class Image extends Design
     /**
      * @var integer
      * @ORM\Column(type="integer", nullable=true)
+     * @Serializer\Type("integer")
      */
     private $height;
     /**
      * @var integer
      * @ORM\Column(type="integer", nullable=true)
+     * @Serializer\Type("integer")
      */
     private $width;
     /**
      * @var integer
      * @ORM\Column(type="integer", nullable=true)
+     * @Serializer\Type("integer")
      */
     private $size;
 
     /**
      * @var string
      * @ORM\Column(type="string", length=4, nullable=true)
+     * @Serializer\Type("integer")
      */
     private $format;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Design\Text", mappedBy="images")
+     * @Serializer\Type("ArrayCollection<App\Entity\Design\Text>")
      */
     private $texts;
 

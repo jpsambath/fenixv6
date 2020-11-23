@@ -5,6 +5,7 @@ namespace App\Entity\Design;
 use App\Repository\Design\CutRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
 use phpDocumentor\Reflection\Types\Collection;
 
 /**
@@ -17,18 +18,21 @@ class Cut
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Serializer\Type("integer")
      */
     private $id;
 
     /**
      * @var integer
      * @ORM\Column(type="integer")
+     * @Serializer\Type("integer")
      */
     private $linecount;
 
     /**
      * @var array
      * @ORM\Column(type="array")
+     * @Serializer\Type("array")
      */
     private $parts;
 
@@ -38,6 +42,7 @@ class Cut
      * joinColumns={@ORM\JoinColumn(name="design_text_id", referencedColumnName="id")},
      * inverseJoinColumns={@ORM\JoinColumn(name="design_cut_id", referencedColumnName="id")}
      * )
+     * @Serializer\Type("ArrayCollection<App\Entity\Design\Text>")
      */
     private $text;
 

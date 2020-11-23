@@ -3,62 +3,99 @@ import density from '../../global/density.js';
 
 $(document).ready(function () {
 
-    //ici ajax tag
-    $(document).on('click', '.unlinktagfromselectionbtn', function (event) {
 
-        console.log($(this).attr('href'));
+    $(document).on('click', '#savebtn', function (event) {
+        let alldata = $('#table').bootstrapTable('getData');
+        let changeddata = removeFromArrayBy(alldata, "change", 1);
         $.ajax({
             url: $(this).attr('href'),
             type: 'POST',
             data: {
-                designs: JSON.stringify($("#table").bootstrapTable('getSelections'))
+                designs: JSON.stringify(changeddata)
             },
             success: function (data, status) {
-                $("#menu_area").notify("Tag Successfully Deleted", {
+                $("#menu_area").notify("Design Successfully Saved", {
                     position: "bottom right",
                     className: "success"
                 });
 
-                $.each(JSON.parse(data), function (key, design) {
-
-                    let taglist = "";
-
-                    $.each(design.tags, function (t, tag) {
-                        taglist += "<span class='taglabel'><span href='/design/design/ajaxunlinktag/" + design.id + "/" + tag.id + "' tagid='" + tag.id + "' tagname='" + tag.name + "' class='closebtn unlinktagbtn'>×</span>" + tag.name + "</span>";
-                    })
-
-
-                    $('#table').bootstrapTable('updateCellByUniqueId', {
-                        id: design.id,
-                        field: 'tags',
-                        value: taglist
-                    });
-
-                    majactivetags();
-                });
-                // $('#table tbody').find('.selected').remove();
-                // $('#table tbody').prepend(data);
-                // $('#table').bootstrapTable('refresh');
+                $('#table').bootstrapTable('refresh');
 
             },
             error:
                 function (data, status, message) {
-                    $("#menu_area").notify("Tag Deletion Failed", {
+                    $("#menu_area").notify("Design Failed Saving", {
                         position: "bottom right",
                         className: "error"
                     });
                 }
         });
+    });
 
+    $('#table').on('all.bs.table', majactivechange);
+
+    //ici ajax tag
+    $(document).on('click', '.unlinktagfromselectionbtn', function (event) {
+        let tagid = $(this).parent().attr('tagid');
+        let designs = $("#table").bootstrapTable('getSelections');
+
+        $.each(designs, function (key, design) {
+            let designtags = design.tags;
+
+            designtags = designtags.filter(function (obj) {
+                return obj.id !== parseInt(tagid);
+            });
+
+            $('#table').bootstrapTable('updateCellByUniqueId', {
+                id: design.id,
+                field: 'tags',
+                value: designtags
+            });
+
+            $('#table').bootstrapTable('updateCellByUniqueId', {
+                id: design.id,
+                field: 'change',
+                value: 1
+            });
+
+            majactivetags();
+
+            $("#menu_area").notify("Tags Successfully Removed", {
+                position: "bottom right",
+                className: "success"
+            });
+
+        });
     });
 
     $(document).on('click', '.unlinktagbtn', function (event) {
+        let tagid = $(this).parent().attr('tagid');
+        let designid = $(this).parents('tr').attr('data-uniqueid');
+        let design = $("#table").bootstrapTable('getRowByUniqueId', designid);
+        let designtags = design.tags;
 
-        let target = this;
-        let designid = $(target).parents('tr').attr('data-uniqueid');
+        designtags = designtags.filter(function (obj) {
+            return obj.id !== parseInt(tagid);
+        });
 
-        $(this).parent().parent().siblings().eq(0).text(1);
-        $(this).parent().remove();
+        $('#table').bootstrapTable('updateCellByUniqueId', {
+            id: designid,
+            field: 'tags',
+            value: designtags
+        });
+
+        $('#table').bootstrapTable('updateCellByUniqueId', {
+            id: designid,
+            field: 'change',
+            value: 1
+        });
+
+        majactivetags();
+
+        $("#menu_area").notify("Tags Successfully Removed", {
+            position: "bottom right",
+            className: "success"
+        });
 
     });
 
@@ -68,24 +105,16 @@ $(document).ready(function () {
 
         let tags = $("#selecttag option:selected");
         let designs = $("#table").bootstrapTable('getSelections');
+        let tagobj;
         $.each(designs, function (key, design) {
             let taglist = design.tags;
-            let designtagname = [];
-
-            $.each(htmlToElements(design.tags), function (dt, designtag) {
-                if ($(designtag).attr('tagname') !== undefined) {
-                    designtagname.push($(designtag).attr('tagname'));
-                }
-            });
 
             $.each(tags, function (t, tag) {
-                if ($.inArray(tag.text, designtagname) === -1) {
-                    taglist += "<span class='taglabel'><span tagid='" + tag.value + "' tagname='" + tag.text + "' class='closebtn unlinktagbtn'>×</span>" + tag.text + "</span>";
-                }
-
+                tagobj = {"id": parseInt(tag.value), "name": tag.text}
+                taglist.push(tagobj)
             })
-            //console.log(taglist);
 
+            taglist = distinctArrayBy(taglist, 'id');
 
             $('#table').bootstrapTable('updateCellByUniqueId', {
                 id: design.id,
@@ -114,144 +143,110 @@ $(document).ready(function () {
 
     //ici ajax template
     $("#applytemplate").on('click', function () {
-        console.log('templates:' + JSON.stringify($("#selecttemplate").val()));
-        console.log('designs:' + JSON.stringify($("#table").bootstrapTable('getSelections')))
-        $.ajax({
-            url: "/design/design/ajaxaddtemplate",
-            type: 'POST',
-            data: {
-                templates: JSON.stringify($("#selecttemplate").val()),
-                designs: JSON.stringify($("#table").bootstrapTable('getSelections'))
-            },
-            dataType: 'json',
+        // console.log($("#selecttemplate option:selected"));
+        // console.log($("#table").bootstrapTable('getSelections'));
 
-            success: function (data, status) {
-                $("#menu_area").notify("Templates Successfully Added :  \n" + $("#selecttemplate option:selected").toArray().map(item => item.text).join('\n'), {
-                    position: "bottom right",
-                    className: "success"
-                });
+        let templates = $("#selecttemplate option:selected");
+        let designs = $("#table").bootstrapTable('getSelections');
+        let templateobj;
 
-                $.each(JSON.parse(data), function (key, design) {
+        $.each(designs, function (key, design) {
+            let templatelist = design.templates;
 
-                    let templatelist = "";
-
-                    $.each(design.templates, function (t, template) {
-                        templatelist += "<span class='templatelabel'><span href='/design/design/ajaxunlinktemplate/" + design.id + "/" + template.id + "' templateid='" + template.id + "' templatename='" + template.name + "' linestyles='" + template.line_styles.length + "' class='closebtn unlinktemplatebtn'>×</span>" + template.name + "<span class='badge badge-secondary'>" + template.line_styles.length + "</span></span>";
-
-                    })
-
-
-                    $('#table').bootstrapTable('updateCellByUniqueId', {
-                        id: design.id,
-                        field: 'templates',
-                        value: templatelist
-                    });
-
-                    majactivetemplates();
-                });
-                // $('#table tbody').find('.selected').remove();
-                // $('#table tbody').prepend(data);
-                // $('#table').bootstrapTable('refresh');
-
-            },
-            error:
-
-                function (data, status, message) {
-                    $("#menu_area").notify("Adding Templates Failed :  \n" + $("#selecttemplate option:selected").toArray().map(item => item.text).join('\n'), {
-                        position: "bottom right",
-                        className: "error"
-                    });
+            $.each(templates, function (t, template) {
+                templateobj = {
+                    "id": parseInt(template.value),
+                    "name": template.text,
+                    "linecount": $(template).attr('linecount')
                 }
-        });
+                templatelist.push(templateobj)
+            })
 
+            templatelist = distinctArrayBy(templatelist, 'id');
+
+
+            $('#table').bootstrapTable('updateCellByUniqueId', {
+                id: design.id,
+                field: 'templates',
+                value: templatelist
+            });
+
+            $('#table').bootstrapTable('updateCellByUniqueId', {
+                id: design.id,
+                field: 'change',
+                value: 1
+            });
+
+            majactivetemplates();
+
+            $("#menu_area").notify("Templates Successfully Added :  \n" + $("#selecttemplate option:selected").toArray().map(item => item.text).join('\n'), {
+                position: "bottom right",
+                className: "success"
+            });
+        });
 
     });
 
     $(document).on('click', '.unlinktemplatefromselectionbtn', function (event) {
+        let templateid = $(this).parent().attr('templateid');
+        let designs = $("#table").bootstrapTable('getSelections');
 
-        console.log($(this).attr('href'));
-        $.ajax({
-            url: $(this).attr('href'),
-            type: 'POST',
-            data: {
-                designs: JSON.stringify($("#table").bootstrapTable('getSelections'))
-            },
-            success: function (data, status) {
-                $("#menu_area").notify("Template Successfully Deleted", {
-                    position: "bottom right",
-                    className: "success"
-                });
+        $.each(designs, function (key, design) {
+            let designtemplates = design.templates;
 
-                $.each(JSON.parse(data), function (key, design) {
+            designtemplates = designtemplates.filter(function (obj) {
+                return obj.id !== parseInt(templateid);
+            });
 
-                    let templatelist = "";
+            $('#table').bootstrapTable('updateCellByUniqueId', {
+                id: design.id,
+                field: 'templates',
+                value: designtemplates
+            });
 
-                    $.each(design.templates, function (t, template) {
-                        templatelist += "<span class='templatelabel'><span href='/design/design/ajaxunlinktemplate/" + design.id + "/" + template.id + "' templateid='" + template.id + "' templatename='" + template.name + "' linestyles='" + template.line_styles.length + "' class='closebtn unlinktemplatebtn'>×</span>" + template.name + "<span class='badge badge-secondary'>" + template.line_styles.length + "</span></span>";
-                    })
+            $('#table').bootstrapTable('updateCellByUniqueId', {
+                id: design.id,
+                field: 'change',
+                value: 1
+            });
 
+            majactivetemplates();
 
-                    $('#table').bootstrapTable('updateCellByUniqueId', {
-                        id: design.id,
-                        field: 'templates',
-                        value: templatelist
-                    });
+            $("#menu_area").notify("Tags Successfully Removed", {
+                position: "bottom right",
+                className: "success"
+            });
 
-                    majactivetemplates();
-                });
-                // $('#table tbody').find('.selected').remove();
-                // $('#table tbody').prepend(data);
-                // $('#table').bootstrapTable('refresh');
-
-            },
-            error:
-                function (data, status, message) {
-                    $("#menu_area").notify("Template Deletion Failed", {
-                        position: "bottom right",
-                        className: "error"
-                    });
-                }
         });
-
     });
 
     $(document).on('click', '.unlinktemplatebtn', function (event) {
-        $.ajax({
-            url: $(this).attr('href'),
-            type: 'POST',
-            success: function (data, status) {
-                $("#menu_area").notify("Template Successfully Deleted", {
-                    position: "bottom right",
-                    className: "success"
-                });
+        let templateid = $(this).parent().attr('templateid');
+        let designid = $(this).parents('tr').attr('data-uniqueid');
+        let design = $("#table").bootstrapTable('getRowByUniqueId', designid);
+        let designtemplates = design.templates;
 
-                let design = JSON.parse(data);
+        designtemplates = designtemplates.filter(function (obj) {
+            return obj.id !== parseInt(templateid);
+        });
 
-                //$('#table').bootstrapTable('removeByUniqueId', design.id);
+        $('#table').bootstrapTable('updateCellByUniqueId', {
+            id: designid,
+            field: 'templates',
+            value: designtemplates
+        });
 
-                let templatelist = "";
+        $('#table').bootstrapTable('updateCellByUniqueId', {
+            id: designid,
+            field: 'change',
+            value: 1
+        });
 
-                $.each(design.templates, function (t, template) {
-                    templatelist += "<span class='templatelabel'><span href='/design/design/ajaxunlinktemplate/" + design.id + "/" + template.id + "' templateid='" + template.id + "' templatename='" + template.name + "' linestyles='" + template.line_styles.length + "' class='closebtn unlinktemplatebtn'>×</span>" + template.name + "<span class='badge badge-secondary'>" + template.line_styles.length + "</span></span>";
-                })
+        majactivetemplates();
 
-
-                $('#table').bootstrapTable('updateCellByUniqueId', {
-                    id: design.id,
-                    field: 'templates',
-                    value: templatelist
-                });
-
-                majactivetemplates();
-
-            },
-            error:
-                function (data, status, message) {
-                    $("#menu_area").notify("Template Deletion Failed", {
-                        position: "bottom right",
-                        className: "error"
-                    });
-                }
+        $("#menu_area").notify("Tags Successfully Removed", {
+            position: "bottom right",
+            className: "success"
         });
 
     });
@@ -260,158 +255,111 @@ $(document).ready(function () {
 
 
     //ici ajax model
-    $("#applymodel").on('click', function () {
-        console.log('models:' + JSON.stringify($("#selectmodel").val()));
-        console.log('designs:' + JSON.stringify($("#table").bootstrapTable('getSelections')))
-        $.ajax({
-            url: "/design/design/ajaxaddmodel",
-            type: 'POST',
-            data: {
-                models: JSON.stringify($("#selectmodel").val()),
-                designs: JSON.stringify($("#table").bootstrapTable('getSelections'))
-            },
-            dataType: 'json',
-
-            success: function (data, status) {
-                $("#menu_area").notify("models Successfully Added :  \n" + $("#selectmodel option:selected").toArray().map(item => item.text).join('\n'), {
-                    position: "bottom right",
-                    className: "success"
-                });
-
-                //Suppression des lignes précédemment cochées
-                // let ids = $.map($('#table').bootstrapTable('getSelections'), function (row) {
-                //     return row.id
-                // })
-                // $('#table').bootstrapTable('remove', {
-                //     field: 'id',
-                //     values: ids
-                // });
-
-                $.each(JSON.parse(data), function (key, design) {
-
-                    let modellist = "";
-
-                    $.each(design.models, function (t, model) {
-                        modellist += "<span class='modellabel'><span href='/design/design/ajaxunlinkmodel/" + design.id + "/" + model.id + "' modelid='" + model.id + "' modelname='" + model.name + "' class='closebtn unlinkmodelbtn'>×</span>" + model.name + "</span>";
-                    })
-
-
-                    $('#table').bootstrapTable('updateCellByUniqueId', {
-                        id: design.id,
-                        field: 'models',
-                        value: modellist
-                    });
-
-                    majactivemodels();
-                });
-                // $('#table tbody').find('.selected').remove();
-                // $('#table tbody').prepend(data);
-                // $('#table').bootstrapTable('refresh');
-
-            },
-            error:
-
-                function (data, status, message) {
-                    $("#menu_area").notify("Adding models Failed :  \n" + $("#selectmodel option:selected").toArray().map(item => item.text).join('\n'), {
-                        position: "bottom right",
-                        className: "error"
-                    });
-                }
-        });
-
-
-    });
-
     $(document).on('click', '.unlinkmodelfromselectionbtn', function (event) {
+        let modelid = $(this).parent().attr('modelid');
+        let designs = $("#table").bootstrapTable('getSelections');
 
-        console.log($(this).attr('href'));
-        $.ajax({
-            url: $(this).attr('href'),
-            type: 'POST',
-            data: {
-                designs: JSON.stringify($("#table").bootstrapTable('getSelections'))
-            },
-            success: function (data, status) {
-                $("#menu_area").notify("model Successfully Deleted", {
-                    position: "bottom right",
-                    className: "success"
-                });
+        $.each(designs, function (key, design) {
+            let designmodels = design.models;
 
-                $.each(JSON.parse(data), function (key, design) {
+            designmodels = designmodels.filter(function (obj) {
+                return obj.id !== parseInt(modelid);
+            });
 
-                    let modellist = "";
+            $('#table').bootstrapTable('updateCellByUniqueId', {
+                id: design.id,
+                field: 'models',
+                value: designmodels
+            });
 
-                    $.each(design.models, function (t, model) {
-                        modellist += "<span class='modellabel'><span href='/design/design/ajaxunlinkmodel/" + design.id + "/" + model.id + "' modelid='" + model.id + "' modelname='" + model.name + "' class='closebtn unlinkmodelbtn'>×</span>" + model.name + "</span>";
-                    })
+            $('#table').bootstrapTable('updateCellByUniqueId', {
+                id: design.id,
+                field: 'change',
+                value: 1
+            });
 
+            majactivemodels();
 
-                    $('#table').bootstrapTable('updateCellByUniqueId', {
-                        id: design.id,
-                        field: 'models',
-                        value: modellist
-                    });
+            $("#menu_area").notify("Tags Successfully Removed", {
+                position: "bottom right",
+                className: "success"
+            });
 
-                    majactivemodels();
-                });
-                // $('#table tbody').find('.selected').remove();
-                // $('#table tbody').prepend(data);
-                // $('#table').bootstrapTable('refresh');
-
-            },
-            error:
-                function (data, status, message) {
-                    $("#menu_area").notify("model Deletion Failed", {
-                        position: "bottom right",
-                        className: "error"
-                    });
-                }
         });
-
     });
 
     $(document).on('click', '.unlinkmodelbtn', function (event) {
-        $.ajax({
-            url: $(this).attr('href'),
-            type: 'POST',
-            success: function (data, status) {
-                $("#menu_area").notify("Model Successfully Deleted", {
-                    position: "bottom right",
-                    className: "success"
-                });
 
-                let design = JSON.parse(data);
+        let modelid = $(this).parent().attr('modelid');
 
-                //$('#table').bootstrapTable('removeByUniqueId', design.id);
+        let designid = $(this).parents('tr').attr('data-uniqueid');
 
-                let modellist = "";
+        let design = $("#table").bootstrapTable('getRowByUniqueId', designid);
 
-                $.each(design.models, function (t, model) {
-                    modellist += "<span class='modellabel'><span href='/design/design/ajaxunlinkmodel/" + design.id + "/" + model.id + "' modelid='" + model.id + "' modelname='" + model.name + "' class='closebtn unlinkmodelbtn'>×</span>" + model.name + "</span>";
-                })
+        let designmodels = design.models;
 
+        designmodels = designmodels.filter(function (obj) {
+            return obj.id !== parseInt(modelid);
+        });
 
-                $('#table').bootstrapTable('updateCellByUniqueId', {
-                    id: design.id,
-                    field: 'models',
-                    value: modellist
-                });
+        $('#table').bootstrapTable('updateCellByUniqueId', {
+            id: designid,
+            field: 'models',
+            value: designmodels
+        });
 
-                majactivemodels();
+        $('#table').bootstrapTable('updateCellByUniqueId', {
+            id: designid,
+            field: 'change',
+            value: 1
+        });
 
-            },
-            error:
-                function (data, status, message) {
-                    $("#menu_area").notify("model Deletion Failed", {
-                        position: "bottom right",
-                        className: "error"
-                    });
-                }
+        majactivemodels();
+
+        $("#menu_area").notify("Tags Successfully Removed", {
+            position: "bottom right",
+            className: "success"
+        });
+    });
+
+    $("#applymodel").on('click', function () {
+        let models = $("#selectmodel option:selected");
+        let designs = $("#table").bootstrapTable('getSelections');
+        let modelobj;
+        $.each(designs, function (key, design) {
+            let modellist = design.models;
+
+            $.each(models, function (t, model) {
+                modelobj = {"id": parseInt(model.value), "name": model.text}
+                modellist.push(modelobj)
+            })
+
+            modellist = distinctArrayBy(modellist, 'id');
+
+            $('#table').bootstrapTable('updateCellByUniqueId', {
+                id: design.id,
+                field: 'models',
+                value: modellist
+            });
+
+            $('#table').bootstrapTable('updateCellByUniqueId', {
+                id: design.id,
+                field: 'change',
+                value: 1
+            });
+
+            majactivemodels();
+
+            $("#menu_area").notify("Tags Successfully Added :  \n" + $("#selectmodel option:selected").toArray().map(item => item.text).join('\n'), {
+                position: "bottom right",
+                className: "success"
+            });
         });
 
     });
 
     $('#table').on('check.bs.table uncheck.bs.table uncheck-all.bs.table check-all.bs.table', majactivemodels);
+
 
     $(document).on('click', '#suggesttags', function (event) {
         let suggestedtaglist = "";
@@ -503,91 +451,68 @@ function calculatedensity() {
 }
 
 function majactivetags() {
-    let designs = $('#table').bootstrapTable('getSelections');
-    let taglist = '';
-    let tags = [];
 
+    let designs = $("#table").bootstrapTable('getSelections');
+    let taghtml = '';
+    let taglist = [];
     $.each(designs, function (key, design) {
-//        $.merge(tags, cleantags(row.tags));
+        taglist = taglist.concat(design.tags);
+    });
+    taglist = distinctArrayBy(taglist, 'id');
 
-        $.each(htmlToElements(design.tags), function (dt, designtag) {
-            if ($(designtag).attr('tagname') !== undefined) {
-                if (jQuery.inArray($(designtag).attr('tagname'), tags) === -1) {
-
-                    tags.push($(designtag).attr('tagname'));
-                    taglist += "<span class='taglabel' tagid='" + $(designtag).attr('tagid') + "' tagname='" + $(designtag).attr('tagname') + "'><span class='closebtn unlinktagfromselectionbtn'>×</span>" + $(designtag).attr('tagname') + "</span>";
-                }
-
-            }
-        });
-
+    $.each(taglist, function (key, tag) {
+        taghtml += "<span class='taglabel' tagid='" + tag.id + "' tagname='" + tag.name + "' ><span class='closebtn unlinktagfromselectionbtn'>×</span>" + tag.name + "</span>";
     });
 
-    $('#activetags').html(taglist);
+    $('#activetags').html(taghtml);
 }
 
 function majactivetemplates() {
-    let rowlist = $('#table').bootstrapTable('getSelections');
-    let templatelist = '';
-    let templates = [];
 
-    $.each(rowlist, function (r, row) {
-//        $.merge(tags, cleantags(row.tags));
+    let designs = $("#table").bootstrapTable('getSelections');
+    let templatehtml = '';
+    let templatelist = [];
 
-        $.each($(row.templates).find('.unlinktemplatebtn'), function (s, span) {
-            if (jQuery.inArray($(span).attr('templatename'), templates) === -1) {
-
-                templates.push($(span).attr('templatename'));
-                templatelist += "<span class='templatelabel'><span href='/design/design/ajaxunlinktemplatefromselection/" + $(span).attr('templateid') + "' templateid='" + $(span).attr('templateid') + "' templatename='" + $(span).attr('templatename') + "' linestyles='" + $(span).attr('linestyles') + "' class='closebtn unlinktemplatefromselectionbtn'>×</span>" + $(span).attr('templatename') + "</span>";
-            }
-
-            //console.log(span.attr('tagid'));
-            // console.log($(span).attr('tagid') + ' ' + $(span).attr('tagname'));
-        });
-
+    $.each(designs, function (key, design) {
+        templatelist = templatelist.concat(design.templates);
+    });
+    templatelist = distinctArrayBy(templatelist, 'id');
+    $.each(templatelist, function (key, template) {
+        templatehtml += "<span class='templatelabel' templateid='" + template.id + "' templatename='" + template.name + "' linecount='" + template.linecount + "'><span class='closebtn unlinktemplatefromselectionbtn'>×</span>" + template.name + "<span class='badge badge-secondary'>" + template.linecount + "</span></span>";
     });
 
-    //console.log(taglist);
-    // tags = unique(tags);
-    // console.log(tags)
-    //
-    // $.each(tags, function (t, tag) {
-    //     taglist += "<span class='taglabel'><span href='/design/design/ajaxunlinktagfromselection/" + tag.id + "' tagid='" + tag.id + "' tagname='" + tag.name + "' class='closebtn unlinktagfromselectionbtn'>×</span>" + tag + "</span>";
-    // })
-
-    $('#activetemplates').html(templatelist);
+    $('#activetemplates').html(templatehtml);
 }
 
 function majactivemodels() {
-    let rowlist = $('#table').bootstrapTable('getSelections');
-    let modellist = '';
-    let models = [];
 
-    $.each(rowlist, function (r, row) {
-//        $.merge(tags, cleantags(row.tags));
+    let designs = $("#table").bootstrapTable('getSelections');
+    let modelhtml = '';
+    let modellist = [];
+    $.each(designs, function (key, design) {
+        modellist = modellist.concat(design.models);
+    });
+    modellist = distinctArrayBy(modellist, 'id');
 
-        $.each($(row.models).find('.unlinkmodelbtn'), function (s, span) {
-            if (jQuery.inArray($(span).attr('modelname'), models) === -1) {
-
-                models.push($(span).attr('modelname'));
-                modellist += "<span class='modellabel'><span href='/design/design/ajaxunlinkmodelfromselection/" + $(span).attr('modelid') + "' modelid='" + $(span).attr('modelid') + "' modelname='" + $(span).attr('modelname') + "' class='closebtn unlinkmodelfromselectionbtn'>×</span>" + $(span).attr('modelname') + "</span>";
-            }
-
-            //console.log(span.attr('tagid'));
-            // console.log($(span).attr('tagid') + ' ' + $(span).attr('tagname'));
-        });
-
+    $.each(modellist, function (key, model) {
+        modelhtml += "<span class='modellabel' modelid='" + model.id + "' modelname='" + model.name + "' ><span class='closebtn unlinkmodelfromselectionbtn'>×</span>" + model.name + "</span>";
     });
 
-    //console.log(taglist);
-    // tags = unique(tags);
-    // console.log(tags)
-    //
-    // $.each(tags, function (t, tag) {
-    //     taglist += "<span class='taglabel'><span href='/design/design/ajaxunlinktagfromselection/" + tag.id + "' tagid='" + tag.id + "' tagname='" + tag.name + "' class='closebtn unlinktagfromselectionbtn'>×</span>" + tag + "</span>";
-    // })
+    $('#activemodels').html(modelhtml);
+}
 
-    $('#activemodels').html(modellist);
+function majactivechange() {
+    let alldata = $('#table').bootstrapTable('getData');
+    let changeddata = removeFromArrayBy(alldata, "change", 1);
+    let result = '';
+
+    if (changeddata.length === 0) {
+        result = "Aucun changement effectué"
+    } else {
+        result = "<span style='color: #28a745; font-weight: bold'>" + changeddata.length + "</span> changement(s) à sauvegarder"
+    }
+
+    $('#activechange').html(result);
 }
 
 function htmlToElements(html) {
@@ -623,4 +548,10 @@ function distinctArrayBy(arr, propName) {
     }, []);
 
     return result;
+}
+
+function removeFromArrayBy(arr, propName, propValue) {
+    return arr.filter(function (obj) {
+        return obj[propName] === propValue;
+    });
 }

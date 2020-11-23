@@ -16,6 +16,7 @@ use App\Repository\Design\TagRepository;
 use App\Repository\Design\TemplateCategoryRepository;
 use App\Repository\Design\TemplateRepository;
 use App\Repository\Design\TextRepository;
+use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerBuilder;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -30,6 +31,40 @@ use Symfony\Component\Routing\Annotation\Route;
 class DesignController extends AbstractController
 {
 
+    /**
+     * @Route("/savedesign", name="design_design_savedesign")
+     * @param TextRepository $textRepository
+     * @param ImageRepository $imageRepository
+     * @param Request $request
+     * @return Response
+     */
+    public function savedesign(TextRepository $textRepository, ImageRepository $imageRepository, Request $request): Response
+    {
+        if ($request->isXMLHttpRequest()) {
+            $data = $request->request->all();
+
+            $entityManager = $this->getDoctrine()->getManager();
+
+            $serializer = SerializerBuilder::create()->build();
+            $designArgument = $serializer->deserialize($data['designs'], 'array<App\Entity\Design\Text>', "json");
+            $designList = array();
+
+            foreach ($designArgument as $design) {
+                $entityManager->merge($design);
+                $designList[] = $design;
+            }
+
+            $entityManager->flush();
+            $response = $serializer->serialize(['result' => 'ok', 'data' => $designList], "json");
+
+
+            return new Response($response);
+        } else {
+            $this->redirectToRoute('design_design_index');
+        }
+        return new Response('This is not ajax!', 400);
+    }
+
 
     /**
      * @Route("/", name="design_design_index", methods={"GET"})
@@ -43,7 +78,7 @@ class DesignController extends AbstractController
      * @param ImageRepository $imageRepository
      * @return Response
      */
-    public function index(DesignRepository $designRepository, TagRepository $tagRepository, ModelRepository $modelRepository, TemplateRepository $templateRepository, ModelCategoryRepository $modelCategoryRepository, TemplateCategoryRepository $templateCategoryRepository, TextRepository $textRepository, ImageRepository $imageRepository ): Response
+    public function index(DesignRepository $designRepository, TagRepository $tagRepository, ModelRepository $modelRepository, TemplateRepository $templateRepository, ModelCategoryRepository $modelCategoryRepository, TemplateCategoryRepository $templateCategoryRepository, TextRepository $textRepository, ImageRepository $imageRepository): Response
     {
         return $this->render('design/design/index.html.twig', [
 //            'designs' => $designRepository->findAll(),
@@ -61,15 +96,16 @@ class DesignController extends AbstractController
      * @Route("/gettextandimage", name="design_design_gettextandimage", methods={"GET"})
      * @param TextRepository $textRepository
      * @param ImageRepository $imageRepository
-     * @return JsonResponse
+     * @return Response
      */
-    public function getTextAndImage(TextRepository $textRepository, ImageRepository $imageRepository): JsonResponse
+    public function getTextAndImage(TextRepository $textRepository, ImageRepository $imageRepository): Response
     {
-        $response = new JsonResponse();
 
-        $response->setData(['texts' => $textRepository->fullFindAll(), 'images' => $imageRepository->findAll() ]);
+        $serializer = SerializerBuilder::create()->build();
+        $texts = $serializer->serialize(['rows' => $textRepository->fullFindAll()], 'json', SerializationContext::create()->setGroups(["design_export"]));
+        //$images = $serializer->serialize($imageRepository->findAll(),'json');
 
-        return $response;
+        return new Response($texts);
     }
 
     /**

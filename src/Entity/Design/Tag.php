@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\JoinTable;
 use Doctrine\ORM\Mapping\JoinColumn;
+use JMS\Serializer\Annotation as Serializer;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 
 /**
@@ -19,7 +20,9 @@ class Tag
      * @var integer
      * @ORM\Id()
      * @ORM\GeneratedValue()
+     * @Serializer\Groups({"design_export"})
      * @ORM\Column(type="integer")
+     * @Serializer\Type("integer")
      */
     private $id;
 
@@ -27,6 +30,8 @@ class Tag
      * @var string
      * @ORM\Column(type="string", length=255)
      * @SerializedName("text")
+     * @Serializer\Groups({"design_export"})
+     * @Serializer\Type("string")
      */
     private $name;
 
@@ -37,12 +42,14 @@ class Tag
      * joinColumns={@JoinColumn(name="tag_children_id", referencedColumnName="id")},
      * inverseJoinColumns={@JoinColumn(name="tag_parent_id", referencedColumnName="id")}
      * )
+     * @Serializer\Type("ArrayCollection<App\Entity\Design\Tag>")
      */
     private $parents;
 
     /**
      * @var array
      * @ORM\ManyToMany(targetEntity="App\Entity\Design\Tag", mappedBy="parents")
+     * @Serializer\Type("ArrayCollection<App\Entity\Design\Tag>")
      */
     private $children;
 
@@ -50,12 +57,14 @@ class Tag
      * @var array
      * @ORM\ManyToMany(targetEntity="App\Entity\Design\Tag")
      * @JoinTable(name="design_tagsiblings")
+     * @Serializer\Type("ArrayCollection<App\Entity\Design\Tag>")
      */
     private $siblings;
 
     /**
      * @var array
      * @ORM\ManyToMany(targetEntity="App\Entity\Design\Design", mappedBy="tags")
+     * @Serializer\Type("ArrayCollection<App\Entity\Design\Design>")
      */
     private $designs;
 
@@ -64,6 +73,7 @@ class Tag
         $this->parents = new ArrayCollection();
         $this->children = new ArrayCollection();
         $this->designs = new ArrayCollection();
+        $this->siblings = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -181,6 +191,22 @@ class Tag
     public function setChildren(array $children): void
     {
         $this->children = $children;
+    }
+
+    /**
+     * @return array
+     */
+    public function getSiblings(): array
+    {
+        return $this->siblings;
+    }
+
+    /**
+     * @param array $siblings
+     */
+    public function setSiblings(array $siblings): void
+    {
+        $this->siblings = $siblings;
     }
 
 }

@@ -5,6 +5,7 @@ namespace App\Entity\Design;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Design\LineStyleRepository")
@@ -17,30 +18,36 @@ class LineStyle
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Serializer\Groups({"design_export"})
+     * @Serializer\Type("integer")
      */
     private $id;
 
     /**
      * @var string
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Serializer\Type("string")
      */
     private $fontColor;
 
     /**
      * @var boolean
      * @ORM\Column(type="boolean", nullable=true)
+     * @Serializer\Type("boolean")
      */
     private $uppercase;
 
     /**
      * @var boolean
      * @ORM\Column(type="boolean", nullable=true)
+     * @Serializer\Type("boolean")
      */
     private $lowercase;
 
     /**
      * @var boolean
      * @ORM\Column(type="boolean", nullable=true)
+     * @Serializer\Type("boolean")
      */
     private $capitalize;
 
@@ -48,40 +55,47 @@ class LineStyle
     /**
      * @var boolean
      * @ORM\Column(type="boolean", nullable=true)
+     * @Serializer\Type("boolean")
      */
     private $bold;
     /**
      * @var boolean
      * @ORM\Column(type="boolean", nullable=true)
+     * @Serializer\Type("boolean")
      */
     private $italic;
 
     /**
      * @var boolean
      * @ORM\Column(type="boolean", nullable=true)
+     * @Serializer\Type("boolean")
      */
     private $underline;
 
     /**
      * @var boolean
      * @ORM\Column(type="boolean", nullable=true)
+     * @Serializer\Type("boolean")
      */
     private $linethrough;
 
     /**
      * @var integer
      * @ORM\Column(type="integer", nullable=true)
+     * @Serializer\Type("integer")
      */
     private $fontSize;
 
     /**
      * @var array
      * @ORM\ManyToMany(targetEntity="App\Entity\Design\Template", mappedBy="lineStyles")
+     * @Serializer\Type("ArrayCollection<App\Entity\Design\Template>")
      */
     private $templates;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Design\Font", inversedBy="lineStyles")
+     * @Serializer\Type("ArrayCollection<App\Entity\Design\Font>")
      */
     private $font;
 

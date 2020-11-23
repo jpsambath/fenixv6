@@ -5,6 +5,7 @@ namespace App\Entity\Design;
 use App\Repository\Design\FontRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * @ORM\Entity(repositoryClass=FontRepository::class)
@@ -16,21 +17,25 @@ class Font
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Serializer\Type("integer")
      */
     private $id;
 
     /**
      * @ORM\OneToMany (targetEntity="App\Entity\Design\LineStyle", mappedBy="font")
+     * @Serializer\Type("ArrayCollection<App\Entity\Design\LineStyle>")
      */
     private $lineStyles;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Serializer\Type("string")
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Serializer\Type("string")
      */
     private $postscriptName;
 

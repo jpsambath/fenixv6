@@ -5,6 +5,7 @@ namespace App\Entity\Design;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Design\TemplateRepository")
@@ -16,18 +17,24 @@ class Template
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Serializer\Groups({"design_export"})
+     * @Serializer\Type("integer")
      */
     private $id;
 
     /**
      * @var string
      * @ORM\Column(type="string", length=255)
+     * @Serializer\Groups({"design_export"})
+     * @Serializer\Type("string")
      */
     private $name;
 
     /**
      * @var integer
      * @ORM\Column(type="integer")
+     * @Serializer\Groups({"design_export"})
+     * @Serializer\Type("integer")
      */
     private $linecount;
 
@@ -38,16 +45,19 @@ class Template
      * joinColumns={@ORM\JoinColumn(name="linestyle_id", referencedColumnName="id")},
      * inverseJoinColumns={@ORM\JoinColumn(name="template_id", referencedColumnName="id")}
      * )
+     * @Serializer\Type("ArrayCollection<App\Entity\Design\LineStyle>")
      */
     private $lineStyles;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Design\Design", mappedBy="templates")
+     * @Serializer\Type("ArrayCollection<App\Entity\Design\Design>")
      */
     private $designs;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Design\TemplateCategory", mappedBy="templates")
+     * @Serializer\Type("ArrayCollection<App\Entity\Design\TemplateCategory>")
      */
     private $templateCategories;
 

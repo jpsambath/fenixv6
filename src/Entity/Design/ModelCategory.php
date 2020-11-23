@@ -5,6 +5,7 @@ namespace App\Entity\Design;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Design\ModelCategoryRepository")
@@ -17,17 +18,20 @@ class ModelCategory
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Serializer\Type("integer")
      */
     private $id;
 
     /**
      * @var string
      * @ORM\Column(type="string", length=255)
+     * @Serializer\Type("string")
      */
     private $name;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Design\Model", mappedBy="modelCategories")
+     * @Serializer\Type("ArrayCollection<App\Entity\Design\Model>")
      */
     private $models;
 

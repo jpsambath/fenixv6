@@ -64,7 +64,7 @@
                                 </optgroup>
                                 <optgroup label="Template">
                                     {% for template in templates %}
-                                        <option type="template" value="{{ template.id }}">{{ template.name }}</option>
+                                            <option type="template" value="{{ template.id }}" linecount="{{ template.linecount }}">{{ template.name }}</option>
                                     {% endfor %}
                                 </optgroup>
                             </select>
@@ -109,19 +109,26 @@
                         <div id="suggestedtags" class="form-group col-10 activecontainer"></div>
                     </div>
 
+                    <div class="row">
+                        <div id="activechange" class="form-group col-8"></div>
+                        <div class="form-group col-4">
+                            <button id="savebtn" href="{{ path('design_design_savedesign') }}" class="btn btn-primary btn-block">Save</button>
+                        </div>
+                    </div>
+
                     <table id="table"
                            data-toggle="table"
-{#                           data-search="true"#}
+                            {# data-search="true" #}
                            data-filter-control="true"
-{#                           data-show-export="true"#}
-{#                           data-click-to-select="true"#}
-                            data-url="{{ path('design_design_') }}"
+                            {# data-show-export="true" #}
+                            {# data-click-to-select="true" #}
+                           data-url="http://127.0.0.1:8000/design/design/gettextandimage"
                            data-unique-id="id"
                            data-toolbar="#toolbar"
                            data-show-columns="true"
                            data-id-field="id"
                            data-select-item-name="id"
-{#                           data-loading-template=" "#}
+                           data-loading-template=" "
                            data-pagination="true"
                            data-page-size="100"
                            class="table table-sm table-bordered table-striped table-hover">
@@ -140,17 +147,14 @@
                             <th data-field="type" data-filter-control="input" data-sortable="true" data-width="50">
                                 Type
                             </th>
-                            <th data-field="tags" data-filter-control="input" data-sortable="true" data-width="400">
+                            <th data-field="tags" data-filter-control="input" data-sortable="true" data-width="400" data-formatter="tagformatter">
                                 Tags
                             </th>
-                            <th data-field="bruttags" data-filter-control="input" data-sortable="true" data-width="400">
-                                Tags Brut
-                            </th>
-                            <th data-field="models" data-filter-control="input" data-sortable="true" data-width="200">
+                            <th data-field="models" data-filter-control="input" data-sortable="true" data-width="200" data-formatter="modelformatter">
                                 Models
                             </th>
                             <th data-field="templates" data-filter-control="input" data-sortable="true"
-                                data-width="300">Templates
+                                data-width="300" data-formatter="templateformatter">Templates
                             </th>
                             <th data-field="cuts" data-filter-control="input" data-sortable="true" data-width="100">
                                 Cuts
@@ -239,7 +243,6 @@
 
         $('#selecttag').select2({
             theme: "classic",
-            tags: true
         });
         $('#selecttemplate').select2({
             theme: "classic",
@@ -248,7 +251,29 @@
             theme: "classic",
         });
 
+        function tagformatter(tags){
+            let taglist = '';
+            $.each(tags, function (t, tag) {
+                    taglist += "<span class='taglabel' tagid='" + tag.id + "' tagname='" + tag.name + "'><span class='closebtn unlinktagbtn'>×</span>" + tag.name + "</span>";
+            })
+            return taglist;
+        }
 
+        function templateformatter(templates){
+            let templatelist = '';
+            $.each(templates, function (t, template) {
+                templatelist += "<span class='templatelabel' templateid='" + template.id + "' templatename='" + template.name + "' linecount='" + template.linecount + "'><span class='closebtn unlinktemplatebtn'>×</span>" + template.name + "<span class='badge badge-secondary'>" + template.linecount + "</span></span>";
+            })
+            return templatelist;
+        }
+
+        function modelformatter(models){
+            let modellist = '';
+            $.each(models, function (t, model) {
+                modellist += "<span class='modellabel' modelid='" + model.id + "' modelname='" + model.name + "'><span class='closebtn unlinkmodelbtn'>×</span>" + model.name + "</span>";
+            })
+            return modellist;
+        }
 
     </script>
 

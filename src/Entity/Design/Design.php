@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\JoinTable;
+use JMS\Serializer\Annotation as Serializer;
 
 
 /**
@@ -27,56 +28,80 @@ class Design
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Serializer\Groups({"design_export"})
+     * @Serializer\Type("integer")
      */
     private $id;
 
     /**
      * @var string
      * @ORM\Column(type="text")
+     * @Serializer\Groups({"design_export"})
+     * @Serializer\Type("string")
      */
     private $name;
 
     /**
      * @var string
      * @ORM\Column(type="text", nullable=true)
+     * @Serializer\Groups({"design_export"})
+     * @Serializer\Type("string")
      */
     private $description;
 
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Design\Tag", inversedBy="designs")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Design\Tag", inversedBy="designs", cascade={"persist", "merge"})
+     * @Serializer\Groups({"design_export"})
      * @JoinTable(name="design_design_tag",
      * joinColumns={@JoinColumn(name="design_id", referencedColumnName="id")},
      * inverseJoinColumns={@JoinColumn(name="tag_id", referencedColumnName="id")}
      * )
+     * @Serializer\Type("ArrayCollection<App\Entity\Design\Tag>")
      */
     private $tags;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Design\Template", inversedBy="designs")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Design\Template", inversedBy="designs", cascade={"persist", "merge"})
+     * @Serializer\Groups({"design_export"})
      * @ORM\JoinTable(name="design_design_template",
      * joinColumns={@ORM\JoinColumn(name="design_template_id", referencedColumnName="id")},
      * inverseJoinColumns={@ORM\JoinColumn(name="design_design_id", referencedColumnName="id")}
      * )
+     * @Serializer\Type("ArrayCollection<App\Entity\Design\Template>")
      */
     private $templates;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Design\Model", inversedBy="designs")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Design\Model", inversedBy="designs", cascade={"persist", "merge"})
+     * @Serializer\Groups({"design_export"})
      * @ORM\JoinTable(name="design_design_model",
      * joinColumns={@ORM\JoinColumn(name="design_model_id", referencedColumnName="id")},
      * inverseJoinColumns={@ORM\JoinColumn(name="design_design_id", referencedColumnName="id")}
      * )
+     * @Serializer\Type("ArrayCollection<App\Entity\Design\Model>")
      */
     private $models;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Support::class, inversedBy="designs")
+     * @ORM\ManyToMany(targetEntity=Support::class, inversedBy="designs", cascade={"persist", "merge"})
+     * @Serializer\Groups({"design_export"})
+     * @ORM\JoinTable(name="design_design_support",
+     * joinColumns={@ORM\JoinColumn(name="design_support_id", referencedColumnName="id")},
+     * inverseJoinColumns={@ORM\JoinColumn(name="design_design_id", referencedColumnName="id")}
+     * )
+     * @Serializer\Type("ArrayCollection<App\Entity\Design\Support>")
      */
     private $supports;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Shop::class, mappedBy="designs")
+     * @ORM\ManyToMany(targetEntity=Shop::class, mappedBy="designs", cascade={"persist", "merge"})
+     * @Serializer\Groups({"design_export"})
+     * @ORM\JoinTable(name="design_design_shops",
+     * joinColumns={@ORM\JoinColumn(name="design_shop_id", referencedColumnName="id")},
+     * inverseJoinColumns={@ORM\JoinColumn(name="design_design_id", referencedColumnName="id")}
+     * )
+     * @Serializer\Type("ArrayCollection<App\Entity\Design\Shop>")
      */
     private $shops;
 
@@ -259,6 +284,22 @@ class Design
         }
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string $description
+     */
+    public function setDescription(string $description): void
+    {
+        $this->description = $description;
     }
 
 

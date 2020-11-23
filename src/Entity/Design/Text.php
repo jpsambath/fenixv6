@@ -7,6 +7,7 @@ namespace App\Entity\Design;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Design\TextRepository")
@@ -18,18 +19,24 @@ class Text extends Design
     /**
      * @var integer
      * @ORM\Column(type="integer", nullable=true)
+     * @Serializer\Groups({"design_export"})
+     * @Serializer\Type("integer")
      */
     private $length;
 
     /**
      * @var integer
      * @ORM\Column(type="integer", nullable=true)
+     * @Serializer\Groups({"design_export"})
+     * @Serializer\Type("integer")
      */
     private $word_count;
 
     /**
      * @var string
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Serializer\Groups({"design_export"})
+     * @Serializer\Type("string")
      */
     private $genre;
 
@@ -39,11 +46,14 @@ class Text extends Design
      * joinColumns={@ORM\JoinColumn(name="design_image_id", referencedColumnName="id")},
      * inverseJoinColumns={@ORM\JoinColumn(name="design_text_id", referencedColumnName="id")}
      * )
+     * @Serializer\Type("ArrayCollection<App\Entity\Design\Image>")
      */
     private $images;
 
     /**
-     * @ORM\OneToMany(targetEntity=Cut::class, mappedBy="text", cascade={"persist", "remove"}, fetch="EAGER")
+     * @ORM\OneToMany(targetEntity=Cut::class, mappedBy="text", cascade={"persist", "remove"})
+     * @Serializer\Groups({"design_export"})
+     * @Serializer\Type("ArrayCollection<App\Entity\Design\Cut>")
      */
     private $cuts;
 
