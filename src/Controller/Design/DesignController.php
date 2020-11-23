@@ -55,7 +55,7 @@ class DesignController extends AbstractController
             }
 
             $entityManager->flush();
-            $response = $serializer->serialize(['result' => 'ok', 'data' => $designList], "json");
+            $response = $serializer->serialize(['result' => 'ok'], "json");
 
 
             return new Response($response);

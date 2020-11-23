@@ -64,7 +64,8 @@
                                 </optgroup>
                                 <optgroup label="Template">
                                     {% for template in templates %}
-                                            <option type="template" value="{{ template.id }}" linecount="{{ template.linecount }}">{{ template.name }}</option>
+                                        <option type="template" value="{{ template.id }}"
+                                                linecount="{{ template.linecount }}">{{ template.name }}</option>
                                     {% endfor %}
                                 </optgroup>
                             </select>
@@ -105,14 +106,38 @@
                     <div class="row">
                         <div class="form-group col-2">
                             <button id="suggesttags" class="btn btn-primary btn-block">Suggest Tags</button>
+                            <input type="number" id="fromtag" min="1" step="100" class="form-control mt-2">
                         </div>
                         <div id="suggestedtags" class="form-group col-10 activecontainer"></div>
                     </div>
 
                     <div class="row">
-                        <div id="activechange" class="form-group col-8"></div>
+                        <div id="activeselection" class="form-group col-4"></div>
+                        <div id="activechange" class="form-group col-4"></div>
                         <div class="form-group col-4">
-                            <button id="savebtn" href="{{ path('design_design_savedesign') }}" class="btn btn-primary btn-block">Save</button>
+                            <button id="savebtn" href="{{ path('design_design_savedesign') }}"
+                                    class="btn btn-primary btn-block">Save
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="form-group col-2">
+                            <button id="unfilterall" class="btn btn-primary btn-block">Unfilter All</button>
+                            <button id="clearall" class="btn btn-primary btn-block">Clear All</button>
+
+                        </div>
+                        <div class="form-group col-2">
+                            <button id="uncheckall" class="btn btn-primary btn-block">UncheckAll</button>
+                            <button id="checkall" class="btn btn-primary btn-block">CheckAll</button>
+                        </div>
+                        <div class="form-group col-2">
+                            <button id="viewjson" class="btn btn-primary btn-block">View Json Console</button>
+                            <button id="refresh" class="btn btn-primary btn-block">Full Refresh</button>
+                        </div>
+
+                        <div class="form-group col-2">
+                            <button id="deleteselection" class="btn btn-primary btn-block">Delete Selection</button>
                         </div>
                     </div>
 
@@ -147,10 +172,12 @@
                             <th data-field="type" data-filter-control="input" data-sortable="true" data-width="50">
                                 Type
                             </th>
-                            <th data-field="tags" data-filter-control="input" data-sortable="true" data-width="400" data-formatter="tagformatter">
+                            <th data-field="tags" data-filter-control="input" data-sortable="true" data-width="400"
+                                data-formatter="tagformatter">
                                 Tags
                             </th>
-                            <th data-field="models" data-filter-control="input" data-sortable="true" data-width="200" data-formatter="modelformatter">
+                            <th data-field="models" data-filter-control="input" data-sortable="true" data-width="200"
+                                data-formatter="modelformatter">
                                 Models
                             </th>
                             <th data-field="templates" data-filter-control="input" data-sortable="true"
@@ -185,7 +212,7 @@
                                 data-visible="false">Format
                             </th>
 
-                            <th data-field="actions" data-width="150">Actions</th>
+                            <th data-field="actions" data-width="150" data-formatter="actionformatter">Actions</th>
                         </tr>
                         </thead>
 
@@ -251,15 +278,15 @@
             theme: "classic",
         });
 
-        function tagformatter(tags){
+        function tagformatter(tags) {
             let taglist = '';
             $.each(tags, function (t, tag) {
-                    taglist += "<span class='taglabel' tagid='" + tag.id + "' tagname='" + tag.name + "'><span class='closebtn unlinktagbtn'>×</span>" + tag.name + "</span>";
+                taglist += "<span class='taglabel' tagid='" + tag.id + "' tagname='" + tag.name + "'><span class='closebtn unlinktagbtn'>×</span>" + tag.name + "</span>";
             })
             return taglist;
         }
 
-        function templateformatter(templates){
+        function templateformatter(templates) {
             let templatelist = '';
             $.each(templates, function (t, template) {
                 templatelist += "<span class='templatelabel' templateid='" + template.id + "' templatename='" + template.name + "' linecount='" + template.linecount + "'><span class='closebtn unlinktemplatebtn'>×</span>" + template.name + "<span class='badge badge-secondary'>" + template.linecount + "</span></span>";
@@ -267,13 +294,26 @@
             return templatelist;
         }
 
-        function modelformatter(models){
+        function modelformatter(models) {
             let modellist = '';
             $.each(models, function (t, model) {
                 modellist += "<span class='modellabel' modelid='" + model.id + "' modelname='" + model.name + "'><span class='closebtn unlinkmodelbtn'>×</span>" + model.name + "</span>";
             })
             return modellist;
         }
+
+        function actionformatter(action, row) {
+            if (row.type === 'Txt') {
+                return "<a href='/design/text/" + row.id + "'><span class='faicon'><i class='fas fa-eye'></i></span></a> " +
+                    "<a href='/design/text/" + row.id + "/edit'><span class='faicon'><i class='fas fa-edit'></i></span></a> " +
+                    "<a href='/design/text/delete/" + row.id + "'><span class='faicon'><i class='fas fa-trash-alt'></i></span></a>";
+            } else if (row.type === "Img") {
+                return "<a href='/design/image/" + row.id + "'><span class='faicon'><i class='fas fa-eye'></i></span></a> " +
+                    "<a href='/design/image/" + row.id + "/edit'><span class='faicon'><i class='fas fa-edit'></i></span></a> " +
+                    "<a href='/design/image/delete/" + row.id + "'><span class='faicon'><i class='fas fa-trash-alt'></i></span></a>";
+            }
+        }
+
 
     </script>
 

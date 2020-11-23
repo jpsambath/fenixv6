@@ -19,6 +19,13 @@ class Image extends Design
 {
     /**
      * @var string
+     * @Serializer\Groups({"design_export"})
+     * @Serializer\Type("string")
+     */
+    private $type = 'Txt';
+
+    /**
+     * @var string
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Serializer\Type("string")
      */
@@ -190,6 +197,22 @@ class Image extends Design
     public function setFormat(string $format): void
     {
         $this->format = $format;
+    }
+
+    /**
+     * @return string
+     */
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param string $type
+     */
+    public function setType(string $type): void
+    {
+        $this->type = $type;
     }
 
 }

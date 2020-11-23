@@ -3,8 +3,32 @@ import density from '../../global/density.js';
 
 $(document).ready(function () {
 
+    $(document).on('click', '#refresh', function (event) {
+        $('#table').bootstrapTable('refresh');
+    });
+    $(document).on('click', '#unfilterall', function (event) {
+        $('#table').bootstrapTable('clearFilterControl');
+    });
+    $(document).on('click', '#viewjson', function (event) {
+        console.log($("#table").bootstrapTable('getSelections'));
+    });
+    $(document).on('click', '#clearall', function (event) {
+        $("#table").bootstrapTable('togglePagination').bootstrapTable('uncheckAll').bootstrapTable('togglePagination');
+        $('#table').bootstrapTable('clearFilterControl');
+    });
+    $(document).on('click', '#checkall', function (event) {
+        if ($("#table").bootstrapTable('getSelections').length > 0) {
+            alert('You have already selected designs! Attenchion !')
+        } else {
+            $("#table").bootstrapTable('togglePagination').bootstrapTable('checkAll').bootstrapTable('togglePagination');
+        }
+    });
+    $(document).on('click', '#uncheckall', function (event) {
+        $("#table").bootstrapTable('togglePagination').bootstrapTable('uncheckAll').bootstrapTable('togglePagination');
+    });
 
     $(document).on('click', '#savebtn', function (event) {
+        $("#table").bootstrapTable('togglePagination').bootstrapTable('uncheckAll').bootstrapTable('togglePagination');
         let alldata = $('#table').bootstrapTable('getData');
         let changeddata = removeFromArrayBy(alldata, "change", 1);
         $.ajax({
@@ -33,6 +57,7 @@ $(document).ready(function () {
     });
 
     $('#table').on('all.bs.table', majactivechange);
+    $('#table').on('check.bs.table uncheck.bs.table uncheck-all.bs.table check-all.bs.table', majactiveselection);
 
     //ici ajax tag
     $(document).on('click', '.unlinktagfromselectionbtn', function (event) {
@@ -105,21 +130,23 @@ $(document).ready(function () {
 
         let tags = $("#selecttag option:selected");
         let designs = $("#table").bootstrapTable('getSelections');
-        let tagobj;
+        //let tagobj;
+        let taglist = [];
+
+        $.each(tags, function (t, tag) {
+            //tagobj = {"id": parseInt(tag.value), "name": tag.text}
+            taglist.push({"id": parseInt(tag.value), "name": tag.text})
+        })
+
         $.each(designs, function (key, design) {
-            let taglist = design.tags;
+            let tagfulllist = taglist.concat(design.tags);
 
-            $.each(tags, function (t, tag) {
-                tagobj = {"id": parseInt(tag.value), "name": tag.text}
-                taglist.push(tagobj)
-            })
-
-            taglist = distinctArrayBy(taglist, 'id');
+            tagfulllist = distinctArrayBy(tagfulllist, 'id');
 
             $('#table').bootstrapTable('updateCellByUniqueId', {
                 id: design.id,
                 field: 'tags',
-                value: taglist
+                value: tagfulllist
             });
 
             $('#table').bootstrapTable('updateCellByUniqueId', {
@@ -128,13 +155,17 @@ $(document).ready(function () {
                 value: 1
             });
 
-            majactivetags();
 
-            $("#menu_area").notify("Tags Successfully Added :  \n" + $("#selecttag option:selected").toArray().map(item => item.text).join('\n'), {
-                position: "bottom right",
-                className: "success"
-            });
         });
+
+        majactivetags();
+
+        $("#menu_area").notify("Tags Successfully Added :  \n" + $("#selecttag option:selected").toArray().map(item => item.text).join('\n'), {
+            position: "bottom right",
+            className: "success"
+        });
+
+        $("#table").bootstrapTable('togglePagination').bootstrapTable('uncheckAll').bootstrapTable('togglePagination');
 
     });
 
@@ -253,7 +284,6 @@ $(document).ready(function () {
 
     $('#table').on('check.bs.table uncheck.bs.table uncheck-all.bs.table check-all.bs.table', majactivetemplates);
 
-
     //ici ajax model
     $(document).on('click', '.unlinkmodelfromselectionbtn', function (event) {
         let modelid = $(this).parent().attr('modelid');
@@ -287,7 +317,6 @@ $(document).ready(function () {
 
         });
     });
-
     $(document).on('click', '.unlinkmodelbtn', function (event) {
 
         let modelid = $(this).parent().attr('modelid');
@@ -321,7 +350,6 @@ $(document).ready(function () {
             className: "success"
         });
     });
-
     $("#applymodel").on('click', function () {
         let models = $("#selectmodel option:selected");
         let designs = $("#table").bootstrapTable('getSelections');
@@ -357,14 +385,16 @@ $(document).ready(function () {
         });
 
     });
-
     $('#table').on('check.bs.table uncheck.bs.table uncheck-all.bs.table check-all.bs.table', majactivemodels);
-
 
     $(document).on('click', '#suggesttags', function (event) {
         let suggestedtaglist = "";
+        let from = $('#fromtag').val() === "" || $('#fromtag').val() === undefined ? 1 : $('#fromtag').val();
+        let to = parseInt(from) + 100;
 
-        jQuery.each(calculatedensity().slice(0, 100), function (index, suggestedtag) {
+        console.log(from + " - " + to);
+
+        jQuery.each(calculatedensity().slice(from, to), function (index, suggestedtag) {
             // faire quelque chose avec `value` (ou `this` qui est `value` )
             suggestedtaglist += "<span class='suggestedtaglabel'><span href='/design/design/ajaxlinksuggestedtag/' tagname='" + suggestedtag.word + "'>" + suggestedtag.word + "<span class='badge badge-secondary'>" + suggestedtag.count + "</span><span class='btn btn-link btn-sm ml-1 filterbtn' filtername='" + suggestedtag.word + "'><i class=\"fas fa-filter\"></i></span></span></span>";
         });
@@ -372,13 +402,12 @@ $(document).ready(function () {
         $('#suggestedtags').html(suggestedtaglist);
 
     });
-
     $(document).on('click', '.filterbtn', function (event) {
-        $("th[data-field='name']").find('input').val($(this).attr('filtername'));
+        let filtervalue = $(this).attr('filtername');
+        $('#table').bootstrapTable('filterBy', {id: 3, price: '$1'})
+        $("th[data-field='name']").find('input').val(filtervalue);
         $('#table').bootstrapTable('triggerSearch');
     });
-
-
 });
 
 
@@ -431,7 +460,7 @@ function calculatedensity() {
             results = unique($.merge($.merge(results1, results2), results3));
             results = sortByKeyDesc(distinctArrayBy(results, 'word'), "count");
 
-            console.log(results);
+            // console.log(results);
 
             $.each(results, function (index, suggestedtag) {
                 if (finalresult.find(x => x.word === suggestedtag.word) === undefined) {
@@ -514,6 +543,22 @@ function majactivechange() {
 
     $('#activechange').html(result);
 }
+
+function majactiveselection() {
+
+    let selection = $('#table').bootstrapTable('getSelections');
+    let result = '';
+
+    if (selection.length === 0) {
+        result = "Aucune sélection en cours"
+    } else {
+        result = "<span style='color: #28a745; font-weight: bold'>" + selection.length + "</span> élément(s) sélectionné(s)"
+    }
+
+    $('#activeselection').html(result);
+
+}
+
 
 function htmlToElements(html) {
     let template = document.createElement('template');
