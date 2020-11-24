@@ -404,7 +404,6 @@ $(document).ready(function () {
     });
     $(document).on('click', '.filterbtn', function (event) {
         let filtervalue = $(this).attr('filtername');
-        $('#table').bootstrapTable('filterBy', {id: 3, price: '$1'})
         $("th[data-field='name']").find('input').val(filtervalue);
         $('#table').bootstrapTable('triggerSearch');
     });
