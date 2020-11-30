@@ -76,3 +76,13 @@
     padding-bottom: 5px;
     padding-right: 5px;
 }
+
+.cutscolumn:hover{
+    background-color: #FFF364 !important;
+    cursor: pointer;
+}
+
+.cut:hover{
+    background-color: #4A32FB !important;
+    cursor: pointer;
+}

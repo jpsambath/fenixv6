@@ -1,11 +1,11 @@
 {
     "devDependencies": {
         "@symfony/webpack-encore": "^0.31.0",
-        "core-js": "^3.0.0",
-        "dropzone": "^5.7.0",
-        "regenerator-runtime": "^0.13.2",
+        "core-js": "^3.8.0",
+        "dropzone": "^5.7.2",
+        "regenerator-runtime": "^0.13.7",
         "tablefilter": "^0.7.2",
-        "webpack-notifier": "^1.6.0"
+        "webpack-notifier": "^1.11.0"
     },
     "license": "UNLICENSED",
     "private": true,
@@ -16,11 +16,13 @@
         "build": "encore production --progress"
     },
     "dependencies": {
-        "@fortawesome/fontawesome-free": "^5.14.0",
+        "@fortawesome/fontawesome-free": "^5.15.1",
+        "bootstrap": "^4.5.3",
         "bootstrap-table": "^1.18.0",
-        "copy-webpack-plugin": "^6.2.1",
+        "copy-webpack-plugin": "^6.3.2",
         "jquery": "latest",
         "notifyjs": "^3.0.0",
+        "popper.js": "^1.16.1",
         "select2": "^4.0.13",
         "table2csv": "^1.1.4",
         "tableexport": "^5.2.0",

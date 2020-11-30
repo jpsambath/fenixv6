@@ -43,6 +43,8 @@ class TextController extends AbstractController
         $response = array();
         $nblink = 0;
 
+        $preposition = ["avant","jusqu’à","compter de","près dans","à travers","devant","au-dessous de","arrière de","de","travers de","à cause de","pour","sauf excepté hormis à condition","concernant","manque de","sans","malgré","à","après","à partir de","lors de","à l’intérieur de","auprès de","hors","au-dessus de","en bas de","en dehors de","près de","en raison de","en vue de","dans le cas","moyennant","avec","moins","de peur de","dès","durant","avant de","entre","chez","parmi","du côté de","en deçà de","hors de","afin de","à moins de","contrairement à","par","selon","à force de","depuis","sur le point de","contre","sous","en","en dedans","loin de","grâce à","comme","de manière à","pendant","à","là","sur","face à","jusque","de façon","derrière","vers","au"];
+
         foreach ($textlist as $text) {
             //Gestion 1 ligne
             if ($text->getLength() <= 15 or $text->getWordCount()==1) {
@@ -66,6 +68,54 @@ class TextController extends AbstractController
                 $entityManager->flush();
                 $textresultlist[] = $text;
             }
+
+            //Gestion 3 lignes
+            if ($text->getWordCount()==3 and count(array_diff(explode(" ", $text->getName()), $preposition))>0) {
+
+                $parts = explode(" ", $text->getName());
+                $oneCut = new Cut();
+                $twoCut = new Cut();
+
+                if(in_array($parts[0], $preposition)){
+                    $oneCut->setParts([$parts[0], $parts[1]." ".$parts[2]]);
+                    $oneCut->setLinecount(2);
+                    $text->addCut($oneCut);
+                }elseif(in_array($parts[1], $preposition)){
+                    $oneCut->setParts([$parts[0], $parts[1], $parts[2]]);
+                    $oneCut->setLinecount(3);
+                    $text->addCut($oneCut);
+                }
+
+                $entityManager->flush();
+                $textresultlist[] = $text;
+            }
+
+            //Gestion 4 lignes
+            if ($text->getWordCount()==4 and count(array_diff(explode(" ", $text->getName()), $preposition))>0) {
+
+                $parts = explode(" ", $text->getName());
+                $oneCut = new Cut();
+                $twoCut = new Cut();
+
+                if(in_array($parts[0], $preposition)){
+                    $oneCut->setParts([$parts[0], $parts[1]." ".$parts[2]." ".$parts[3]]);
+                    $oneCut->setLinecount(2);
+                    $text->addCut($oneCut);
+                }elseif(in_array($parts[1], $preposition)){
+                    $oneCut->setParts([$parts[0], $parts[1], $parts[2]." ".$parts[3]]);
+                    $oneCut->setLinecount(3);
+                    $text->addCut($oneCut);
+                }elseif(in_array($parts[2], $preposition)){
+                    $oneCut->setParts([$parts[0]." ".$parts[1], $parts[2], $parts[3]]);
+                    $oneCut->setLinecount(3);
+                    $text->addCut($oneCut);
+                }
+
+                $entityManager->flush();
+                $textresultlist[] = $text;
+            }
+
+
         }
 
         $result = $serializer->serialize(['status' => 'ok', 'data' => $textresultlist], "json", SerializationContext::create()->setGroups(["design_export"]));

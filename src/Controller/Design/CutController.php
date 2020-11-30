@@ -5,6 +5,8 @@ namespace App\Controller\Design;
 use App\Entity\Design\Cut;
 use App\Form\Design\CutType;
 use App\Repository\Design\CutRepository;
+use App\Repository\Design\TextRepository;
+use JMS\Serializer\SerializerBuilder;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,6 +17,35 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class CutController extends AbstractController
 {
+    /**
+     * @Route("/savecut", name="design_cut_savecut")
+     * @param TextRepository $textRepository
+     * @param CutRepository $cutRepository
+     * @param Request $request
+     * @return Response
+     */
+    public function savecut(TextRepository $textRepository, CutRepository $cutRepository, Request $request): Response
+    {
+        if ($request->isXMLHttpRequest()) {
+            $data = $request->request->all();
+
+            $entityManager = $this->getDoctrine()->getManager();
+
+            $serializer = SerializerBuilder::create()->build();
+            $cut = $serializer->deserialize($data['cut'], 'App\Entity\Design\Cut', "json");
+
+            $entityManager->merge($cut);
+            $entityManager->flush();
+            $response = $serializer->serialize(['result' => 'ok', 'cut' => $cut], "json");
+
+            return new Response($response);
+        } else {
+            $this->redirectToRoute('design_design_index');
+        }
+        return new Response('This is not ajax!', 400);
+    }
+
+
     /**
      * @Route("/", name="design_cut_index", methods={"GET"})
      * @param CutRepository $cutRepository
@@ -95,9 +126,9 @@ class CutController extends AbstractController
      */
     public function delete(Request $request, Cut $cut): Response
     {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($cut);
-            $entityManager->flush();
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($cut);
+        $entityManager->flush();
 
         return $this->redirectToRoute('design_cut_index');
     }
