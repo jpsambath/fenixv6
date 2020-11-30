@@ -1,7 +1,56 @@
 import '../../../css/design/design/index.css';
 import density from '../../global/density.js';
+import 'bootstrap';
 
 $(document).ready(function () {
+
+    $(document).on('click', '.cutscolumn', function (event) {
+        let designid = $(this).parents('tr').attr('data-uniqueid');
+        let design = $("#table").bootstrapTable('getRowByUniqueId', designid);
+        $('#cutid').text(design.id);
+        $('#cuttitle').text(design.name);
+        $('#cutparts').val(design.name);
+        $('#cutmodal').modal('show');
+
+        $(document).on('click', '#savecut', function (event) {
+            // let cutparts = $('#cutparts').val().split(/\r?\n/);
+            let cutparts = $.map($('#cutparts').val().split(/\r?\n/), $.trim);
+            let cut = {"linecount": cutparts.length, "parts": cutparts, "text":[{"id": $('#cutid').text()}]};
+
+            $.ajax({
+                url: $(this).attr('href'),
+                type: 'POST',
+                data: {
+                    cut: JSON.stringify(cut)
+                },
+                success:
+                    function (data, status) {
+                        $("#menu_area").notify("Text Cut Done", {
+                            position: "bottom right",
+                            className: "success"
+                        });
+                        console.log(status);
+                        console.log(data);
+                    },
+                error:
+                    function (data, status, message) {
+                        $("#menu_area").notify("Text Cut Fail", {
+                            position: "bottom right",
+                            className: "error"
+                        });
+                        console.log(status);
+                        console.log(message);
+                        console.log(data);
+                    }
+            });
+
+        });
+
+    });
+
+    $(document).on('click', '.cut', function (event) {
+        $('#cutmodal').modal('show');
+    });
 
     $(document).on('click', '#smartcuttext', function (event) {
         $.ajax({

@@ -4,7 +4,7 @@
     <inspection_tool class="HtmlUnknownAttribute" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="myValues">
         <value>
-          <list size="16">
+          <list size="18">
             <item index="0" class="java.lang.String" itemvalue="action" />
             <item index="1" class="java.lang.String" itemvalue="tagid" />
             <item index="2" class="java.lang.String" itemvalue="tagname" />
@@ -21,6 +21,8 @@
             <item index="13" class="java.lang.String" itemvalue="filtername" />
             <item index="14" class="java.lang.String" itemvalue="line_styles" />
             <item index="15" class="java.lang.String" itemvalue="linecount" />
+            <item index="16" class="java.lang.String" itemvalue="cutid" />
+            <item index="17" class="java.lang.String" itemvalue="cutparts" />
           </list>
         </value>
       </option>
