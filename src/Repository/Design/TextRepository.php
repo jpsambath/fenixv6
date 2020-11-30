@@ -19,6 +19,9 @@ class TextRepository extends ServiceEntityRepository
         parent::__construct($registry, Text::class);
     }
 
+    /**
+     * @return Text[]|null
+     */
     public function fullFindAll(): ?array
     {
         return $this->createQueryBuilder('t')->addSelect(['templates', 'models', 'tags', 'cuts', 'lineStyles', 'supports', 'shops'])

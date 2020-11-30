@@ -6586,6 +6586,14 @@
         <argument key="cut" type="service" id=".errored..service_locator.3PHEvsR.App\Entity\Design\Cut"/>
       </argument>
     </service>
+    <service id=".service_locator.IQf5Sru" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="imageRepository" type="service" id="App\Repository\Design\ImageRepository"/>
+        <argument key="tagRepository" type="service" id="App\Repository\Design\TagRepository"/>
+        <argument key="textRepository" type="service" id="App\Repository\Design\TextRepository"/>
+      </argument>
+    </service>
     <service id=".service_locator.6PeZag5" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
       <argument type="collection">
@@ -6823,7 +6831,7 @@
         <argument key="authenticationUtils" type="service" id="security.authentication_utils"/>
       </argument>
     </service>
-    <service id=".service_locator.rLx.YY2" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+    <service id=".service_locator.cKBTPJW" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="App\Controller\Design\CutController::delete" type="service" id=".service_locator.3PHEvsR"/>
@@ -6843,6 +6851,7 @@
         <argument key="App\Controller\Design\DesignController::edit" type="service" id=".service_locator.HV.o7VJ"/>
         <argument key="App\Controller\Design\DesignController::getTextAndImage" type="service" id=".service_locator.6PeZag5"/>
         <argument key="App\Controller\Design\DesignController::index" type="service" id=".service_locator.Ar4HpE5"/>
+        <argument key="App\Controller\Design\DesignController::linktagtodesign" type="service" id=".service_locator.IQf5Sru"/>
         <argument key="App\Controller\Design\DesignController::savedesign" type="service" id=".service_locator.6PeZag5"/>
         <argument key="App\Controller\Design\DesignController::show" type="service" id=".service_locator.HV.o7VJ"/>
         <argument key="App\Controller\Design\FontController::delete" type="service" id=".service_locator.Q6iFIIn"/>
@@ -6884,6 +6893,7 @@
         <argument key="App\Controller\Design\TextController::delete" type="service" id=".service_locator.BKU0RPS"/>
         <argument key="App\Controller\Design\TextController::edit" type="service" id=".service_locator.BKU0RPS"/>
         <argument key="App\Controller\Design\TextController::show" type="service" id=".service_locator.BKU0RPS"/>
+        <argument key="App\Controller\Design\TextController::smartcuttext" type="service" id=".service_locator.IQf5Sru"/>
         <argument key="App\Controller\PrintifyController::printify_blueprintsselector" type="service" id=".service_locator.RDavkXp"/>
         <argument key="App\Controller\PrintifyController::printify_createproduct" type="service" id=".service_locator.ZEvxGHO"/>
         <argument key="App\Controller\PrintifyController::printify_productlist" type="service" id=".service_locator.ZEvxGHO"/>
@@ -6910,6 +6920,7 @@
         <argument key="App\Controller\Design\DesignController:edit" type="service" id=".service_locator.HV.o7VJ"/>
         <argument key="App\Controller\Design\DesignController:getTextAndImage" type="service" id=".service_locator.6PeZag5"/>
         <argument key="App\Controller\Design\DesignController:index" type="service" id=".service_locator.Ar4HpE5"/>
+        <argument key="App\Controller\Design\DesignController:linktagtodesign" type="service" id=".service_locator.IQf5Sru"/>
         <argument key="App\Controller\Design\DesignController:savedesign" type="service" id=".service_locator.6PeZag5"/>
         <argument key="App\Controller\Design\DesignController:show" type="service" id=".service_locator.HV.o7VJ"/>
         <argument key="App\Controller\Design\FontController:delete" type="service" id=".service_locator.Q6iFIIn"/>
@@ -6951,6 +6962,7 @@
         <argument key="App\Controller\Design\TextController:delete" type="service" id=".service_locator.BKU0RPS"/>
         <argument key="App\Controller\Design\TextController:edit" type="service" id=".service_locator.BKU0RPS"/>
         <argument key="App\Controller\Design\TextController:show" type="service" id=".service_locator.BKU0RPS"/>
+        <argument key="App\Controller\Design\TextController:smartcuttext" type="service" id=".service_locator.IQf5Sru"/>
         <argument key="App\Controller\PrintifyController:printify_blueprintsselector" type="service" id=".service_locator.RDavkXp"/>
         <argument key="App\Controller\PrintifyController:printify_createproduct" type="service" id=".service_locator.ZEvxGHO"/>
         <argument key="App\Controller\PrintifyController:printify_productlist" type="service" id=".service_locator.ZEvxGHO"/>
@@ -7537,12 +7549,12 @@
       <argument type="service" id="security.token_storage"/>
     </service>
     <service id="debug.argument_resolver.service.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver" public="false">
-      <argument type="service" id=".service_locator.rLx.YY2"/>
+      <argument type="service" id=".service_locator.cKBTPJW"/>
     </service>
     <service id="debug.argument_resolver.default.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver" public="false"/>
     <service id="debug.argument_resolver.variadic.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\VariadicValueResolver" public="false"/>
     <service id="debug.argument_resolver.not_tagged_controller.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\NotTaggedControllerValueResolver" public="false">
-      <argument type="service" id=".service_locator.rLx.YY2"/>
+      <argument type="service" id=".service_locator.cKBTPJW"/>
     </service>
     <service id=".debug.http_client.inner" class="Symfony\Contracts\HttpClient\HttpClientInterface" public="false">
       <argument type="collection"/>
@@ -8010,7 +8022,7 @@
     <service id="JMS\Serializer\ContextFactory\DeserializationContextFactoryInterface" alias="jms_serializer.configured_deserialization_context_factory" public="false"/>
     <service id="container.env_var_processors_locator" alias=".service_locator.CmORmuK" public="true"/>
     <service id="twig.loader.filesystem" alias="twig.loader.native_filesystem" public="false"/>
-    <service id="argument_resolver.controller_locator" alias=".service_locator.rLx.YY2"/>
+    <service id="argument_resolver.controller_locator" alias=".service_locator.cKBTPJW"/>
     <service id="twig.loader" alias="twig.loader.native_filesystem"/>
     <service id="Psr\Log\LoggerInterface $requestLogger" alias="monolog.logger.request"/>
     <service id="Psr\Log\LoggerInterface $consoleLogger" alias="monolog.logger.console"/>

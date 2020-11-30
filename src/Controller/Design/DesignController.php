@@ -31,6 +31,49 @@ use Symfony\Component\Routing\Annotation\Route;
 class DesignController extends AbstractController
 {
 
+
+    /**
+     * @Route("/linktagtodesign", name="design_design_linktagtodesign")
+     * @param TextRepository $textRepository
+     * @param ImageRepository $imageRepository
+     * @param TagRepository $tagRepository
+     * @param Request $request
+     * @return Response
+     */
+    public function linktagtodesign(TextRepository $textRepository, ImageRepository $imageRepository, TagRepository $tagRepository, Request $request): Response
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $serializer = SerializerBuilder::create()->build();
+        $taglist = $tagRepository->fullFindAll();
+        $textlist = $textRepository->fullFindAll();
+
+        $testtext = $textRepository->find(1135);
+        $textresultlist = array();
+
+        $response = array();
+        $nblink = 0;
+
+        foreach($textlist as $text){
+            foreach($taglist as $tag){
+                if(preg_match("/\b{$tag->getName()}\b/i", preg_replace("#[[:punct:]]#", "", $text->getName()))){
+                    $text->addTag($tag);
+                    $nblink++;
+                }
+            }
+            $entityManager->flush();
+            $textresultlist[] = $text;
+        }
+
+        $result = $serializer->serialize(['status'=> 'ok','data' => $textresultlist], "json", SerializationContext::create()->setGroups(["design_export"]));
+        return new Response($result);
+
+
+
+//        foreach($taglist as $tag){
+//            if($tag->getName())
+//        }
+    }
+
     /**
      * @Route("/savedesign", name="design_design_savedesign")
      * @param TextRepository $textRepository

@@ -19,6 +19,9 @@ class TagRepository extends ServiceEntityRepository
         parent::__construct($registry, Tag::class);
     }
 
+    /**
+     * @return Tag[]|null
+     */
     public function fullFindAll(): ?array
     {
         return $this->createQueryBuilder('t')->addSelect(['parents', 'children', 'designs'])

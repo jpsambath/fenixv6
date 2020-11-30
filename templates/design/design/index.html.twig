@@ -139,6 +139,16 @@
                         <div class="form-group col-2">
                             <button id="deleteselection" class="btn btn-primary btn-block">Delete Selection</button>
                         </div>
+
+                        <div class="form-group col-2">
+                            <button id="linktagtodesign" href="{{ path('design_design_linktagtodesign') }}"
+                                    class="btn btn-primary btn-block">Link Tag To Design
+                            </button>
+                            <button id="smartcuttext" href="{{ path('design_text_smartcuttext') }}"
+                                    class="btn btn-primary btn-block">Smart Cut Text
+                            </button>
+
+                        </div>
                     </div>
 
                     <table id="table"
@@ -185,7 +195,8 @@
                             <th data-field="templates" data-filter-control="input" data-sortable="true"
                                 data-width="300" data-formatter="templateformatter">Templates
                             </th>
-                            <th data-field="cuts" data-filter-control="input" data-sortable="true" data-width="100">
+                            <th data-field="cuts" data-filter-control="input" data-sortable="true" data-width="100"
+                                data-formatter="cutsformatter">
                                 Cuts
                             </th>
 
@@ -314,6 +325,27 @@
                     "<a href='/design/image/" + row.id + "/edit'><span class='faicon'><i class='fas fa-edit'></i></span></a> " +
                     "<a href='/design/image/delete/" + row.id + "'><span class='faicon'><i class='fas fa-trash-alt'></i></span></a>";
             }
+        }
+
+        function cutsformatter(cuts, row) {
+            let cutslist = "";
+            let sameline = false
+            $.each(cuts, function (c, cut) {
+                sameline = false
+                $.each(row.templates, function (t, template) {
+                    if (template.linecount === cut.linecount) {
+                        sameline = true
+                    }
+                })
+
+                if (sameline === true) {
+                    cutslist += "<span class=\"badge badge-success withtooltip\" title=\"" + cut.parts.join("\r\n") + "\">" + cut.linecount + "</span>"
+                } else {
+                    console.log(cut);
+                    cutslist += "<span class=\"badge badge-danger withtooltip\"  title=\"" + cut.parts.join("\r\n") + "\">" + cut.linecount + "</span>"
+                }
+            })
+            return cutslist;
         }
 
 

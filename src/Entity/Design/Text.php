@@ -157,11 +157,14 @@ class Text extends Design
 
     public function addCut(Cut $cut): self
     {
-        if (!$this->cuts->contains($cut)) {
-            $this->cuts[] = $cut;
-            $cut->setText($this);
+        foreach ($this->cuts as $thiscut) {
+            if (count(array_diff($thiscut->getParts(), $cut->getParts())) == 0) {
+                return $this;
+            }
         }
 
+        $this->cuts[] = $cut;
+        $cut->setText($this);
         return $this;
     }
 

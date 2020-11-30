@@ -25,6 +25,7 @@ class Cut
     /**
      * @var integer
      * @ORM\Column(type="integer")
+     * @Serializer\Groups({"design_export"})
      * @Serializer\Type("integer")
      */
     private $linecount;
@@ -32,6 +33,7 @@ class Cut
     /**
      * @var array
      * @ORM\Column(type="array")
+     * @Serializer\Groups({"design_export"})
      * @Serializer\Type("array")
      */
     private $parts;
@@ -85,6 +87,24 @@ class Cut
     public function setParts(array $parts): self
     {
         $this->parts = $parts;
+
+        return $this;
+    }
+
+    public function addPart(string $part): self
+    {
+        if (!$this->parts->contains($part)) {
+            $this->parts[] = $part;
+        }
+
+        return $this;
+    }
+
+    public function removePart(string $part): self
+    {
+        if ($this->parts->contains($part)) {
+            $this->parts->removeElement($part);
+        }
 
         return $this;
     }

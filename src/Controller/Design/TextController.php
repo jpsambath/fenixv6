@@ -2,12 +2,15 @@
 
 namespace App\Controller\Design;
 
-use App\Entity\Design\Design;
+use App\Entity\Design\Cut;
 use App\Entity\Design\Text;
 use App\Form\Design\TextType;
-use App\Repository\Design\CutRepository;
-use App\Repository\Design\DesignRepository;
+use App\Repository\Design\ImageRepository;
+use App\Repository\Design\TagRepository;
+use App\Repository\Design\TextRepository;
 use App\Service\DesignService;
+use JMS\Serializer\SerializationContext;
+use JMS\Serializer\SerializerBuilder;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,6 +22,57 @@ use Symfony\Component\Security\Core\Security;
  */
 class TextController extends AbstractController
 {
+
+    /**
+     * @Route("/smartcuttext", name="design_text_smartcuttext")
+     * @param TextRepository $textRepository
+     * @param ImageRepository $imageRepository
+     * @param TagRepository $tagRepository
+     * @param Request $request
+     * @return Response
+     */
+    public function smartcuttext(TextRepository $textRepository, ImageRepository $imageRepository, TagRepository $tagRepository, Request $request): Response
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $serializer = SerializerBuilder::create()->build();
+        $textlist = $textRepository->fullFindAll();
+
+        $testtext = $textRepository->find(1135);
+        $textresultlist = array();
+
+        $response = array();
+        $nblink = 0;
+
+        foreach ($textlist as $text) {
+            //Gestion 1 ligne
+            if ($text->getLength() <= 15 or $text->getWordCount()==1) {
+                $oneCut = new Cut();
+                $oneCut->setParts([$text->getName()]);
+                $oneCut->setLinecount(1);
+                $text->addCut($oneCut);
+
+                $entityManager->flush();
+                $textresultlist[] = $text;
+            }
+
+            //Gestion 2 lignes
+            if ($text->getWordCount()==2) {
+                $parts = explode(" ", $text->getName());
+                $oneCut = new Cut();
+                $oneCut->setParts([$parts[0], $parts[1]]);
+                $oneCut->setLinecount(2);
+                $text->addCut($oneCut);
+
+                $entityManager->flush();
+                $textresultlist[] = $text;
+            }
+        }
+
+        $result = $serializer->serialize(['status' => 'ok', 'data' => $textresultlist], "json", SerializationContext::create()->setGroups(["design_export"]));
+        return new Response($result);
+    }
+
+
     /**
      * @Route("/", name="design_text_index", methods={"GET"})
      */
@@ -51,7 +105,7 @@ class TextController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $text->setLength(strlen($text->getName()));
-            $text->setWordCount(str_word_count($text->getName(),0));
+            $text->setWordCount(str_word_count($text->getName(), 0));
             $designService->saveText($text);
 //            $entityManager = $this->getDoctrine()->getManager();
 //            $entityManager->persist($text);
@@ -110,9 +164,9 @@ class TextController extends AbstractController
     public function delete(Request $request, Text $text): Response
     {
 
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($text);
-            $entityManager->flush();
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($text);
+        $entityManager->flush();
 
 
         return $this->redirectToRoute('design_design_index');
