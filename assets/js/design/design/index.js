@@ -15,7 +15,7 @@ $(document).ready(function () {
         $(document).on('click', '#savecut', function (event) {
             // let cutparts = $('#cutparts').val().split(/\r?\n/);
             let cutparts = $.map($('#cutparts').val().split(/\r?\n/), $.trim);
-            let cut = {"linecount": cutparts.length, "parts": cutparts, "text":{"id": $('#cutid').text()}};
+            let cut = {"linecount": cutparts.length, "parts": cutparts, "text":[{"id": $('#cutid').text()}]};
 
             $.ajax({
                 url: $(this).attr('href'),
