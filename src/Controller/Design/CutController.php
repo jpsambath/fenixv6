@@ -3,10 +3,12 @@
 namespace App\Controller\Design;
 
 use App\Entity\Design\Cut;
+use App\Entity\Design\Text;
 use App\Form\Design\CutType;
 use App\Repository\Design\CutRepository;
 use App\Repository\Design\TextRepository;
 use JMS\Serializer\SerializerBuilder;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,13 +20,15 @@ use Symfony\Component\Routing\Annotation\Route;
 class CutController extends AbstractController
 {
     /**
-     * @Route("/savecut", name="design_cut_savecut")
+     * @Route("/savecut/{textid}", name="design_cut_savecut")
+     * @ParamConverter("text", options={"mapping": {"textid" : "id"}})
      * @param TextRepository $textRepository
+     * @param Text $text
      * @param CutRepository $cutRepository
      * @param Request $request
      * @return Response
      */
-    public function savecut(TextRepository $textRepository, CutRepository $cutRepository, Request $request): Response
+    public function savecut(TextRepository $textRepository, Text $text, CutRepository $cutRepository, Request $request): Response
     {
         if ($request->isXMLHttpRequest()) {
             $data = $request->request->all();
@@ -33,6 +37,7 @@ class CutController extends AbstractController
 
             $serializer = SerializerBuilder::create()->build();
             $cut = $serializer->deserialize($data['cut'], 'App\Entity\Design\Cut', "json");
+            $cut->setText($text);
 
             $entityManager->merge($cut);
             $entityManager->flush();

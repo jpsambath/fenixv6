@@ -7,6 +7,7 @@ use App\Entity\Design\Image;
 use App\Entity\Design\Model;
 use App\Entity\Design\Tag;
 use App\Entity\Design\Template;
+use App\Entity\Design\Text;
 use App\Form\Design\DesignType;
 use App\Repository\Design\DesignRepository;
 use App\Repository\Design\ImageRepository;

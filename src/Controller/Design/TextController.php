@@ -11,6 +11,7 @@ use App\Repository\Design\TextRepository;
 use App\Service\DesignService;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerBuilder;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
