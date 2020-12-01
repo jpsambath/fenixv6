@@ -224,13 +224,25 @@ class DesignController extends AbstractController
      */
     public function delete(Request $request, Design $design): Response
     {
-        //if ($this->isCsrfTokenValid('delete'.$design->getId(), $request->request->get('_token'))) {
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->remove($design);
-        $entityManager->flush();
-        //}
+        if ($request->isXMLHttpRequest()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($design);
+            $entityManager->flush();
 
-        return $this->redirectToRoute('design_design_index');
+            $serializer = SerializerBuilder::create()->build();
+            $response = $serializer->serialize(['result' => 'ok'], "json");
+            return new Response($response);
+        }
+        else{
+            //if ($this->isCsrfTokenValid('delete'.$design->getId(), $request->request->get('_token'))) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($design);
+            $entityManager->flush();
+            //}
+
+            return $this->redirectToRoute('design_design_index');
+        }
+
     }
 
     /**

@@ -18,6 +18,7 @@ class Cut
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Serializer\Groups({"design_export"})
      * @Serializer\Type("integer")
      */
     private $id;

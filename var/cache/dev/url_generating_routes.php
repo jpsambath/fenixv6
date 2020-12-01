@@ -17,7 +17,7 @@ return [
     '_profiler_exception_css' => [['token'], ['_controller' => 'web_profiler.controller.exception_panel::stylesheet'], [], [['text', '/exception.css'], ['variable', '/', '[^/]++', 'token', true], ['text', '/_profiler']], [], []],
     'admin_synchronizeprintify' => [[], ['_controller' => 'App\\Controller\\AdminController::synchronizeprintify'], [], [['text', '/admin/synchronizeprintify']], [], []],
     'admin_synchronizeprintful' => [[], ['_controller' => 'App\\Controller\\AdminController::synchronizeprintful'], [], [['text', '/admin/synchronizeprintful']], [], []],
-    'design_cut_savecut' => [['textid'], ['_controller' => 'App\\Controller\\Design\\CutController::savecut'], [], [['variable', '/', '[^/]++', 'textid', true], ['text', '/design/cut/savecut']], [], []],
+    'design_cut_savecut' => [[], ['_controller' => 'App\\Controller\\Design\\CutController::savecut'], [], [['text', '/design/cut/savecut']], [], []],
     'design_cut_index' => [[], ['_controller' => 'App\\Controller\\Design\\CutController::index'], [], [['text', '/design/cut/']], [], []],
     'design_cut_new' => [[], ['_controller' => 'App\\Controller\\Design\\CutController::new'], [], [['text', '/design/cut/new']], [], []],
     'design_cut_show' => [['id'], ['_controller' => 'App\\Controller\\Design\\CutController::show'], [], [['variable', '/', '[^/]++', 'id', true], ['text', '/design/cut']], [], []],

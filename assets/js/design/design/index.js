@@ -4,6 +4,39 @@ import 'bootstrap';
 
 $(document).ready(function () {
 
+    $(document).on('click', '#deleteselection', function () {
+        let designs = $("#table").bootstrapTable('getSelections');
+
+        $.each(designs, function (key, design) {
+            $.ajax({
+                url: "/design/design/delete/" + design.id,
+                type: 'POST',
+                success:
+                    function (data, status) {
+                        $("#menu_area").notify(design.id + " : " + design.name + " deleted", {
+                            position: "bottom right",
+                            className: "success"
+                        });
+                        console.log(data);
+                        console.log(status);
+                        $("#table").bootstrapTable('removeByUniqueId', design.id)
+
+
+                    },
+                error:
+                    function (data, status, message) {
+                        $("#menu_area").notify("Designs have not been deleted", {
+                            position: "bottom right",
+                            className: "error"
+                        });
+                        console.log(data);
+                        console.log(status);
+                        console.log(message);
+                    }
+            });
+        });
+    })
+
     $(document).on('click', '.cutscolumn', function (event) {
         let designid = $(this).parents('tr').attr('data-uniqueid');
         let design = $("#table").bootstrapTable('getRowByUniqueId', designid);
@@ -11,44 +44,63 @@ $(document).ready(function () {
         $('#cuttitle').text(design.name);
         $('#cutparts').val(design.name);
         $('#cutmodal').modal('show');
+    });
 
-        $(document).on('click', '#savecut', function (event) {
-            // let cutparts = $('#cutparts').val().split(/\r?\n/);
-            let cutparts = $.map($('#cutparts').val().split(/\r?\n/), $.trim);
-            let cut = {"linecount": cutparts.length, "parts": cutparts};
+    $(document).on('click', '#savecut', function (event) {
+        // let cutparts = $('#cutparts').val().split(/\r?\n/);
+        let cutparts = $.map($('#cutparts').val().split(/\r?\n/), $.trim);
+        let cut = {"linecount": cutparts.length, "parts": cutparts};
 
-            $.ajax({
-                url: "/design/cut/savecut/" + design.id,
-                type: 'POST',
-                data: {
-                    cut: JSON.stringify(cut)
+        $.ajax({
+            url: $(this).attr('href'),
+            type: 'POST',
+            data: {
+                cut: JSON.stringify(cut),
+                textid: $('#cutid').text()
+            },
+            success:
+                function (data, status) {
+                    $("#menu_area").notify("Text Cut Done", {
+                        position: "bottom right",
+                        className: "success"
+                    });
+                    console.log(status);
+                    console.log(1);
+                    console.log(data);
+                    let dataobject = JSON.parse(data);
+                    console.log(2);
+                    console.log(dataobject);
+
+                    $('#table').bootstrapTable('updateCellByUniqueId', {
+                        id: $('#cutid').text(),
+                        field: 'cuts',
+                        value: dataobject.text.cuts
+                    });
+
+                    $('#cutmodal').modal('hide');
+
                 },
-                success:
-                    function (data, status) {
-                        $("#menu_area").notify("Text Cut Done", {
-                            position: "bottom right",
-                            className: "success"
-                        });
-                        console.log(status);
-                        console.log(data);
-                    },
-                error:
-                    function (data, status, message) {
-                        $("#menu_area").notify("Text Cut Fail", {
-                            position: "bottom right",
-                            className: "error"
-                        });
-                        console.log(status);
-                        console.log(message);
-                        console.log(data);
-                    }
-            });
-
+            error:
+                function (data, status, message) {
+                    $("#menu_area").notify("Text Cut Fail", {
+                        position: "bottom right",
+                        className: "error"
+                    });
+                    console.log(status);
+                    console.log(message);
+                    console.log(data);
+                    $('#cutmodal').modal('hide');
+                }
         });
 
     });
 
     $(document).on('click', '.cut', function (event) {
+        let designid = $(this).parents('tr').attr('data-uniqueid');
+        let design = $("#table").bootstrapTable('getRowByUniqueId', designid);
+        $('#cutid').text(design.id);
+        $('#cuttitle').text(design.name);
+        $('#cutparts').val("test");
         $('#cutmodal').modal('show');
     });
 
