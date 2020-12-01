@@ -7,6 +7,7 @@ use App\Entity\Design\Text;
 use App\Form\Design\CutType;
 use App\Repository\Design\CutRepository;
 use App\Repository\Design\TextRepository;
+use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerBuilder;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,28 +21,27 @@ use Symfony\Component\Routing\Annotation\Route;
 class CutController extends AbstractController
 {
     /**
-     * @Route("/savecut/{textid}", name="design_cut_savecut")
-     * @ParamConverter("text", options={"mapping": {"textid" : "id"}})
+     * @Route("/savecut", name="design_cut_savecut")
      * @param TextRepository $textRepository
-     * @param Text $text
      * @param CutRepository $cutRepository
      * @param Request $request
      * @return Response
      */
-    public function savecut(TextRepository $textRepository, Text $text, CutRepository $cutRepository, Request $request): Response
+    public function savecut(TextRepository $textRepository, CutRepository $cutRepository, Request $request): Response
     {
         if ($request->isXMLHttpRequest()) {
             $data = $request->request->all();
 
             $entityManager = $this->getDoctrine()->getManager();
+            $text = $textRepository->find($data['textid']);
 
             $serializer = SerializerBuilder::create()->build();
             $cut = $serializer->deserialize($data['cut'], 'App\Entity\Design\Cut', "json");
             $cut->setText($text);
 
-            $entityManager->merge($cut);
+            $entityManager->persist($cut);
             $entityManager->flush();
-            $response = $serializer->serialize(['result' => 'ok', 'cut' => $cut], "json");
+            $response = $serializer->serialize(['result' => 'ok', 'text' => $text], "json", SerializationContext::create()->setGroups(["design_export"]));
 
             return new Response($response);
         } else {
