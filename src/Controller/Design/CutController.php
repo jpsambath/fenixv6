@@ -38,8 +38,9 @@ class CutController extends AbstractController
             $serializer = SerializerBuilder::create()->build();
             $cut = $serializer->deserialize($data['cut'], 'App\Entity\Design\Cut', "json");
             $cut->setText($text);
+            $text->setName(implode(" ", $cut->getParts()));
 
-            $entityManager->persist($cut);
+            $entityManager->merge($cut);
             $entityManager->flush();
             $response = $serializer->serialize(['result' => 'ok', 'text' => $text], "json", SerializationContext::create()->setGroups(["design_export"]));
 
@@ -127,14 +128,36 @@ class CutController extends AbstractController
      * @Route("/delete/{id}", name="design_cut_delete")
      * @param Request $request
      * @param Cut $cut
+     * @param TextRepository $textRepository
      * @return Response
      */
-    public function delete(Request $request, Cut $cut): Response
+    public function delete(Request $request, Cut $cut, TextRepository $textRepository): Response
     {
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->remove($cut);
-        $entityManager->flush();
+        if ($request->isXMLHttpRequest()) {
+            $text = $textRepository->find($cut->getText()->getId());
+            $text->removeCut($cut);
 
-        return $this->redirectToRoute('design_cut_index');
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->merge($text);
+            $entityManager->flush();
+
+            $serializer = SerializerBuilder::create()->build();
+            $response = $serializer->serialize(['result' => 'ok', 'action'=> 'delete cut', 'text' => $text], "json", SerializationContext::create()->setGroups(["design_export"]));
+            return new Response($response);
+        }
+        else{
+            //if ($this->isCsrfTokenValid('delete'.$design->getId(), $request->request->get('_token'))) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($cut);
+            $entityManager->flush();
+            //}
+
+            return $this->redirectToRoute('design_design_index');
+        }
+
+
+
+
+
     }
 }

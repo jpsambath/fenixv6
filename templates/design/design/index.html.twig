@@ -155,7 +155,8 @@
                         <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="cuttitle">Cut title</h5>
+                                    <div class="modal-title" id="designid">Cut title</div>
+                                    <div class="modal-title" id="designtitle">Cut title</div>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -167,6 +168,7 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-danger float-left" id="deletecut">Delete Cut</button>
                                     <button type="button" class="btn btn-primary" id="savecut" href="{{ path("design_cut_savecut") }}">Save</button>
                                 </div>
                             </div>
@@ -190,6 +192,7 @@
                            data-maintain-meta-data="true"
                            data-page-size="100"
                            data-filter-strict-search="true"
+                           data-pagination-successively-size="50"
                            class="table table-sm table-bordered table-striped table-hover">
                         <thead class="thead-light">
                         <tr>
@@ -361,9 +364,9 @@
                 })
 
                 if (sameline === true) {
-                    cutslist += "<span class=\"badge badge-success cut\" cutid='" + cut.id + "' cutparts='"+ cut.parts +"' title=\"" + cut.parts.join("\r\n") + "\">" + cut.linecount + "</span>"
+                    cutslist += "<div class=\"badge badge-success cut\" cutid='" + cut.id + "' cutparts='"+ cut.parts +"' title=\"" + cut.parts.join("\r\n") + "\">" + cut.linecount + "</div>"
                 } else {
-                    cutslist += "<span class=\"badge badge-danger cut\" cutid='" + cut.id + "' cutparts='"+ cut.parts +"' title=\"" + cut.parts.join("\r\n") + "\">" + cut.linecount + "</span>"
+                    cutslist += "<div class=\"badge badge-danger cut\" cutid='" + cut.id + "' cutparts='"+ cut.parts +"' title=\"" + cut.parts.join("\r\n") + "\">" + cut.linecount + "</div>"
                 }
             })
             return cutslist;

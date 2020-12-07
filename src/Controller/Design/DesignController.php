@@ -54,9 +54,13 @@ class DesignController extends AbstractController
         $response = array();
         $nblink = 0;
 
-        foreach($textlist as $text){
-            foreach($taglist as $tag){
-                if(preg_match("/\b{$tag->getName()}\b/i", preg_replace("#[[:punct:]]#", "", $text->getName()))){
+        foreach ($textlist as $text) {
+            foreach ($taglist as $tag) {
+                $plurielmasculin = $tag->getName()."s";
+                $femininsingulier = $tag->getName()."e";
+                $plurielfeminin = $tag->getName()."es";
+
+                if (preg_match("/\b{$tag->getName()}\b/i", preg_replace("#[[:punct:]]#", "", $text->getName())) or preg_match("/\b{$plurielmasculin}\b/i", preg_replace("#[[:punct:]]#", "", $text->getName())) or preg_match("/\b{$femininsingulier}\b/i", preg_replace("#[[:punct:]]#", "", $text->getName())) or preg_match("/\b{$plurielfeminin}\b/i", preg_replace("#[[:punct:]]#", "", $text->getName()))) {
                     $text->addTag($tag);
                     $nblink++;
                 }
@@ -65,9 +69,8 @@ class DesignController extends AbstractController
             $textresultlist[] = $text;
         }
 
-        $result = $serializer->serialize(['status'=> 'ok','data' => $textresultlist], "json", SerializationContext::create()->setGroups(["design_export"]));
+        $result = $serializer->serialize(['status' => 'ok', 'data' => $textresultlist], "json", SerializationContext::create()->setGroups(["design_export"]));
         return new Response($result);
-
 
 
 //        foreach($taglist as $tag){
@@ -232,8 +235,7 @@ class DesignController extends AbstractController
             $serializer = SerializerBuilder::create()->build();
             $response = $serializer->serialize(['result' => 'ok'], "json");
             return new Response($response);
-        }
-        else{
+        } else {
             //if ($this->isCsrfTokenValid('delete'.$design->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($design);
@@ -306,7 +308,7 @@ class DesignController extends AbstractController
                 $designList[] = $oneDesign;
 
             }
-            $designListJson = $serializer->serialize($designList, "json");
+            $designListJson = $serializer->serialize($designList, "json", SerializationContext::create()->setGroups(["design_export"]));
 
 
             return new JsonResponse($designListJson);
@@ -337,7 +339,7 @@ class DesignController extends AbstractController
 
             $serializer = SerializerBuilder::create()->build();
 
-            $designJson = $serializer->serialize($design, "json");
+            $designJson = $serializer->serialize($design, "json", SerializationContext::create()->setGroups(["design_export"]));
 
             return new JsonResponse($designJson);
         } else {
@@ -374,7 +376,7 @@ class DesignController extends AbstractController
                 $entityManager->flush();
                 $designList[] = $oneDesign;
             }
-            $designListJson = $serializer->serialize($designList, "json");
+            $designListJson = $serializer->serialize($designList, "json", SerializationContext::create()->setGroups(["design_export"]));
 
             return new JsonResponse($designListJson);
         } else {
@@ -440,7 +442,7 @@ class DesignController extends AbstractController
 
             }
             $entityManager->flush();
-            $designListJson = $serializer->serialize($designList, "json");
+            $designListJson = $serializer->serialize($designList, "json", SerializationContext::create()->setGroups(["design_export"]));
 
             return new JsonResponse($designListJson);
         } else {
@@ -469,7 +471,7 @@ class DesignController extends AbstractController
 
             $serializer = SerializerBuilder::create()->build();
 
-            $designJson = $serializer->serialize($design, "json");
+            $designJson = $serializer->serialize($design, "json", SerializationContext::create()->setGroups(["design_export"]));
 
             return new JsonResponse($designJson);
         } else {
@@ -506,7 +508,7 @@ class DesignController extends AbstractController
                 $entityManager->flush();
                 $designList[] = $oneDesign;
             }
-            $designListJson = $serializer->serialize($designList, "json");
+            $designListJson = $serializer->serialize($designList, "json", SerializationContext::create()->setGroups(["design_export"]));
 
             return new JsonResponse($designListJson);
         } else {
@@ -571,7 +573,7 @@ class DesignController extends AbstractController
                 $designList[] = $oneDesign;
 
             }
-            $designListJson = $serializer->serialize($designList, "json");
+            $designListJson = $serializer->serialize($designList, "json", SerializationContext::create()->setGroups(["design_export"]));
 
             return new JsonResponse($designListJson);
         } else {
@@ -600,7 +602,7 @@ class DesignController extends AbstractController
 
             $serializer = SerializerBuilder::create()->build();
 
-            $designJson = $serializer->serialize($design, "json");
+            $designJson = $serializer->serialize($design, "json", SerializationContext::create()->setGroups(["design_export"]));
 
             return new JsonResponse($designJson);
         } else {
@@ -637,7 +639,7 @@ class DesignController extends AbstractController
                 $entityManager->flush();
                 $designList[] = $oneDesign;
             }
-            $designListJson = $serializer->serialize($designList, "json");
+            $designListJson = $serializer->serialize($designList, "json", SerializationContext::create()->setGroups(["design_export"]));
 
             return new JsonResponse($designListJson);
         } else {

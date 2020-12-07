@@ -4,6 +4,42 @@ import 'bootstrap';
 
 $(document).ready(function () {
 
+    $(document).on('click', '#deletecut', function () {
+        $.ajax({
+            url: "/design/cut/delete/" + $('#cutid').text(),
+            type: 'POST',
+            success:
+                function (data, status) {
+                    $("#menu_area").notify("Cut : " + $('#cutid').text() + " deleted", {
+                        position: "bottom right",
+                        className: "success"
+                    });
+                    console.log(data);
+                    console.log(status);
+                    let dataobject = JSON.parse(data);
+
+                    $('#table').bootstrapTable('updateCellByUniqueId', {
+                        id: dataobject.text.id,
+                        field: 'cuts',
+                        value: dataobject.text.cuts
+                    });
+
+                    $('#cutmodal').modal('hide');
+                },
+            error:
+                function (data, status, message) {
+                    $("#menu_area").notify("Designs have not been deleted", {
+                        position: "bottom right",
+                        className: "error"
+                    });
+                    console.log(data);
+                    console.log(status);
+                    console.log(message);
+                }
+        });
+    });
+
+
     $(document).on('click', '#deleteselection', function () {
         let designs = $("#table").bootstrapTable('getSelections');
 
@@ -35,13 +71,29 @@ $(document).ready(function () {
                     }
             });
         });
-    })
+    });
 
-    $(document).on('click', '.cutscolumn', function (event) {
+    $(document).on('click', '.cutscolumn > .cut', function (event) {
+        event.stopPropagation();
+        event.preventDefault();
         let designid = $(this).parents('tr').attr('data-uniqueid');
         let design = $("#table").bootstrapTable('getRowByUniqueId', designid);
-        $('#cutid').text(design.id);
-        $('#cuttitle').text(design.name);
+        $('#deletecut').prop('disabled', false);
+        $('#designid').text(design.id);
+        $('#cutid').text($(this).attr('cutid'));
+        $('#designtitle').text(design.name);
+        $('#cutparts').val($(this).attr('title'));
+        $('#cutmodal').modal('show');
+    });
+
+    $(document).on('click', '.cutscolumn', function (event) {
+
+        let designid = $(this).parents('tr').attr('data-uniqueid');
+        let design = $("#table").bootstrapTable('getRowByUniqueId', designid);
+        $('#deletecut').prop('disabled', true);
+        $('#cutid').text("new");
+        $('#designid').text(design.id);
+        $('#designtitle').text(design.name);
         $('#cutparts').val(design.name);
         $('#cutmodal').modal('show');
     });
@@ -49,14 +101,20 @@ $(document).ready(function () {
     $(document).on('click', '#savecut', function (event) {
         // let cutparts = $('#cutparts').val().split(/\r?\n/);
         let cutparts = $.map($('#cutparts').val().split(/\r?\n/), $.trim);
-        let cut = {"linecount": cutparts.length, "parts": cutparts};
+        let cut;
+        if ($('#cutid').text() != "new") {
+            cut = {"id": $('#cutid').text(), "linecount": cutparts.length, "parts": cutparts};
+        } else {
+            cut = {"linecount": cutparts.length, "parts": cutparts};
+        }
+
 
         $.ajax({
             url: $(this).attr('href'),
             type: 'POST',
             data: {
                 cut: JSON.stringify(cut),
-                textid: $('#cutid').text()
+                textid: $('#designid').text()
             },
             success:
                 function (data, status) {
@@ -72,9 +130,15 @@ $(document).ready(function () {
                     console.log(dataobject);
 
                     $('#table').bootstrapTable('updateCellByUniqueId', {
-                        id: $('#cutid').text(),
+                        id: $('#designid').text(),
                         field: 'cuts',
                         value: dataobject.text.cuts
+                    });
+
+                    $('#table').bootstrapTable('updateCellByUniqueId', {
+                        id: $('#designid').text(),
+                        field: 'name',
+                        value: dataobject.text.name
                     });
 
                     $('#cutmodal').modal('hide');
@@ -95,14 +159,6 @@ $(document).ready(function () {
 
     });
 
-    $(document).on('click', '.cut', function (event) {
-        let designid = $(this).parents('tr').attr('data-uniqueid');
-        let design = $("#table").bootstrapTable('getRowByUniqueId', designid);
-        $('#cutid').text(design.id);
-        $('#cuttitle').text(design.name);
-        $('#cutparts').val("test");
-        $('#cutmodal').modal('show');
-    });
 
     $(document).on('click', '#smartcuttext', function (event) {
         $.ajax({

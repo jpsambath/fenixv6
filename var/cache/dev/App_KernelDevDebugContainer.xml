@@ -6593,6 +6593,13 @@
         <argument key="cut" type="service" id=".errored..service_locator.3PHEvsR.App\Entity\Design\Cut"/>
       </argument>
     </service>
+    <service id=".service_locator.NTYsqQA" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="cut" type="service" id=".errored..service_locator.NTYsqQA.App\Entity\Design\Cut"/>
+        <argument key="textRepository" type="service" id="App\Repository\Design\TextRepository"/>
+      </argument>
+    </service>
     <service id=".service_locator.IQf5Sru" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
       <argument type="collection">
@@ -6838,10 +6845,10 @@
         <argument key="authenticationUtils" type="service" id="security.authentication_utils"/>
       </argument>
     </service>
-    <service id=".service_locator.r1vAhOW" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+    <service id=".service_locator.9w0EnBV" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
       <argument type="collection">
-        <argument key="App\Controller\Design\CutController::delete" type="service" id=".service_locator.3PHEvsR"/>
+        <argument key="App\Controller\Design\CutController::delete" type="service" id=".service_locator.NTYsqQA"/>
         <argument key="App\Controller\Design\CutController::edit" type="service" id=".service_locator.3PHEvsR"/>
         <argument key="App\Controller\Design\CutController::index" type="service" id=".service_locator.kKW1Hom"/>
         <argument key="App\Controller\Design\CutController::savecut" type="service" id=".service_locator.agEV.D2"/>
@@ -6911,7 +6918,7 @@
         <argument key="App\Controller\UserController::edit" type="service" id=".service_locator.pfEGUEs"/>
         <argument key="App\Controller\UserController::login" type="service" id=".service_locator.q6jLs_L"/>
         <argument key="App\Controller\UserController::register" type="service" id=".service_locator.pfEGUEs"/>
-        <argument key="App\Controller\Design\CutController:delete" type="service" id=".service_locator.3PHEvsR"/>
+        <argument key="App\Controller\Design\CutController:delete" type="service" id=".service_locator.NTYsqQA"/>
         <argument key="App\Controller\Design\CutController:edit" type="service" id=".service_locator.3PHEvsR"/>
         <argument key="App\Controller\Design\CutController:index" type="service" id=".service_locator.kKW1Hom"/>
         <argument key="App\Controller\Design\CutController:savecut" type="service" id=".service_locator.agEV.D2"/>
@@ -7558,12 +7565,12 @@
       <argument type="service" id="security.token_storage"/>
     </service>
     <service id="debug.argument_resolver.service.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver" public="false">
-      <argument type="service" id=".service_locator.r1vAhOW"/>
+      <argument type="service" id=".service_locator.9w0EnBV"/>
     </service>
     <service id="debug.argument_resolver.default.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver" public="false"/>
     <service id="debug.argument_resolver.variadic.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\VariadicValueResolver" public="false"/>
     <service id="debug.argument_resolver.not_tagged_controller.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\NotTaggedControllerValueResolver" public="false">
-      <argument type="service" id=".service_locator.r1vAhOW"/>
+      <argument type="service" id=".service_locator.9w0EnBV"/>
     </service>
     <service id=".debug.http_client.inner" class="Symfony\Contracts\HttpClient\HttpClientInterface" public="false">
       <argument type="collection"/>
@@ -7574,6 +7581,7 @@
       <factory class="Symfony\Component\HttpClient\HttpClient" method="create"/>
     </service>
     <service id=".errored..service_locator.3PHEvsR.App\Entity\Design\Cut" class="App\Entity\Design\Cut"/>
+    <service id=".errored..service_locator.NTYsqQA.App\Entity\Design\Cut" class="App\Entity\Design\Cut"/>
     <service id=".errored..service_locator.HV.o7VJ.App\Entity\Design\Design" class="App\Entity\Design\Design"/>
     <service id=".errored..service_locator.9X7zW68.App\Entity\Design\Design" class="App\Entity\Design\Design"/>
     <service id=".errored..service_locator.9X7zW68.App\Entity\Design\Tag" class="App\Entity\Design\Tag"/>
@@ -8031,7 +8039,7 @@
     <service id="JMS\Serializer\ContextFactory\DeserializationContextFactoryInterface" alias="jms_serializer.configured_deserialization_context_factory" public="false"/>
     <service id="container.env_var_processors_locator" alias=".service_locator.CmORmuK" public="true"/>
     <service id="twig.loader.filesystem" alias="twig.loader.native_filesystem" public="false"/>
-    <service id="argument_resolver.controller_locator" alias=".service_locator.r1vAhOW"/>
+    <service id="argument_resolver.controller_locator" alias=".service_locator.9w0EnBV"/>
     <service id="twig.loader" alias="twig.loader.native_filesystem"/>
     <service id="Psr\Log\LoggerInterface $requestLogger" alias="monolog.logger.request"/>
     <service id="Psr\Log\LoggerInterface $consoleLogger" alias="monolog.logger.console"/>

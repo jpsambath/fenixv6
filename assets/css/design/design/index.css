@@ -81,8 +81,15 @@
     background-color: #FFF364 !important;
     cursor: pointer;
 }
+.cutscolumn{
+    z-index: 99;
+}
 
 .cut:hover{
     background-color: #4A32FB !important;
     cursor: pointer;
+}
+
+.cut{
+    z-index: 100;
 }
