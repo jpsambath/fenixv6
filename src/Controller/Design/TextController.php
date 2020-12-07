@@ -11,7 +11,6 @@ use App\Repository\Design\TextRepository;
 use App\Service\DesignService;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerBuilder;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -44,11 +43,11 @@ class TextController extends AbstractController
         $response = array();
         $nblink = 0;
 
-        $preposition = ["avant","jusqu’à","compter de","près dans","à travers","devant","au-dessous de","arrière de","de","travers de","à cause de","pour","sauf excepté hormis à condition","concernant","manque de","sans","malgré","à","après","à partir de","lors de","à l’intérieur de","auprès de","hors","au-dessus de","en bas de","en dehors de","près de","en raison de","en vue de","dans le cas","moyennant","avec","moins","de peur de","dès","durant","avant de","entre","chez","parmi","du côté de","en deçà de","hors de","afin de","à moins de","contrairement à","par","selon","à force de","depuis","sur le point de","contre","sous","en","en dedans","loin de","grâce à","comme","de manière à","pendant","à","là","sur","face à","jusque","de façon","derrière","vers","dans","excepté","hormis","outre","vu","près","sauf","suivant","voici","voilà","et","&","si","du","Appelle moi","Appelez-moi"];
+        $preposition = ["avant", "jusqu’à", "compter de", "près dans", "à travers", "devant", "au-dessous de", "arrière de", "de", "travers de", "à cause de", "pour", "sauf excepté hormis à condition", "concernant", "manque de", "sans", "malgré", "à", "après", "à partir de", "lors de", "à l’intérieur de", "auprès de", "hors", "au-dessus de", "en bas de", "en dehors de", "près de", "en raison de", "en vue de", "dans le cas", "moyennant", "avec", "moins", "de peur de", "dès", "durant", "avant de", "entre", "chez", "parmi", "du côté de", "en deçà de", "hors de", "afin de", "à moins de", "contrairement à", "par", "selon", "à force de", "depuis", "sur le point de", "contre", "sous", "en", "en dedans", "loin de", "grâce à", "comme", "de manière à", "pendant", "à", "là", "sur", "face à", "jusque", "de façon", "derrière", "vers", "dans", "excepté", "hormis", "outre", "vu", "près", "sauf", "suivant", "voici", "voilà", "et", "&", "si", "du", "Appelle moi", "Appelez-moi"];
 
         foreach ($textlist as $text) {
             //Gestion 1 ligne
-            if ($text->getLength() <= 15 or $text->getWordCount()==1) {
+            /*if ($text->getLength() <= 15 or $text->getWordCount() == 1) {
                 $oneCut = new Cut();
                 $oneCut->setParts([$text->getName()]);
                 $oneCut->setLinecount(1);
@@ -59,7 +58,7 @@ class TextController extends AbstractController
             }
 
             //Gestion 2 lignes
-            if ($text->getWordCount()==2) {
+            if ($text->getWordCount() == 2) {
                 $parts = explode(" ", $text->getName());
                 $oneCut = new Cut();
                 $oneCut->setParts([$parts[0], $parts[1]]);
@@ -71,17 +70,17 @@ class TextController extends AbstractController
             }
 
             //Gestion 3 lignes
-            if ($text->getWordCount()==3 and count(array_udiff(explode(" ", $text->getName()), $preposition, 'strcasecmp'))>0) {
+            if ($text->getWordCount() == 3 and count(array_udiff(explode(" ", $text->getName()), $preposition, 'strcasecmp')) > 0) {
 
                 $parts = explode(" ", $text->getName());
                 $oneCut = new Cut();
                 $twoCut = new Cut();
 
-                if(in_array(strtolower($parts[0]), array_map("strtolower", $preposition))){
-                    $oneCut->setParts([$parts[0], $parts[1]." ".$parts[2]]);
+                if (in_array(strtolower($parts[0]), array_map("strtolower", $preposition))) {
+                    $oneCut->setParts([$parts[0], $parts[1] . " " . $parts[2]]);
                     $oneCut->setLinecount(2);
                     $text->addCut($oneCut);
-                }elseif(in_array(strtolower($parts[1]), array_map("strtolower", $preposition))){
+                } elseif (in_array(strtolower($parts[1]), array_map("strtolower", $preposition))) {
                     $oneCut->setParts([$parts[0], $parts[1], $parts[2]]);
                     $oneCut->setLinecount(3);
                     $text->addCut($oneCut);
@@ -90,24 +89,35 @@ class TextController extends AbstractController
                 $entityManager->flush();
                 $textresultlist[] = $text;
             }
+            if ($text->getWordCount() == 3) {
+                $parts = explode(" ", $text->getName());
+                $oneCut = new Cut();
+                if (strcasecmp("qui", $parts[1]) == 0) {
+                    $oneCut->setParts([$parts[0] . " " . $parts[1], $parts[2]]);
+                    $oneCut->setLinecount(2);
+                    $text->addCut($oneCut);
+                }
+                $entityManager->flush();
+                $textresultlist[] = $text;
+            }
 
             //Gestion 4 lignes
-            if ($text->getWordCount()==4 and count(array_udiff(explode(" ", $text->getName()), $preposition, 'strcasecmp'))>0) {
+            if ($text->getWordCount() == 4 and count(array_udiff(explode(" ", $text->getName()), $preposition, 'strcasecmp')) > 0) {
 
                 $parts = explode(" ", $text->getName());
                 $oneCut = new Cut();
                 $twoCut = new Cut();
 
-                if(in_array(strtolower($parts[0]), array_map("strtolower", $preposition))){
-                    $oneCut->setParts([$parts[0], $parts[1]." ".$parts[2]." ".$parts[3]]);
+                if (in_array(strtolower($parts[0]), array_map("strtolower", $preposition))) {
+                    $oneCut->setParts([$parts[0], $parts[1] . " " . $parts[2] . " " . $parts[3]]);
                     $oneCut->setLinecount(2);
                     $text->addCut($oneCut);
-                }elseif(in_array(strtolower($parts[1]), array_map("strtolower", $preposition))){
-                    $oneCut->setParts([$parts[0], $parts[1], $parts[2]." ".$parts[3]]);
+                } elseif (in_array(strtolower($parts[1]), array_map("strtolower", $preposition))) {
+                    $oneCut->setParts([$parts[0], $parts[1], $parts[2] . " " . $parts[3]]);
                     $oneCut->setLinecount(3);
                     $text->addCut($oneCut);
-                }elseif(in_array(strtolower($parts[2]), array_map("strtolower", $preposition))){
-                    $oneCut->setParts([$parts[0]." ".$parts[1], $parts[2], $parts[3]]);
+                } elseif (in_array(strtolower($parts[2]), array_map("strtolower", $preposition))) {
+                    $oneCut->setParts([$parts[0] . " " . $parts[1], $parts[2], $parts[3]]);
                     $oneCut->setLinecount(3);
                     $text->addCut($oneCut);
                 }
@@ -115,27 +125,38 @@ class TextController extends AbstractController
                 $entityManager->flush();
                 $textresultlist[] = $text;
             }
+            if ($text->getWordCount() == 4) {
+                $parts = explode(" ", $text->getName());
+                $oneCut = new Cut();
+                if (strcasecmp("qui", $parts[2]) == 0) {
+                    $oneCut->setParts([$parts[0] . " " . $parts[1], $parts[2], $parts[3]]);
+                    $oneCut->setLinecount(3);
+                    $text->addCut($oneCut);
+                }
+                $entityManager->flush();
+                $textresultlist[] = $text;
+            }
 
-            if ($text->getWordCount()==5 and count(array_udiff(explode(" ", $text->getName()), $preposition, 'strcasecmp'))>0) {
+            if ($text->getWordCount() == 5 and count(array_udiff(explode(" ", $text->getName()), $preposition, 'strcasecmp')) > 0) {
 
                 $parts = explode(" ", $text->getName());
                 $oneCut = new Cut();
                 $twoCut = new Cut();
 
-                if(in_array(strtolower($parts[0]), array_map("strtolower", $preposition))){
-                    $oneCut->setParts([$parts[0], $parts[1]." ".$parts[2]." ".$parts[3]." ".$parts[4]]);
+                if (in_array(strtolower($parts[0]), array_map("strtolower", $preposition))) {
+                    $oneCut->setParts([$parts[0], $parts[1] . " " . $parts[2] . " " . $parts[3] . " " . $parts[4]]);
                     $oneCut->setLinecount(2);
                     $text->addCut($oneCut);
-                }elseif(in_array(strtolower($parts[1]), array_map("strtolower", $preposition))){
-                    $oneCut->setParts([$parts[0], $parts[1], $parts[2]." ".$parts[3]." ".$parts[4]]);
+                } elseif (in_array(strtolower($parts[1]), array_map("strtolower", $preposition))) {
+                    $oneCut->setParts([$parts[0], $parts[1], $parts[2] . " " . $parts[3] . " " . $parts[4]]);
                     $oneCut->setLinecount(3);
                     $text->addCut($oneCut);
-                }elseif(in_array(strtolower($parts[2]), array_map("strtolower", $preposition))){
-                    $oneCut->setParts([$parts[0]." ".$parts[1], $parts[2], $parts[3]." ".$parts[4]]);
+                } elseif (in_array(strtolower($parts[2]), array_map("strtolower", $preposition))) {
+                    $oneCut->setParts([$parts[0] . " " . $parts[1], $parts[2], $parts[3] . " " . $parts[4]]);
                     $oneCut->setLinecount(3);
                     $text->addCut($oneCut);
-                }elseif(in_array(strtolower($parts[3]), array_map("strtolower", $preposition))){
-                    $oneCut->setParts([$parts[0]." ".$parts[1]." ".$parts[2], $parts[3], $parts[4]]);
+                } elseif (in_array(strtolower($parts[3]), array_map("strtolower", $preposition))) {
+                    $oneCut->setParts([$parts[0] . " " . $parts[1] . " " . $parts[2], $parts[3], $parts[4]]);
                     $oneCut->setLinecount(3);
                     $text->addCut($oneCut);
                 }
@@ -143,6 +164,90 @@ class TextController extends AbstractController
                 $entityManager->flush();
                 $textresultlist[] = $text;
             }
+            if ($text->getWordCount() == 5) {
+                $parts = explode(" ", $text->getName());
+                $oneCut = new Cut();
+                if (strcasecmp("qui", $parts[2]) == 0) {
+                    $oneCut->setParts([$parts[0] . " " . $parts[1], $parts[2], $parts[3] . " " . $parts[4]]);
+                    $oneCut->setLinecount(3);
+                    $text->addCut($oneCut);
+                }
+                $entityManager->flush();
+                $textresultlist[] = $text;
+            }*/
+
+//            if ($text->getWordCount() >= 5) {
+//                $parts = explode(" ", $text->getName());
+//                $occurence = array_keys(array_map('strtolower', $parts), "c'est");
+//                $firsthalf = '';
+//                $secondhalf = '';
+//                $oneCut = new Cut();
+//
+//                if (count($occurence) > 1) {
+//                    for ($i = 0; $i < $occurence[1]; $i++) {
+//                        $firsthalf .= $parts[$i]." ";
+//                    }
+//                    for ($i = $occurence[1]; $i < count($parts); $i++) {
+//                        $secondhalf .= $parts[$i]." ";
+//                    }
+//                    $oneCut->setParts([trim($firsthalf), trim($secondhalf)]);
+//                    $oneCut->setLinecount(2);
+//                    $text->addCut($oneCut);
+//
+//                    $entityManager->flush();
+//                    $textresultlist[] = $text;
+//
+//                }
+//
+//            }
+
+            if ($text->getWordCount() >= 4) {
+
+                $oneCut = new Cut();
+                $needle = "Je peux pas";
+
+                if (strpos($text->getName(), $needle) !== false) {
+                    $firsthalf = substr($text->getName(),0,strpos($text->getName(), $needle)+strlen($needle));
+                    $secondhalf = substr($text->getName(), strpos($text->getName(), $needle)+strlen($needle));
+
+                    $oneCut->setParts([trim($firsthalf), trim($secondhalf)]);
+                    $oneCut->setLinecount(2);
+                    $text->addCut($oneCut);
+
+                    $entityManager->flush();
+                    $textresultlist[] = $text;
+
+                }
+
+            }
+
+            /*if ($text->getWordCount() >= 5 and count(array_udiff(explode(" ", $text->getName()), $preposition, 'strcasecmp')) > 0) {
+                $parts = explode(" ", $text->getName());
+                foreach($preposition as $prep){
+                    $occurence = array_keys(array_map('strtolower', $parts), $prep);
+                    $firsthalf = '';
+                    $secondhalf = '';
+                    $oneCut = new Cut();
+
+                    if (count($occurence) > 0) {
+                        for ($i = 0; $i < $occurence[0]; $i++) {
+                            $firsthalf .= $parts[$i]." ";
+                        }
+                        for ($i = $occurence[0]+1; $i < count($parts); $i++) {
+                            $secondhalf .= $parts[$i]." ";
+                        }
+                        $oneCut->setParts([trim($firsthalf), $parts[$occurence[0]], trim($secondhalf)]);
+                        $oneCut->setLinecount(3);
+                        $text->addCut($oneCut);
+
+                        $entityManager->flush();
+                        $textresultlist[] = $text;
+
+                    }
+                }
+            }*/
+
+
 
 
         }
