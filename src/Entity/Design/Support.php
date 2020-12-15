@@ -10,6 +10,7 @@ use JMS\Serializer\Annotation as Serializer;
 
 /**
  * @ORM\Entity(repositoryClass=SupportRepository::class)
+ * @ORM\Table("design_support")
  */
 class Support
 {

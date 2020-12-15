@@ -6,10 +6,13 @@ use App\Repository\Design\ShopRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\JoinTable;
+use Doctrine\ORM\Mapping\JoinColumn;
 use JMS\Serializer\Annotation as Serializer;
 
 /**
  * @ORM\Entity(repositoryClass=ShopRepository::class)
+ * @ORM\Table("design_shop")
  */
 class Shop
 {
@@ -30,6 +33,10 @@ class Shop
     /**
      * @ORM\ManyToMany(targetEntity=Design::class, inversedBy="shops")
      * @Serializer\Type("ArrayCollection<App\Entity\Design\Design>")
+     * @JoinTable(name="design_shop_design",
+     * joinColumns={@JoinColumn(name="shop_id", referencedColumnName="id")},
+     * inverseJoinColumns={@JoinColumn(name="design_id", referencedColumnName="id")}
+     * )
      */
     private $designs;
 
