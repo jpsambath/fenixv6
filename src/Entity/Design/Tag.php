@@ -68,12 +68,28 @@ class Tag
      */
     private $designs;
 
+    /**
+     * @var array
+     * @ORM\OneToMany(targetEntity=TagRelationship::class, mappedBy="tag_origin", orphanRemoval=true)
+     * @Serializer\Type("ArrayCollection<App\Entity\Design\Tag>")
+     */
+    private $tag_origin;
+
+    /**
+     * @var array
+     * @ORM\OneToMany(targetEntity=TagRelationship::class, mappedBy="tag_target", orphanRemoval=true)
+     * @Serializer\Type("ArrayCollection<App\Entity\Design\Tag>")
+     */
+    private $tag_target;
+
     public function __construct()
     {
         $this->parents = new ArrayCollection();
         $this->children = new ArrayCollection();
         $this->designs = new ArrayCollection();
         $this->siblings = new ArrayCollection();
+        $this->tag_origin = new ArrayCollection();
+        $this->tag_target = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -207,6 +223,66 @@ class Tag
     public function setSiblings(array $siblings): void
     {
         $this->siblings = $siblings;
+    }
+
+    /**
+     * @return Collection|TagRelationship[]
+     */
+    public function getTagOrigin(): Collection
+    {
+        return $this->tag_origin;
+    }
+
+    public function addTagOrigin(TagRelationship $tagOrigin): self
+    {
+        if (!$this->tag_origin->contains($tagOrigin)) {
+            $this->tag_origin[] = $tagOrigin;
+            $tagOrigin->setTagOrigin($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTagOrigin(TagRelationship $tagOrigin): self
+    {
+        if ($this->tag_origin->removeElement($tagOrigin)) {
+            // set the owning side to null (unless already changed)
+            if ($tagOrigin->getTagOrigin() === $this) {
+                $tagOrigin->setTagOrigin(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|TagRelationship[]
+     */
+    public function getTagTarget(): Collection
+    {
+        return $this->tag_target;
+    }
+
+    public function addTagTarget(TagRelationship $tagTarget): self
+    {
+        if (!$this->tag_target->contains($tagTarget)) {
+            $this->tag_target[] = $tagTarget;
+            $tagTarget->setTagTarget($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTagTarget(TagRelationship $tagTarget): self
+    {
+        if ($this->tag_target->removeElement($tagTarget)) {
+            // set the owning side to null (unless already changed)
+            if ($tagTarget->getTagTarget() === $this) {
+                $tagTarget->setTagTarget(null);
+            }
+        }
+
+        return $this;
     }
 
 }
