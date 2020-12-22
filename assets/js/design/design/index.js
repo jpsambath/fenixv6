@@ -4,6 +4,89 @@ import 'bootstrap';
 
 $(document).ready(function () {
 
+    $(document).on('click', '.tosecondary', function (event) {
+        let tagid = $(this).parent().attr('tagid');
+        let designid = $(this).parents('tr').attr('data-uniqueid');
+        let design = $("#table").bootstrapTable('getRowByUniqueId', designid);
+        let primarytags = design.primarytags;
+        let secondarytags = design.secondarytags;
+
+        secondarytags.push({"id": parseInt(tagid), "name": $(this).parent().attr('tagname')})
+        secondarytags = distinctArrayBy(secondarytags, 'id');
+
+        primarytags = primarytags.filter(function (obj) {
+            return obj.id !== parseInt(tagid);
+        });
+
+        $('#table').bootstrapTable('updateCellByUniqueId', {
+            id: designid,
+            field: 'secondarytags',
+            value: secondarytags
+        });
+
+        $('#table').bootstrapTable('updateCellByUniqueId', {
+            id: designid,
+            field: 'primarytags',
+            value: primarytags
+        });
+
+        $('#table').bootstrapTable('updateCellByUniqueId', {
+            id: designid,
+            field: 'change',
+            value: 1
+        });
+
+        majactivetags();
+
+        $("#menu_area").notify("Tags Successfully Removed", {
+            position: "bottom right",
+            className: "success"
+        });
+
+    });
+
+    $(document).on('click', '.toprimary', function (event) {
+        let tagid = $(this).parent().attr('tagid');
+        let designid = $(this).parents('tr').attr('data-uniqueid');
+        let design = $("#table").bootstrapTable('getRowByUniqueId', designid);
+        let primarytags = design.primarytags;
+        let secondarytags = design.secondarytags;
+
+        primarytags.push({"id": parseInt(tagid), "name": $(this).parent().attr('tagname')})
+        primarytags = distinctArrayBy(primarytags, 'id');
+
+        secondarytags = secondarytags.filter(function (obj) {
+            return obj.id !== parseInt(tagid);
+        });
+
+        $('#table').bootstrapTable('updateCellByUniqueId', {
+            id: designid,
+            field: 'secondarytags',
+            value: secondarytags
+        });
+
+        $('#table').bootstrapTable('updateCellByUniqueId', {
+            id: designid,
+            field: 'primarytags',
+            value: primarytags
+        });
+
+        $('#table').bootstrapTable('updateCellByUniqueId', {
+            id: designid,
+            field: 'change',
+            value: 1
+        });
+
+        majactivetags();
+
+        $("#menu_area").notify("Tags Successfully Removed", {
+            position: "bottom right",
+            className: "success"
+        });
+
+    });
+
+
     $(document).on('click', '#deletecut', function () {
         $.ajax({
             url: "/design/cut/delete/" + $('#cutid').text(),
@@ -38,7 +121,6 @@ $(document).ready(function () {
                 }
         });
     });
-
 
     $(document).on('click', '#deleteselection', function () {
         let designs = $("#table").bootstrapTable('getSelections');
@@ -159,7 +241,6 @@ $(document).ready(function () {
 
     });
 
-
     $(document).on('click', '#smartcuttext', function (event) {
         $.ajax({
             url: $(this).attr('href'),
@@ -185,7 +266,6 @@ $(document).ready(function () {
                 }
         });
     });
-
 
     $(document).on('click', '#linktagtodesign', function (event) {
         $.ajax({
@@ -216,16 +296,20 @@ $(document).ready(function () {
     $(document).on('click', '#refresh', function (event) {
         $('#table').bootstrapTable('refresh');
     });
+
     $(document).on('click', '#unfilterall', function (event) {
         $('#table').bootstrapTable('clearFilterControl');
     });
+
     $(document).on('click', '#viewjson', function (event) {
         console.log($("#table").bootstrapTable('getSelections'));
     });
+
     $(document).on('click', '#clearall', function (event) {
         $("#table").bootstrapTable('togglePagination').bootstrapTable('uncheckAll').bootstrapTable('togglePagination');
         $('#table').bootstrapTable('clearFilterControl');
     });
+
     $(document).on('click', '#checkall', function (event) {
         if ($("#table").bootstrapTable('getSelections').length > 0) {
             alert('You have already selected designs! Attenchion !')
@@ -233,6 +317,7 @@ $(document).ready(function () {
             $("#table").bootstrapTable('togglePagination').bootstrapTable('checkAll').bootstrapTable('togglePagination');
         }
     });
+
     $(document).on('click', '#uncheckall', function (event) {
         $("#table").bootstrapTable('togglePagination').bootstrapTable('uncheckAll').bootstrapTable('togglePagination');
     });
@@ -267,15 +352,15 @@ $(document).ready(function () {
     });
 
     $('#table').on('all.bs.table', majactivechange);
+
     $('#table').on('check.bs.table uncheck.bs.table uncheck-all.bs.table check-all.bs.table', majactiveselection);
 
-    //ici ajax tag
     $(document).on('click', '.unlinktagfromselectionbtn', function (event) {
         let tagid = $(this).parent().attr('tagid');
         let designs = $("#table").bootstrapTable('getSelections');
 
         $.each(designs, function (key, design) {
-            let designtags = design.tags;
+            let designtags = design.secondarytags;
 
             designtags = designtags.filter(function (obj) {
                 return obj.id !== parseInt(tagid);
@@ -283,7 +368,7 @@ $(document).ready(function () {
 
             $('#table').bootstrapTable('updateCellByUniqueId', {
                 id: design.id,
-                field: 'tags',
+                field: 'secondarytags',
                 value: designtags
             });
 
@@ -307,16 +392,27 @@ $(document).ready(function () {
         let tagid = $(this).parent().attr('tagid');
         let designid = $(this).parents('tr').attr('data-uniqueid');
         let design = $("#table").bootstrapTable('getRowByUniqueId', designid);
-        let designtags = design.tags;
+        let secondarytags = design.secondarytags;
+        let primarytags = design.primarytags;
 
-        designtags = designtags.filter(function (obj) {
+        secondarytags = secondarytags.filter(function (obj) {
+            return obj.id !== parseInt(tagid);
+        });
+
+        primarytags = primarytags.filter(function (obj) {
             return obj.id !== parseInt(tagid);
         });
 
         $('#table').bootstrapTable('updateCellByUniqueId', {
             id: designid,
-            field: 'tags',
-            value: designtags
+            field: 'secondarytags',
+            value: secondarytags
+        });
+
+        $('#table').bootstrapTable('updateCellByUniqueId', {
+            id: designid,
+            field: 'primarytags',
+            value: primarytags
         });
 
         $('#table').bootstrapTable('updateCellByUniqueId', {
@@ -349,13 +445,13 @@ $(document).ready(function () {
         })
 
         $.each(designs, function (key, design) {
-            let tagfulllist = taglist.concat(design.tags);
+            let tagfulllist = taglist.concat(design.secondarytags);
 
             tagfulllist = distinctArrayBy(tagfulllist, 'id');
 
             $('#table').bootstrapTable('updateCellByUniqueId', {
                 id: design.id,
-                field: 'tags',
+                field: 'secondarytags',
                 value: tagfulllist
             });
 
@@ -710,7 +806,7 @@ function majactivetags() {
     let taghtml = '';
     let taglist = [];
     $.each(designs, function (key, design) {
-        taglist = taglist.concat(design.tags);
+        taglist = taglist.concat(design.secondarytags);
     });
     taglist = distinctArrayBy(taglist, 'id');
 
@@ -825,3 +921,5 @@ function removeFromArrayBy(arr, propName, propValue) {
         return obj[propName] === propValue;
     });
 }
+
+

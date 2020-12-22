@@ -63,10 +63,18 @@ class Tag
 
     /**
      * @var array
-     * @ORM\ManyToMany(targetEntity="App\Entity\Design\Design", mappedBy="tags")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Design\Design", mappedBy="secondarytags")
      * @Serializer\Type("ArrayCollection<App\Entity\Design\Design>")
      */
-    private $designs;
+    private $designssecondary;
+
+    /**
+     * @var array
+     * @ORM\ManyToMany(targetEntity="App\Entity\Design\Design", mappedBy="primarytags")
+     * @Serializer\Type("ArrayCollection<App\Entity\Design\Design>")
+     */
+    private $designsprimary;
+
 
     /**
      * @var array
@@ -86,7 +94,8 @@ class Tag
     {
         $this->parents = new ArrayCollection();
         $this->children = new ArrayCollection();
-        $this->designs = new ArrayCollection();
+        $this->designssecondary = new ArrayCollection();
+        $this->designsprimary = new ArrayCollection();
         $this->siblings = new ArrayCollection();
         $this->tag_origin = new ArrayCollection();
         $this->tag_target = new ArrayCollection();
@@ -168,26 +177,54 @@ class Tag
     /**
      * @return Collection|Design[]
      */
-    public function getDesigns(): ?Collection
+    public function getDesignssecondary(): ?Collection
     {
-        return $this->designs;
+        return $this->designssecondary;
     }
 
-    public function addDesign(Design $design): self
+    public function addDesignsecondary(Design $design): self
     {
-        if (!$this->designs->contains($design)) {
-            $this->designs[] = $design;
-            $design->addTag($this);
+        if (!$this->designssecondary->contains($design)) {
+            $this->designssecondary[] = $design;
+            $design->addSecondarytags($this);
         }
 
         return $this;
     }
 
-    public function removeDesign(Design $design): self
+    public function removeDesignsecondary(Design $design): self
     {
-        if ($this->designs->contains($design)) {
-            $this->designs->removeElement($design);
-            $design->removeTag($this);
+        if ($this->designssecondary->contains($design)) {
+            $this->designssecondary->removeElement($design);
+            $design->removeSecondarytags($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Design[]
+     */
+    public function getDesignsprimary(): ?Collection
+    {
+        return $this->designsprimary;
+    }
+
+    public function addDesignprimary(Design $design): self
+    {
+        if (!$this->designsprimary->contains($design)) {
+            $this->designsprimary[] = $design;
+            $design->addPrimarytags($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDesignprimary(Design $design): self
+    {
+        if ($this->designsprimary->contains($design)) {
+            $this->designsprimary->removeElement($design);
+            $design->removePrimarytags($this);
         }
 
         return $this;

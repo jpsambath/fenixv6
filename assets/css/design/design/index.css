@@ -12,9 +12,9 @@
     text-decoration: none;
 }
 
-.taglabel{
-    background-color: #e4e4e4;
-    border: 1px solid #aaa;
+.taglabelsecondary{
+    background-color: #cdcdcd;
+    border: 1px solid #818181;
     border-radius: 4px;
     cursor: default;
     float: left;
@@ -22,6 +22,34 @@
     margin-top: 5px;
     padding: 0 5px;
 }
+
+.taglabelprimary{
+    background-color: #98ff9a;
+    border: 1px solid #2efa42;
+    border-radius: 4px;
+    cursor: default;
+    float: left;
+    margin-right: 5px;
+    margin-top: 5px;
+    padding: 0 5px;
+}
+
+.tosecondary{
+    cursor: pointer;
+}
+
+.tosecondary:hover{
+    background-color: #cdcdcd;
+}
+
+.toprimary{
+    cursor: pointer;
+}
+
+.toprimary:hover{
+    background-color: #98ff9a;
+}
+
 
 .templatelabel{
     background-color: #7efca4;

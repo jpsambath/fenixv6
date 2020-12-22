@@ -24,10 +24,11 @@ class TextRepository extends ServiceEntityRepository
      */
     public function fullFindAll(): ?array
     {
-        return $this->createQueryBuilder('t')->addSelect(['templates', 'models', 'tags', 'cuts', 'lineStyles', 'supports', 'shops'])
+        return $this->createQueryBuilder('t')->addSelect(['templates', 'models', 'secondarytags', 'primarytags', 'cuts', 'lineStyles', 'supports', 'shops'])
             ->leftJoin('t.templates', 'templates')
             ->leftJoin('t.models', 'models')
-            ->leftJoin('t.tags', 'tags')
+            ->leftJoin('t.secondarytags', 'secondarytags')
+            ->leftJoin('t.primarytags', 'primarytags')
             ->leftJoin('t.cuts', 'cuts')
             ->leftJoin('t.supports', 'supports')
             ->leftJoin('t.shops', 'shops')

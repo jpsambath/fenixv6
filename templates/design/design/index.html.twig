@@ -209,9 +209,13 @@
                             <th data-field="type" data-filter-control="input" data-sortable="true" data-width="50">
                                 Type
                             </th>
-                            <th data-field="tags" data-filter-control="input" data-sortable="true" data-width="400"
-                                data-formatter="tagformatter">
-                                Tags
+                            <th data-field="primarytags" data-filter-control="input" data-sortable="true" data-width="400"
+                                data-formatter="primarytagformatter">
+                                Primary Tags
+                            </th>
+                            <th data-field="secondarytags" data-filter-control="input" data-sortable="true" data-width="400"
+                                data-formatter="secondarytagformatter">
+                                Secondary Tags
                             </th>
                             <th data-field="models" data-filter-control="input" data-sortable="true" data-width="200"
                                 data-formatter="modelformatter">
@@ -224,7 +228,6 @@
                                 data-formatter="cutsformatter" data-class="cutscolumn">
                                 Cuts
                             </th>
-
                             <th data-field="genre" data-filter-control="input" data-sortable="true"
                                 data-visible="false">Genre
                             </th>
@@ -316,10 +319,18 @@
             theme: "classic",
         });
 
-        function tagformatter(tags) {
+        function primarytagformatter(primarytags) {
             let taglist = '';
-            $.each(tags, function (t, tag) {
-                taglist += "<span class='taglabel' tagid='" + tag.id + "' tagname='" + tag.name + "'><span class='closebtn unlinktagbtn'>×</span>" + tag.name + "</span>";
+            $.each(primarytags, function (t, tag) {
+                taglist += "<span class='taglabelprimary' tagid='" + tag.id + "' tagname='" + tag.name + "'><span class='closebtn unlinktagbtn'>×</span>" + tag.name + "<span class='badge badge-secondary tosecondary'>2></span></span>";
+            })
+            return taglist;
+        }
+
+        function secondarytagformatter(secondarytags) {
+            let taglist = '';
+            $.each(secondarytags, function (t, tag) {
+                taglist += "<span class='taglabelsecondary' tagid='" + tag.id + "' tagname='" + tag.name + "'><span class='closebtn unlinktagbtn'>×</span>" + tag.name + "<span class='badge badge-secondary toprimary'><1</span></span>";
             })
             return taglist;
         }

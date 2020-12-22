@@ -300,7 +300,7 @@ class DesignController extends AbstractController
                 $oneDesign = $designRepository->findOneById($design['id']);
 
                 foreach ($tagList as $tag) {
-                    $oneDesign->addTag($tag);
+                    $oneDesign->addSecondarytags($tag);
                 }
 
                 $entityManager->persist($oneDesign);
@@ -332,7 +332,7 @@ class DesignController extends AbstractController
         if ($request->isXMLHttpRequest()) {
             $entityManager = $this->getDoctrine()->getManager();
 
-            $design->removeTag($tag);
+            $design->removeSecondarytags($tag);
             $entityManager->persist($design);
             $entityManager->flush();
 
@@ -370,7 +370,7 @@ class DesignController extends AbstractController
             foreach ($designArgument as $design) {
 
                 $oneDesign = $designRepository->find($design['id']);
-                $oneDesign->removeTag($tag);
+                $oneDesign->removeSecondarytags($tag);
 
                 $entityManager->persist($oneDesign);
                 $entityManager->flush();
