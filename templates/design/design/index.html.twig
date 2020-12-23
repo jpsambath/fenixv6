@@ -28,16 +28,7 @@
                             <select multiple class="js-example-basic-single js-states form-control select-to-apply"
                                     id="selecttag" data-allow-clear="1">
                                 {% for tag in tags %}
-                                    {% if tag.children|length > 0 %}
-
-                                        <optgroup label="{{ tag.name }}">
-                                            {% for child in tag.children %}
-                                                <option value="{{ child.id }}">{{ child.name }}</option>
-                                            {% endfor %}
-                                        </optgroup>
-                                    {% elseif tag.parents|length == 0 %}
-                                        <option value="{{ tag.id }}">{{ tag.name }}</option>
-                                    {% endif %}
+                                    <option value="{{ tag.id }}">{{ tag.name }}</option>
                                 {% endfor %}
 
                             </select>
