@@ -51,15 +51,26 @@ class Design
 
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Design\Tag", inversedBy="designs", cascade={"persist", "merge"})
+     * @ORM\ManyToMany(targetEntity="App\Entity\Design\Tag", inversedBy="designssecondary", cascade={"persist", "merge"})
      * @Serializer\Groups({"design_export"})
-     * @JoinTable(name="design_design_tag",
+     * @JoinTable(name="design_design_secondarytag",
      * joinColumns={@JoinColumn(name="design_id", referencedColumnName="id")},
-     * inverseJoinColumns={@JoinColumn(name="tag_id", referencedColumnName="id")}
+     * inverseJoinColumns={@JoinColumn(name="secondarytag_id", referencedColumnName="id")}
      * )
      * @Serializer\Type("ArrayCollection<App\Entity\Design\Tag>")
      */
-    private $tags;
+    private $secondarytags;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Design\Tag", inversedBy="designsprimary", cascade={"persist", "merge"})
+     * @Serializer\Groups({"design_export"})
+     * @JoinTable(name="design_design_primarytag",
+     * joinColumns={@JoinColumn(name="design_id", referencedColumnName="id")},
+     * inverseJoinColumns={@JoinColumn(name="primarytag_id", referencedColumnName="id")}
+     * )
+     * @Serializer\Type("ArrayCollection<App\Entity\Design\Tag>")
+     */
+    private $primarytags;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Design\Template", inversedBy="designs", cascade={"persist", "merge"})
@@ -109,7 +120,8 @@ class Design
 
     public function __construct()
     {
-        $this->tags = new ArrayCollection();
+        $this->secondarytags = new ArrayCollection();
+        $this->primarytags = new ArrayCollection();
         $this->templates = new ArrayCollection();
         $this->models = new ArrayCollection();
         $this->supports = new ArrayCollection();
@@ -136,24 +148,50 @@ class Design
     /**
      * @return Collection|Tag[]
      */
-    public function getTags(): Collection
+    public function getSecondarytags(): Collection
     {
-        return $this->tags;
+        return $this->secondarytags;
     }
 
-    public function addTag(Tag $tag): self
+    public function addSecondarytags(Tag $tag): self
     {
-        if (!$this->tags->contains($tag)) {
-            $this->tags[] = $tag;
+        if (!$this->secondarytags->contains($tag)) {
+            $this->secondarytags[] = $tag;
         }
 
         return $this;
     }
 
-    public function removeTag(Tag $tag): self
+    public function removeSecondarytags(Tag $tag): self
     {
-        if ($this->tags->contains($tag)) {
-            $this->tags->removeElement($tag);
+        if ($this->secondarytags->contains($tag)) {
+            $this->secondarytags->removeElement($tag);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Tag[]
+     */
+    public function getPrimarytags(): Collection
+    {
+        return $this->primarytags;
+    }
+
+    public function addPrimarytags(Tag $tag): self
+    {
+        if (!$this->primarytags->contains($tag)) {
+            $this->primarytags[] = $tag;
+        }
+
+        return $this;
+    }
+
+    public function removePrimarytags(Tag $tag): self
+    {
+        if ($this->primarytags->contains($tag)) {
+            $this->primarytags->removeElement($tag);
         }
 
         return $this;

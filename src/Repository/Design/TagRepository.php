@@ -24,11 +24,11 @@ class TagRepository extends ServiceEntityRepository
      */
     public function fullFindAll(): ?array
     {
-        return $this->createQueryBuilder('t')
-//            ->addSelect(['parents', 'children', 'designs'])
-//            ->leftJoin('t.parents', 'parents')
-//            ->leftJoin('t.children', 'children')
-            ->leftJoin( 't.designs', 'designs')
+        return $this->createQueryBuilder('t')->addSelect(['parents', 'children', 'designssecondary', 'designsprimary'])
+            ->leftJoin('t.parents', 'parents')
+            ->leftJoin('t.children', 'children')
+            ->leftJoin( 't.designssecondary', 'designssecondary')
+            ->leftJoin( 't.designsprimary', 'designsprimary')
             ->getQuery()
             ->getResult();
     }
