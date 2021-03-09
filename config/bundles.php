@@ -16,6 +16,5 @@ return [
     Symfony\WebpackEncoreBundle\WebpackEncoreBundle::class => ['all' => true],
     Knp\Bundle\PaginatorBundle\KnpPaginatorBundle::class => ['all' => true],
     JMS\SerializerBundle\JMSSerializerBundle::class => ['all' => true],
-    Tetranz\Select2EntityBundle\TetranzSelect2EntityBundle::class => ['all' => true],
-    EasyCorp\Bundle\EasyDeployBundle\EasyDeployBundle::class => ['dev' => true, 'test' => true],
+    Tetranz\Select2EntityBundle\TetranzSelect2EntityBundle::class => ['all' => true]
 ];
