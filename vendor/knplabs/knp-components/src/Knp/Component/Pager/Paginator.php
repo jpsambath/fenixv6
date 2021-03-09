@@ -61,6 +61,7 @@ class Paginator implements PaginatorInterface
     {
         $this->eventDispatcher = \class_exists(BaseEvent::class) && \class_exists(LegacyEventDispatcherProxy::class) ? LegacyEventDispatcherProxy::decorate($eventDispatcher) : $eventDispatcher;
         if (is_null($this->eventDispatcher)) {
+            trigger_deprecation('knplabs/knp-components', '2.5.0', 'Not passing EventDispatcher is deprecated and will no longer be supported in v3.');
             $this->eventDispatcher = new EventDispatcher();
             $this->eventDispatcher->addSubscriber(new PaginationSubscriber);
             $this->eventDispatcher->addSubscriber(new SortableSubscriber);
@@ -140,8 +141,11 @@ class Paginator implements PaginatorInterface
                 // replace page number out of range with max page
                 return $this->paginate($target, ceil($itemsEvent->count / $limit), $limit, $options);
             }
-            if ($pageOutOfRangeOption === self::PAGE_OUT_OF_RANGE_THROW_EXCEPTION) {
-                throw new PageNumberOutOfRangeException("Page number: $page is out of range.");
+            if ($pageOutOfRangeOption === self::PAGE_OUT_OF_RANGE_THROW_EXCEPTION && $page > 1) {
+                throw new PageNumberOutOfRangeException(
+                    sprintf('Page number: %d is out of range.', $page),
+                    ceil($itemsEvent->count / $limit)
+                );
             }
         }
 
